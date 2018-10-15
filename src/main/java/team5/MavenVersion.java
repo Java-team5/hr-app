@@ -1,4 +1,4 @@
-package gurinov;
+package team5;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,12 +9,15 @@ public final class MavenVersion {
     public static String getVersion() {
         String path = "/version.prop";
         InputStream stream = MavenVersion.class.getResourceAsStream(path);
+
         if (stream == null) return "UNKNOWN";
-        Properties props = new Properties();
+
+        Properties properties = new Properties();
+
         try {
-            props.load(stream);
+            properties.load(stream);
             stream.close();
-            return (String)props.get("version");
+            return (String) properties.get("version");
         } catch (IOException e) {
             return "UNKNOWN";
         }
