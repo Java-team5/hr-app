@@ -10,16 +10,15 @@ import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
-public class MainController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView setBirthdayFromInput(Locale locale) {
+public class EntityController {
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ModelAndView setUser(Locale locale) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("version", MavenVersion.getVersion());
+        modelAndView.getModelMap().addAttribute("entity", "User");
         modelAndView.setViewName("index");
-
         return modelAndView;
     }
 
 }
-
