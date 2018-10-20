@@ -25,14 +25,20 @@ header {
 footer{
     background: linear-gradient(to top, #d7d4d7, #fff9fa);
 }
-.language{
-    position: absolute;
-    right: 20px;
-    top: 10px;
- }
+
 .intro{
     display: flex;
+    flex-basis: 100%;
+    justify-content: center;
+
 }
+
+.language {
+    justify-content: left;
+    flex-direction: row;
+
+}
+
 .main{
     display: flex;
     align-items: center;
@@ -54,17 +60,18 @@ footer{
     cursor: pointer;
     display: flex;
     height: 100%;
-    width: 100px;
+    width: auto;
     background-color: initial;
+    padding: 0 10px 0 10px;
+    text-decoration: none;
+    color: black;
+    align-items: center;
 }
 .menu-item:hover{
     background-color: black;
-}
-.menu-item:hover .menu-item-link{
     color: white;
 }
-.menu-item-link{
-    text-decoration: none;
-    color: black;
-    margin: auto;
+
+*:focus {
+    outline: none;
 }

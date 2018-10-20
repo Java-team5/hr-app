@@ -4,13 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import team5.MavenVersion;
 
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/")
-
 public class EntityController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)

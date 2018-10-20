@@ -10,32 +10,33 @@
 <body>
 <header>
     <div class="intro">
-        Team-5
+        <spring:message code="team.name"/>
     </div>
     <div class="language">
-        <a href="?lang=en">en</a>|<a href="?lang=ru">ru</a>
+        <a class="menu-item" href="?lang=en">en</a>
+        <a class="menu-item" href="?lang=ru">ru</a>
     </div>
 </header>
 <div class="main">
     <div class="menu">
-        <div class="menu-item">
-            <a class="menu-item-link" href="/user">User</a>
-        </div>
-        <div class="menu-item">
-            <a class="menu-item-link" href="/candidate">Candidate</a>
-        </div>
-        <div class="menu-item">
-            <a class="menu-item-link" href="/interview">Interview</a>
-        </div>
-        <div class="menu-item">
-            <a class="menu-item-link" href="/skill">Skill</a>
-        </div>
-        <div class="menu-item">
-            <a class="menu-item-link" href="/feedback">Feedback</a>
-        </div>
-        <div class="menu-item">
-            <a class="menu-item-link" href="/vacancy">Vacancy</a>
-        </div>
+        <a class="menu-item" href="/user">
+            <spring:message code="menu.user"/>
+        </a>
+        <a class="menu-item" href="/candidate">
+            <spring:message code="menu.candidate"/>
+        </a>
+        <a class="menu-item" href="/interview">
+            <spring:message code="menu.interview"/>
+        </a>
+        <a class="menu-item" href="/skill">
+            <spring:message code="menu.skill"/>
+        </a>
+        <a class="menu-item" href="/feedback">
+            <spring:message code="menu.feedback"/>
+        </a>
+        <a class="menu-item" href="/vacancy">
+            <spring:message code="menu.vacancy"/>
+        </a>
     </div>
     <div class="result">
         <c:if test = "${not empty entity}">
