@@ -12,7 +12,7 @@ import java.util.Locale;
 @RequestMapping("/")
 public class MainController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/**", method = RequestMethod.GET)
     public ModelAndView initPath(Locale locale) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("version", MavenVersion.getVersion());
