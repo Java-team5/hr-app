@@ -30,13 +30,20 @@ footer{
     display: flex;
     flex-basis: 100%;
     justify-content: center;
-
 }
 
 .language {
     justify-content: left;
     flex-direction: row;
-
+    font-size: 15px;
+    margin-right: 10px;
+}
+.language-item{
+    cursor: pointer;
+    display: flex;
+    padding: 0 5px;
+    text-decoration: none;
+    border-radius: 5px;
 }
 
 .main{
@@ -59,7 +66,6 @@ footer{
 .menu-item{
     cursor: pointer;
     display: flex;
-    height: 100%;
     width: auto;
     background-color: initial;
     padding: 0 10px 0 10px;
@@ -67,7 +73,7 @@ footer{
     color: black;
     align-items: center;
 }
-.menu-item:hover{
+.menu-item:hover, .language-item:hover{
     background-color: black;
     color: white;
 }

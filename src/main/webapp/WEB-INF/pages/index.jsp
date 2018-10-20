@@ -13,8 +13,8 @@
         <spring:message code="team.name"/>
     </div>
     <div class="language">
-        <a class="menu-item" href="?lang=en">en</a>
-        <a class="menu-item" href="?lang=ru">ru</a>
+        <a class="language-item" href="?lang=en">en</a>
+        <a class="language-item" href="?lang=ru">ru</a>
     </div>
 </header>
 <div class="main">
