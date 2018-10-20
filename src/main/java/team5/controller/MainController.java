@@ -13,7 +13,7 @@ import java.util.Locale;
 public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView setBirthdayFromInput(Locale locale) {
+    public ModelAndView initPath(Locale locale) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("version", MavenVersion.getVersion());
         modelAndView.setViewName("index");
