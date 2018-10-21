@@ -11,8 +11,11 @@ import java.util.Locale;
 public class EntityController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ModelAndView setUser(Locale locale) {
+    public ModelAndView setUser(String type) {
         ModelAndView modelAndView = new ModelAndView();
+        if(type!=null){
+            modelAndView.getModelMap().addAttribute("type", type);
+        }
         modelAndView.getModelMap().addAttribute("entity", "User");
         modelAndView.setViewName("index");
         return modelAndView;

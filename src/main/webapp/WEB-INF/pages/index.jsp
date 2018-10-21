@@ -19,7 +19,7 @@
 </header>
 <div class="main">
     <div class="menu">
-        <a class="menu-item" href="/user">
+        <a class="menu-item" href="/user?type=view">
             <spring:message code="menu.user"/>
         </a>
         <a class="menu-item" href="/candidate">

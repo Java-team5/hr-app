@@ -1,0 +1,19 @@
+.user-type{
+    display: flex;
+    flex-direction: row;
+}
+.user-type-link{
+    margin: 0px 5px;
+    padding: 5px 10px;
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px solid grey;
+}
+.user-type-link:hover{
+    border-bottom: 2px solid blue;
+}
+.user-view{
+    width: 100%;
+    display: flex;
+
+}
