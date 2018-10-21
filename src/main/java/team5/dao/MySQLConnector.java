@@ -1,12 +1,11 @@
 package team5.dao;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLConnector {
-
+    //TODO change sqlconnection properties to properties file
     private static final String URL="jdbc:mysql://localhost:3306/hr_app_db";
     private static final String USERNAME="root";
     private static final String PASSWORD="";
