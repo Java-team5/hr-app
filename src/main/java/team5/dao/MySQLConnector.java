@@ -10,11 +10,14 @@ public class MySQLConnector {
     private static final String USERNAME="root";
     private static final String PASSWORD="";
     private static boolean singletonFlag = false;
-    private static Connection connection;
+    private static Connection connection = null;
+
+    public static Connection getConnection() {
+        return connection != null ? connection : null;
+    }
 
     private MySQLConnector() throws SQLException, ClassNotFoundException{
         Class.forName("com.mysql.jdbc.Driver");
-        MySQLConnector.connection = null;
         MySQLConnector.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
@@ -37,7 +40,4 @@ public class MySQLConnector {
             MySQLConnector.singletonFlag = false;
         }
     }
-
-
-
 }
