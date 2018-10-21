@@ -16,6 +16,11 @@ public class EntityController {
         if(type!=null){
             modelAndView.getModelMap().addAttribute("type", type);
         }
+        String[]users=new String[3];
+        users[0]="Yana";
+        users[1]="Katya";
+        users[2]="Dasha";
+        modelAndView.getModelMap().addAttribute("users", users);
         modelAndView.getModelMap().addAttribute("entity", "User");
         modelAndView.setViewName("index");
         return modelAndView;
