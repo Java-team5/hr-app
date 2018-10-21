@@ -12,6 +12,8 @@ import team5.models.Skill;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Math.ceil;
+
 @Controller
 public class EntityController {
 
@@ -26,20 +28,28 @@ public class EntityController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/skill/{pageid}", method = RequestMethod.GET)
-    public ModelAndView setSkill(Locale locale, @PathVariable int pageid) {
+    @RequestMapping(value = "/skill/{page}/**", method = RequestMethod.GET)
+    public ModelAndView setSkill(Locale locale, @PathVariable int page) {
         int total=5;
-        if(pageid==1){}
+        if(page==1){}
         else{
-            pageid=(pageid-1)*total+1;
+            page=(page-1)*total+1;
         }
-        List<Skill> list = skillDao.getByPage(pageid,total);
+        List<Skill> skills = skillDao.getEntitiesByPage(page,total);
+
+        float pagesCount = (float) skillDao.getCount() / total;
+        int[] pages = new int[(int) ceil(pagesCount)];
+        for(int i=0; i<pages.length; i++){
+            pages[i] = i + 1;
+        }
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("entity", "Skill");
-        modelAndView.getModelMap().addAttribute("list", list);
+        modelAndView.getModelMap().addAttribute("skill", skills);
+        modelAndView.getModelMap().addAttribute("pages", pages);
         modelAndView.setViewName("index");
         return modelAndView;
 
     }
+
 }

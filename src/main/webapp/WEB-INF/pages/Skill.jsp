@@ -8,7 +8,7 @@
         <th>Id</th>
         <th><spring:message code="menu.skill"/></th>
     </tr>
-    <c:forEach var="skill" items="${list}">
+    <c:forEach var="skill" items="${skill}">
         <tr>
             <td>${skill.id}</td>
             <td>${skill.skill}</td>
@@ -16,6 +16,14 @@
     </c:forEach>
 </table>
 <br/>
-<a href="/skill/1">1</a>
-<a href="/skill/2">2</a>
-<a href="/skill/3">3</a>
+<c:forEach var="pages" items="${pages}">
+    <tr>
+        <td><a href="/skill/${pages}">${pages}</a></td>
+    </tr>
+</c:forEach>
+
+<select>
+    <option><spring:message code="sorting.withoutSorting"/></option>
+    <option>ID</option>
+    <option><spring:message code="menu.skill"/></option>
+</select>
