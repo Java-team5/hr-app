@@ -22,12 +22,6 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
 
-        try{
-            connection = DBConnector.getConnection();
-            connection.close();
-        }
-        catch (Exception e){}
-
         return modelAndView;
     }
 

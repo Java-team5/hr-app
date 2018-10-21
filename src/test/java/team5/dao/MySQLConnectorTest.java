@@ -13,11 +13,11 @@ public class MySQLConnectorTest {
 
     @Test
     public void getConnection() throws ClassNotFoundException,SQLException {
-            MySQLConnector.getConnection();
+            DBConnector.getConnection();
     }
 
     @Test
     public void closeConnection() throws ClassNotFoundException,SQLException {
-            MySQLConnector.closeConnection(MySQLConnector.getConnection());
+        DBConnector.closeConnection(DBConnector.getConnection());
     }
 }
