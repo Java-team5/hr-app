@@ -1,24 +1,33 @@
 package team5.dao;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLConnector {
-    //TODO change sqlconnection properties to properties file
-    private static final String URL="jdbc:mysql://localhost:3306/hr_app_db";
+    private static final String URL="jdbc:mysql://localhost:3306/hr_app_db" +
+            "?verifyServerCertificate=false"+
+            "&useSSL=false"+
+            "&requireSSL=false"+
+            "&useLegacyDatetimeCode=false"+
+            "&amp"+
+            "&serverTimezone=UTC";
     private static final String USERNAME="root";
     private static final String PASSWORD="";
     private static boolean singletonFlag = false;
-    private static Connection connection;
+    private static Connection connection = null;
+
+    public Connection getConnection() {
+        return connection != null ? connection : null;
+    }
 
     private MySQLConnector() throws SQLException, ClassNotFoundException{
         Class.forName("com.mysql.jdbc.Driver");
-        MySQLConnector.connection = null;
         MySQLConnector.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
-    private MySQLConnector getMySQLConnector() throws SQLException, ClassNotFoundException{
+    public static MySQLConnector getMySQLConnector() throws SQLException, ClassNotFoundException{
         try {
             return !singletonFlag ? new MySQLConnector() : null;
         }
@@ -37,7 +46,4 @@ public class MySQLConnector {
             MySQLConnector.singletonFlag = false;
         }
     }
-
-
-
 }
