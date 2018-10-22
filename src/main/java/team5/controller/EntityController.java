@@ -26,4 +26,20 @@ public class EntityController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/candidate", method = RequestMethod.GET)
+    public ModelAndView setCandidate(String type) {
+        ModelAndView modelAndView = new ModelAndView();
+        if(type!=null){
+            modelAndView.getModelMap().addAttribute("type", type);
+        }
+        String[]users = new String[3];
+        users[0]="Yana";
+        users[1]="Katya";
+        users[2]="Dasha";
+        modelAndView.getModelMap().addAttribute("candidates", users);
+        modelAndView.getModelMap().addAttribute("entity", "Candidate");
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
+
 }
