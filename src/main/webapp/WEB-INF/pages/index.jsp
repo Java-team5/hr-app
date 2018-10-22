@@ -28,7 +28,7 @@
         <a class="menu-item" href="/interview">
             <spring:message code="menu.interview"/>
         </a>
-        <a class="menu-item" href="/skill">
+        <a class="menu-item" href="/skill/1">
             <spring:message code="menu.skill"/>
         </a>
         <a class="menu-item" href="/feedback">
