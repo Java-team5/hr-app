@@ -8,8 +8,8 @@
 <body>
 <div class="user">
     <div class="user-type">
-        <a href="?type=view" class="user-type-link">View</a>
-        <a href="?type=add" class="user-type-link">Add</a>
+        <a href="/user/view/1" class="user-type-link">View</a>
+        <a href="/user/add" class="user-type-link">Add</a>
     </div>
 </div>
     <c:if test="${type eq 'view'}">
@@ -26,37 +26,56 @@
                         <th>isAdmin</th>
                     </tr>
                 </thead>
-            <c:forEach var="userItems" items="${users}" varStatus="status">
+            <c:forEach var="user" items="${user}">
                 <tr class="user-item">
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td>7</td>
+                    <td>${user.id}</td>
+                    <td>${user.email}</td>
+                    <td>${user.password}</td>
+                    <td>${user.name}</td>
+                    <td>${user.surname}</td>
+                    <td>${user.userState}</td>
+                    <td>${user.isAdmin}</td>
                 </tr>
             </c:forEach>
             </table>
+            <div class="user-pages">
+            <c:forEach var="pages" items="${pages}">
+                <a class="user-page-link" href="/user/view/${pages}">${pages}</a>
+            </c:forEach>
+            </div>
         </div>
     </c:if>
     <c:if test="${type eq 'add'}">
         <div class="user-add">
             <form class="user-add-form" method="post" action="/userAdd">
-                <label>email</label>
-                <input>
-                <label>password</label>
-                <input>
-                <label>name</label>
-                <input>
-                <label>surname</label>
-                <input>
-                <label>userState</label>
-                <input>
-                <label>isAdmin</label>
-                <input>
-                <button type="submit">submit</button>
+                <h1>Adding a new user</h1>
+                <div class="question">
+                    <input class="user-add-form-input" type="text" required />
+                    <label class="user-add-form-label">Email</label>
+                </div>
+                <div class="question">
+                    <input class="user-add-form-input" type="text" required/>
+                    <label class="user-add-form-label">Password</label>
+                </div>
+                <div class="question">
+                    <input class="user-add-form-input" type="text" required/>
+                    <label class="user-add-form-label">Name</label>
+                </div>
+                <div class="question">
+                    <input class="user-add-form-input" type="text" required/>
+                    <label class="user-add-form-label">Surname</label>
+                </div>
+                <div class="question">
+                    <input class="user-add-form-input" type="text" required/>
+                    <label class="user-add-form-label">userState</label>
+                </div>
+                <div class="question">
+                    <input class="user-add-form-input" type="text" required/>
+                    <label class="user-add-form-label">isAdmin</label>
+                </div>
+                <button type="submit">Add</button>
             </form>
+
         </div>
     </c:if>
 </body>

@@ -19,7 +19,7 @@
 </header>
 <div class="main">
     <div class="menu">
-        <a class="menu-item" href="/user?type=view">
+        <a class="menu-item" href="/user/view/1">
             <spring:message code="menu.user"/>
         </a>
         <a class="menu-item" href="/candidate">
@@ -28,7 +28,7 @@
         <a class="menu-item" href="/interview">
             <spring:message code="menu.interview"/>
         </a>
-        <a class="menu-item" href="/skill">
+        <a class="menu-item" href="/skill/1">
             <spring:message code="menu.skill"/>
         </a>
         <a class="menu-item" href="/feedback">
