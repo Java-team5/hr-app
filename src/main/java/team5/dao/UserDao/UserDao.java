@@ -69,7 +69,7 @@ public class UserDao implements EntityDao<User>{
         return users;
     }
 
-    public long getCount(){
+    public int getCount(){
         return findAll().size();
     }
 

@@ -31,7 +31,7 @@
         <a class="menu-item" href="/skill/1">
             <spring:message code="menu.skill"/>
         </a>
-        <a class="menu-item" href="/feedback">
+        <a class="menu-item" href="/feedback/view/1">
             <spring:message code="menu.feedback"/>
         </a>
         <a class="menu-item" href="/vacancy">
