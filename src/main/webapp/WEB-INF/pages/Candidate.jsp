@@ -18,11 +18,11 @@
             <table class="candidate-table">
                 <thead>
                 <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>surname</th>
-                    <th>birthday</th>
-                    <th>salary</th>
+                    <th><spring:message code="menu.candidate.id"/></th>
+                    <th><spring:message code="menu.candidate.name"/></th>
+                    <th><spring:message code="menu.candidate.surname"/></th>
+                    <th><spring:message code="menu.candidate.birthday"/></th>
+                    <th><spring:message code="menu.candidate.salary"/></th>
                 </tr>
                 </thead>
                 <c:forEach var="candidateItems" items="${candidates}" varStatus="status">
