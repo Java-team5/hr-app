@@ -17,6 +17,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import team5.dao.FeedbackDAO.FeedbackDAO;
 import team5.dao.SkillDao.SkillDao;
 import team5.dao.UserDao.UserDao;
+import team5.dao.SkillDao.SkillDao;
 
 @Configuration
 @EnableWebMvc
@@ -36,6 +37,11 @@ public class MvcWebConfig implements WebMvcConfigurer {
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
+    }
+
+    @Bean(name = "skillDao")
+    public SkillDao skillDao(){
+        return new SkillDao();
     }
 
     @Bean(name = "skillDao")
