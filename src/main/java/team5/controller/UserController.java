@@ -4,13 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import team5.dao.SkillDao.SkillDao;
 import team5.dao.UserDao.UserDao;
-import team5.models.Skill;
 import team5.models.User;
 
 import java.util.List;
-import java.util.Locale;
 
 import static java.lang.Math.ceil;
 
@@ -22,13 +19,19 @@ public class UserController {
     UserDao userDao;
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
-    public ModelAndView setUserView(@PathVariable int page) {
+    public ModelAndView setUserView(@PathVariable int page, String sortBy) {
         int total=5;
         if(page==1){}
         else{
             page=(page-1)*total+1;
         }
-        List<User> users = userDao.getEntitiesByPage(page,total);
+        List<User> users = null;
+        System.out.println(sortBy);
+        if(sortBy!="none"){
+            users = userDao.getSortedEntitiesByPage(sortBy, page, total);
+        } else {
+            users = userDao.getEntitiesByPage(page, total);
+        }
         float pagesCount = (float) userDao.getCount() / total;
         int[] pages = new int[(int) ceil(pagesCount)];
         for(int i=0; i<pages.length; i++){
@@ -55,7 +58,6 @@ public class UserController {
     @ResponseBody
     public ModelAndView addNewUser(@ModelAttribute("newUser") User user ) {
         userDao.save(user);
-        return setUserView(1);
+        return setUserView(1, "none");
     }
-
 }
