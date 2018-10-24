@@ -1,4 +1,4 @@
-package team5.dao;
+package team5.dao.interfaces;
 
 import java.util.List;
 

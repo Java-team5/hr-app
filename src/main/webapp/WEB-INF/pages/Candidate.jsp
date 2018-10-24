@@ -3,19 +3,19 @@
 <html>
 <head></head>
 <style>
-    <%@include file="../styles/candidate.css"%>
+    <%@include file="../styles/user.css"%>
 </style>
 <body>
-<div class="candidate">
-    <div class="candidate-type">
-        <a href="?type=view" class="candidate-type-link">View</a>
-        <a href="?type=add" class="candidate-type-link">Add</a>
+<div class="user">
+    <div class="user-type">
+        <a href="/candidate/view/1" class="user-type-link">View</a>
+        <a href="/candidate/add" class="user-type-link">Add</a>
     </div>
 </div>
 <div>
     <c:if test="${type eq 'view'}">
-        <div class="candidate-view">
-            <table class="candidate-table">
+        <div class="user-view">
+            <table class="user-table">
                 <thead>
                 <tr>
                     <th><spring:message code="menu.candidate.id"/></th>
@@ -25,21 +25,26 @@
                     <th><spring:message code="menu.candidate.salary"/></th>
                 </tr>
                 </thead>
-                <c:forEach var="candidateItems" items="${candidates}" varStatus="status">
-                    <tr class="candidate-item">
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
+                <c:forEach var="candidate" items="${candidates}">
+                    <tr class="user-item">
+                        <td>${candidate.id}</td>
+                        <td>${candidate.name}</td>
+                        <td>${candidate.surname}</td>
+                        <td>${candidate.birthday}</td>
+                        <td>${candidate.salary}</td>
                     </tr>
                 </c:forEach>
             </table>
+            <div class="user-pages">
+                <c:forEach var="pages" items="${pages}">
+                    <a class="user-page-link" href="/candidate/view/${pages}">${pages}</a>
+                </c:forEach>
+            </div>
         </div>
     </c:if>
     <c:if test="${type eq 'add'}">
-        <div class="candidate-add">
-            <form class="candidate-add-form" method="post" action="/candidateAdd">
+        <div class="user-add">
+            <form class="user-add-form" method="post" action="/candidateAdd">
                 <label>name</label>
                 <input>
                 <label>surname</label>

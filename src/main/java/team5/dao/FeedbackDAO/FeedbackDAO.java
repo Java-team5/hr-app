@@ -1,9 +1,8 @@
 package team5.dao.FeedbackDAO;
 
 import team5.dao.DBConnector;
-import team5.dao.EntityDao;
+import team5.dao.interfaces.EntityDao;
 import team5.models.Feedback;
-import team5.models.Skill;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,10 +11,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackDAO implements EntityDao<Feedback> {
+
     @Override
-    public List<Feedback> getEntitiesByPage(int pageid, int total) {
-        String sql="SELECT * FROM interviewfeedback LIMIT "+(pageid-1)+","+total;
+    public Feedback getById(long id) {
+        return null;
+    }
+
+    @Override
+    public void save(Feedback model) {
+
+    }
+
+    @Override
+    public void update(Feedback model) {
+
+    }
+
+    @Override
+    public void delete(long id) {
+
+    }
+
+    @Override
+    public List<Feedback> getAll() {
+        String sql="SELECT * FROM interview";
         return createListEntitiesFromQueryResult(sql);
+    }
+
+    @Override
+    public int count(){
+        return getAll().size();
     }
 
     private List<Feedback> createListEntitiesFromQueryResult(String sql){
@@ -41,32 +66,15 @@ public class FeedbackDAO implements EntityDao<Feedback> {
     }
 
     @Override
-    public Feedback find(long id) {
+    public List<Feedback> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
         return null;
     }
 
     @Override
-    public void save(Feedback model) {
-
-    }
-
-    @Override
-    public void update(Feedback model) {
-
-    }
-
-    @Override
-    public void delete(long id) {
-
-    }
-
-    @Override
-    public List<Feedback> findAll() {
-        String sql="SELECT * FROM interview";
+    public List<Feedback> getEntitiesByPage(int pageid, int total) {
+        String sql="SELECT * FROM interviewfeedback LIMIT "+(pageid-1)+","+total;
         return createListEntitiesFromQueryResult(sql);
     }
 
-    public int getCount(){
-        return findAll().size();
-    }
+
 }

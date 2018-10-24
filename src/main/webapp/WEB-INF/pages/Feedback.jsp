@@ -33,9 +33,9 @@
             </c:forEach>
             </table>
             <div class="user-pages">
-            <c:forEach var="pages" items="${pages}">
-                <a class="user-page-link" href="/feedback/view/${pages}">${pages}</a>
-            </c:forEach>
+                <c:forEach var="pages" items="${pages}">
+                    <a class="user-page-link" href="/feedback/view/${pages}">${pages}</a>
+                </c:forEach>
             </div>
         </div>
     </c:if>

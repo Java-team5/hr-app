@@ -1,5 +1,6 @@
-package team5.config;
+package team5.models;
 import java.util.*;
+import  java.sql.Date;
 
 public class Candidate {
 
@@ -10,6 +11,7 @@ public class Candidate {
     private double salary;
 
     public Candidate(){}
+
     public Candidate(int id, String name, String surname, Date birthday, double salary) {
         this.id = id;
         this.name = name;

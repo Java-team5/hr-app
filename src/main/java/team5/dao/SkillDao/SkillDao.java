@@ -1,7 +1,6 @@
 package team5.dao.SkillDao;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import team5.dao.EntityDao;
+import team5.dao.interfaces.EntityDao;
 import team5.dao.DBConnector;
 import team5.models.Skill;
 
@@ -14,14 +13,14 @@ import java.util.List;
 
 public class SkillDao implements EntityDao<Skill> {
 
-    private JdbcTemplate template;
+    //private JdbcTemplate template;
 
-    public void setTemplate(JdbcTemplate template) {
-        this.template = template;
-    }
+    //public void setTemplate(JdbcTemplate template) {
+      //  this.template = template;
+    //}
 
     @Override
-    public Skill find(long id) {
+    public Skill getById(long id) {
         return null;
     }
 
@@ -41,7 +40,7 @@ public class SkillDao implements EntityDao<Skill> {
     }
 
     @Override
-    public List<Skill> findAll() {
+    public List<Skill> getAll() {
         String sql="SELECT * FROM skill";
         return createListEntitiesFromQueryResult(sql);
     }
@@ -55,6 +54,11 @@ public class SkillDao implements EntityDao<Skill> {
     @Override
     public List<Skill> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
         return null;
+    }
+
+    @Override
+    public int count(){
+        return getAll().size();
     }
 
     private List<Skill> createListEntitiesFromQueryResult(String sql){
@@ -73,9 +77,5 @@ public class SkillDao implements EntityDao<Skill> {
             e.printStackTrace();
         }
         return skills;
-    }
-
-    public long getCount(){
-        return findAll().size();
     }
 }
