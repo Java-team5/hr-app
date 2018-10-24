@@ -52,7 +52,11 @@ public class UserDao implements EntityDao<User>{
         return createListEntitiesFromQueryResult(sql);
     }
 
-
+    @Override
+    public List<User> getSortedEntitiesByPage(String sortBy, int pageid, int total){
+        String sql = "SELECT * FROM users ORDER BY "+sortBy+" LIMIT "+(pageid-1)+","+total;
+        return createListEntitiesFromQueryResult(sql);
+    }
 
     private void insertUserByQuery(String sql){
         try {

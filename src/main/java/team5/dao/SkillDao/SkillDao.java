@@ -52,6 +52,11 @@ public class SkillDao implements EntityDao<Skill> {
         return createListEntitiesFromQueryResult(sql);
     }
 
+    @Override
+    public List<Skill> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
+        return null;
+    }
+
     private List<Skill> createListEntitiesFromQueryResult(String sql){
         ResultSet resultSet;
         List<Skill> skills = new ArrayList<>();

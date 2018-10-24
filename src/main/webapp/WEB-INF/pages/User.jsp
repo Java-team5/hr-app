@@ -43,6 +43,18 @@
                 <a class="user-page-link" href="/user/view/${pages}">${pages}</a>
             </c:forEach>
             </div>
+            <div class="user-sort">
+                <form name='sort'>
+                    Sort by:
+                    <select name='sortBy'>
+                        <option value="none">none</option>
+                        <option value='email'>email</option>
+                        <option value='name'>name</option>
+                        <option value='surname'>surname</option>
+                    </select>
+                    <button type='submit'>SORT</button>
+                </form>
+            </div>
         </div>
     </c:if>
     <c:if test="${type eq 'add'}">
