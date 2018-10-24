@@ -12,7 +12,9 @@ import team5.models.Skill;
 import team5.models.User;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
+import team5.config.Candidate;
 
 import static java.lang.Math.ceil;
 
@@ -91,30 +93,6 @@ public class EntityController {
         modelAndView.getModelMap().addAttribute("type", "add");
         modelAndView.setViewName("index");
         return modelAndView;
-    }
-
-    @RequestMapping(value = "/skill/{page}/**", method = RequestMethod.GET)
-    public ModelAndView setSkill(Locale locale, @PathVariable int page) {
-        int total=5;
-        if(page==1){}
-        else{
-            page=(page-1)*total+1;
-        }
-        List<Skill> skills = skillDao.getEntitiesByPage(page,total);
-
-        float pagesCount = (float) skillDao.getCount() / total;
-        int[] pages = new int[(int) ceil(pagesCount)];
-        for(int i=0; i<pages.length; i++){
-            pages[i] = i + 1;
-        }
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("entity", "Skill");
-        modelAndView.getModelMap().addAttribute("skill", skills);
-        modelAndView.getModelMap().addAttribute("pages", pages);
-        modelAndView.setViewName("index");
-        return modelAndView;
-
     }
 
 }
