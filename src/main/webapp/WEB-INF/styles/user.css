@@ -154,7 +154,7 @@ input.user-add-form-input:valid~label{
 }
 .user-add-form button{
     background-color: rgba(255, 74, 86, 0.07);
-    margin-top: 20px;
+    margin-top: 10px;
     cursor: pointer;
     border: 1px solid #ff4a56;
     line-height: 0;

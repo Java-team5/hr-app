@@ -25,7 +25,9 @@ public class UserDao implements EntityDao<User>{
 
     @Override
     public void save(User model) {
-
+        String sql = "INSERT INTO users (email, password, name, surname, userState, isAdmin) VALUES ('"+model.getEmail()+"', '"+model.getPassword()+"', '"+model.getName()+"', '"+
+                model.getSurname()+"', 'Active', 'User')";
+        insertUserByQuery(sql);
     }
 
     @Override
@@ -50,6 +52,17 @@ public class UserDao implements EntityDao<User>{
         return createListEntitiesFromQueryResult(sql);
     }
 
+
+
+    private void insertUserByQuery(String sql){
+        try {
+            Connection connection = DBConnector.getConnection();
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
     private List<User> createListEntitiesFromQueryResult(String sql){
         ResultSet resultSet;
         List<User> users = new ArrayList<>();
