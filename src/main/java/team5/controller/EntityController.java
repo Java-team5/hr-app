@@ -6,8 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import team5.dao.SkillDao.SkillDao;
 import team5.dao.UserDao.UserDao;
-import team5.models.Skill;
 import team5.models.User;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import team5.dao.SkillDao.SkillDao;
+import team5.models.Skill;
 
 import java.util.List;
 import java.util.Locale;

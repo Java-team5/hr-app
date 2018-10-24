@@ -51,7 +51,6 @@ public class SkillDao implements EntityDao<Skill> {
         String sql="SELECT * FROM skill LIMIT "+(pageid-1)+","+total;
         return createListEntitiesFromQueryResult(sql);
     }
-
     @Override
     public List<Skill> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
         return null;
@@ -79,3 +78,4 @@ public class SkillDao implements EntityDao<Skill> {
         return findAll().size();
     }
 }
+
