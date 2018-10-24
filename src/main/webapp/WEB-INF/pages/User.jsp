@@ -8,8 +8,8 @@
 <body>
 <div class="user">
     <div class="user-type">
-        <a href="/user/view/1" class="user-type-link">View</a>
-        <a href="/user/add" class="user-type-link">Add</a>
+        <a href="/user/view/1" class="user-type-link"><spring:message code="user.view"/></a>
+        <a href="/user/add" class="user-type-link"><spring:message code="user.add"/></a>
     </div>
 </div>
     <c:if test="${type eq 'view'}">
@@ -18,12 +18,12 @@
                 <thead>
                     <tr>
                         <th>id</th>
-                        <th>email</th>
-                        <th>password</th>
-                        <th>name</th>
-                        <th>surname</th>
-                        <th>userState</th>
-                        <th>isAdmin</th>
+                        <th><spring:message code="user.email"/></th>
+                        <th><spring:message code="user.password"/></th>
+                        <th><spring:message code="user.name"/></th>
+                        <th><spring:message code="user.surname"/></th>
+                        <th><spring:message code="user.userState"/></th>
+                        <th><spring:message code="user.isAdmin"/></th>
                     </tr>
                 </thead>
             <c:forEach var="user" items="${user}">
@@ -47,33 +47,25 @@
     </c:if>
     <c:if test="${type eq 'add'}">
         <div class="user-add">
-            <form class="user-add-form" method="post" action="/userAdd">
-                <h1>Adding a new user</h1>
+            <form class="user-add-form" name="newUser" method="Post" action="/user/add">
+                <h1><spring:message code="user.addUserTitle"/></h1>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required />
-                    <label class="user-add-form-label">Email</label>
+                    <input class="user-add-form-input" name="email" type="text" required />
+                    <label class="user-add-form-label"><spring:message code="user.email"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">Password</label>
+                    <input class="user-add-form-input" name="password" type="text" required/>
+                    <label class="user-add-form-label"><spring:message code="user.password"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">Name</label>
+                    <input class="user-add-form-input" name="name" type="text" required/>
+                    <label class="user-add-form-label"><spring:message code="user.name"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">Surname</label>
+                    <input class="user-add-form-input" name="surname" type="text" required/>
+                    <label class="user-add-form-label"><spring:message code="user.surname"/></label>
                 </div>
-                <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">userState</label>
-                </div>
-                <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">isAdmin</label>
-                </div>
-                <button type="submit">Add</button>
+                <button type="submit"><spring:message code="user.addUser"/></button>
             </form>
 
         </div>
