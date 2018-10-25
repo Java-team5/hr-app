@@ -14,7 +14,6 @@ import java.sql.Connection;
 @Controller
 @ControllerAdvice
 public class MainController {
-    Connection connection;
 
     @RequestMapping(value = "/**", method = RequestMethod.GET)
     public ModelAndView initPath() {

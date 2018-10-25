@@ -38,7 +38,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
         return messageSource;
     }
 
-
     @Bean(name = "skillDao")
     public SkillDao skillDao(){
         return new SkillDao();
