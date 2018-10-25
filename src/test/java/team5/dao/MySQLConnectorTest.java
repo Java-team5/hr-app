@@ -3,6 +3,7 @@ package team5.dao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import team5.dao.utils.DBConnector;
 
 import java.sql.Connection;
 import java.sql.SQLException;
