@@ -26,4 +26,7 @@ public class Skill {
         this.skill = skill;
     }
 
+    public Skill(String skill) {
+        this.skill = skill;
+    }
 }
