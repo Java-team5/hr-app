@@ -1,4 +1,4 @@
-package team5.dao;
+package team5.dao.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,7 @@ public class DBConnector {
     //TODO change sqlconnection properties to properties file
     private static final String URL="jdbc:mysql://localhost:3306/hr_app_db ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
     private static final String USERNAME="root";
-    private static final String PASSWORD="314159";
+    private static final String PASSWORD="";
 
     private static Connection connection;
 

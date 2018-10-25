@@ -1,8 +1,8 @@
-package team5.dao.SkillDao;
+package team5.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import team5.dao.EntityDao;
-import team5.dao.DBConnector;
+import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
 import java.sql.Connection;
@@ -62,13 +62,14 @@ public class SkillDao implements EntityDao<Skill> {
     }
 
     @Override
-    public List<Skill> getEntitiesByPage(int page, int total, String sortField) {
-        String sql;
-        if (sortField != null)
-            sql = "SELECT * FROM skill ORDER BY " + sortField + " LIMIT " + (page - 1) + "," + total;
-        else
-            sql = "SELECT * FROM skill LIMIT " + (page - 1) + "," + total;
+    public List<Skill> getEntitiesByPage(int page, int total) {
+        String sql = "SELECT * FROM skill LIMIT " + (page - 1) + "," + total;
+        return createListEntitiesFromQueryResult(sql);
+    }
 
+    @Override
+    public List<Skill> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
+        String sql = "SELECT * FROM skill ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
@@ -104,4 +105,5 @@ public class SkillDao implements EntityDao<Skill> {
             e.printStackTrace();
         }
     }
+
 }

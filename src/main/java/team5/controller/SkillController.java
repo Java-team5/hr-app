@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import team5.dao.SkillDao.SkillDao;
+import team5.dao.SkillDao;
 import team5.models.Skill;
 
 import javax.servlet.http.Cookie;
@@ -30,9 +30,9 @@ public class SkillController {
 
         List<Skill> skills;
         if(skillSortField != null)
-            skills= skillDao.getEntitiesByPage(page, total, skillSortField.getValue());
+            skills= skillDao.getSortedEntitiesByPage(skillSortField.getValue(), page, total);
         else
-            skills= skillDao.getEntitiesByPage(page, total, null);
+            skills= skillDao.getEntitiesByPage(page, total);
 
         float pagesCount = (float) skillDao.getCount() / total;
         int[] pages = new int[(int) ceil(pagesCount)];

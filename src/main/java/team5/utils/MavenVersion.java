@@ -1,4 +1,4 @@
-package team5;
+package team5.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
