@@ -3,24 +3,24 @@
 <html>
 <head></head>
 <style>
-    <%@include file="../styles/user.css"%>
+    <%@include file="../styles/item.css"%>
 </style>
 <body>
-<div class="user">
-    <div class="user-type">
-        <a href="/feedback/view/1" class="user-type-link">View</a>
-        <a href="/feedback/add" class="user-type-link">Add</a>
+<div class="item">
+    <div class="item-type">
+        <a href="/feedback/view/1" class="item-type-link"><spring:message code="button.view"/></a>
+        <a href="/feedback/add" class="item-type-link"><spring:message code="button.add"/></a>
     </div>
 </div>
     <c:if test="${type eq 'view'}">
-        <div class="user-view">
-            <table class="user-table">
+        <div class="item-view">
+            <table class="item-table">
                 <thead>
                     <tr>
-                        <th>idInterview</th>
-                        <th>idInterviewer</th>
-                        <th>State</th>
-                        <th>Feedback</th>
+                        <th><spring:message code="feedback.idInterview"/></th>
+                        <th><spring:message code="feedback.idInterviewer"/></th>
+                        <th><spring:message code="feedback.feedbackState"/></th>
+                        <th><spring:message code="feedback.reason"/></th>
                     </tr>
                 </thead>
             <c:forEach var="feedback" items="${feedback}">
@@ -32,32 +32,32 @@
                 </tr>
             </c:forEach>
             </table>
-            <div class="user-pages">
+            <div class="item-pages">
                 <c:forEach var="pages" items="${pages}">
-                    <a class="user-page-link" href="/feedback/view/${pages}">${pages}</a>
+                    <a class="item-page-link" href="/feedback/view/${pages}">${pages}</a>
                 </c:forEach>
             </div>
         </div>
     </c:if>
     <c:if test="${type eq 'add'}">
-        <div class="user-add">
-            <form class="user-add-form" method="post" action="/feedbackAdd">
-                <h1>Adding a new feedback</h1>
+        <div class="item-add">
+            <form class="item-add-form" method="post" action="/feedback/add">
+                <h1><spring:message code="feedback.addFeedback"/></h1>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required />
-                    <label class="user-add-form-label">idEnterview</label>
+                    <input class="item-add-form-input" type="text" required />
+                    <label class="item-add-form-label"><spring:message code="feedback.idInterview"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">idInterviewer</label>
+                    <input class="item-add-form-input" type="text" required/>
+                    <label class="item-add-form-label"><spring:message code="feedback.idInterviewer"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">State</label>
+                    <input class="item-add-form-input" type="text" required/>
+                    <label class="item-add-form-label"><spring:message code="feedback.feedbackState"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" type="text" required/>
-                    <label class="user-add-form-label">Feedback</label>
+                    <input class="item-add-form-input" type="text" required/>
+                    <label class="item-add-form-label"><spring:message code="feedback.reason"/></label>
                 </div>
                 <button type="submit">Add</button>
             </form>

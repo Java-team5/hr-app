@@ -1,9 +1,8 @@
-package team5.dao.UserDao;
+package team5.dao;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import team5.dao.DBUtils;
 import team5.dao.interfaces.EntityDao;
-import team5.dao.DBConnector;
+import team5.dao.utils.DBConnector;
+import team5.dao.utils.DBUtils;
 import team5.models.User;
 
 import java.sql.Connection;

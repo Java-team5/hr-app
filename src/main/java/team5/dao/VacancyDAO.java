@@ -1,9 +1,8 @@
-package team5.dao.vacancyDAO;
+package team5.dao;
 
-import team5.dao.DBConnector;
-import team5.dao.DBUtils;
+import team5.dao.utils.DBConnector;
 import team5.dao.interfaces.EntityDao;
-import team5.models.User;
+import team5.dao.utils.DBUtils;
 import team5.models.Vacancy;
 
 import java.sql.Connection;

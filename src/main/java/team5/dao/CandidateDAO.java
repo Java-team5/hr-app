@@ -1,8 +1,8 @@
-package team5.dao.CandidateDAO;
+package team5.dao;
 
+import team5.dao.utils.DBUtils;
 import team5.models.Candidate;
-import team5.dao.DBConnector;
-import team5.dao.DBUtils;
+import team5.dao.utils.DBConnector;
 import team5.dao.interfaces.EntityDao;
 
 import java.sql.Connection;

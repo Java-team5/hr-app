@@ -21,7 +21,7 @@ public class SkillController {
     @Autowired
     EntityDao skillDao;
 
-    @RequestMapping(value = "view/{page}/**", method = RequestMethod.GET)
+    @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
     public ModelAndView setSkillView(Locale locale, @PathVariable int page) {
         int total=5;
 
@@ -32,12 +32,22 @@ public class SkillController {
         int[] pages = Utils.getPagesIndexArray(skillDao,total);
 
         ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.getModelMap().addAttribute("type", "view");
         modelAndView.getModelMap().addAttribute("entity", "Skill");
-        modelAndView.getModelMap().addAttribute("skill", skills);
+        modelAndView.getModelMap().addAttribute("skills", skills);
         modelAndView.getModelMap().addAttribute("pages", pages);
         modelAndView.setViewName("index");
         return modelAndView;
 
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public ModelAndView serSkillAdd(Locale locale){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModelMap().addAttribute("entity", "Skill");
+        modelAndView.getModelMap().addAttribute("type", "add");
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
 }
