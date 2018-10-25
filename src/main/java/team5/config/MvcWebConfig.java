@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.dao.support.DaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import team5.dao.SkillDao.SkillDao;
-import team5.dao.UserDao.UserDao;
 
 @Configuration
 @EnableWebMvc
@@ -40,10 +37,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
     @Bean(name = "skillDao")
     public SkillDao skillDao(){
         return new SkillDao();
-    }
-    @Bean(name = "userDao")
-    public UserDao userDao(){
-        return new UserDao();
     }
 
     @Bean

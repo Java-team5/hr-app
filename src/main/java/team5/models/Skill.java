@@ -18,9 +18,13 @@ public class Skill {
         this.skill = skill;
     }
 
-    public Skill(long id, String skill) {
-        this.id = id;
+    public Skill(String skill) {
         this.skill = skill;
+    }
+
+    public Skill(long id, String skill) {
+        this.skill = skill;
+        this.id = id;
     }
 
     public Skill() {

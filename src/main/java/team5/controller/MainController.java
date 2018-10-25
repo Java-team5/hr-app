@@ -8,14 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import team5.MavenVersion;
-import team5.dao.DBConnector;
-
-import java.sql.Connection;
 
 @Controller
 @ControllerAdvice
 public class MainController {
-    Connection connection;
 
     @RequestMapping(value = "/**", method = RequestMethod.GET)
     public ModelAndView initPath() {
