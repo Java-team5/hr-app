@@ -4,6 +4,14 @@ public class Skill {
     private long id;
     private String skill;
 
+    public Skill() {
+    }
+
+    public Skill(long id, String skill) {
+        this.id = id;
+        this.skill = skill;
+    }
+
     public long getId() {
         return id;
     }
@@ -18,11 +26,4 @@ public class Skill {
         this.skill = skill;
     }
 
-    public Skill(long id, String skill) {
-        this.id = id;
-        this.skill = skill;
-    }
-
-    public Skill() {
-    }
 }

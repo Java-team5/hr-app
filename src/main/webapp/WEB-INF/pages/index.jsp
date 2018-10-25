@@ -22,19 +22,19 @@
         <a class="menu-item" href="/user/view/1">
             <spring:message code="menu.user"/>
         </a>
-        <a class="menu-item" href="/candidate">
+        <a class="menu-item" href="/candidate/view/1">
             <spring:message code="menu.candidate"/>
         </a>
         <a class="menu-item" href="/interview">
             <spring:message code="menu.interview"/>
         </a>
-        <a class="menu-item" href="/skill/1">
+        <a class="menu-item" href="/skill/view/1">
             <spring:message code="menu.skill"/>
         </a>
-        <a class="menu-item" href="/feedback">
+        <a class="menu-item" href="/feedback/view/1">
             <spring:message code="menu.feedback"/>
         </a>
-        <a class="menu-item" href="/vacancy">
+        <a class="menu-item" href="/vacancy/view/1">
             <spring:message code="menu.vacancy"/>
         </a>
     </div>

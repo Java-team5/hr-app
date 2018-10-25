@@ -3,18 +3,18 @@
 <html>
 <head></head>
 <style>
-    <%@include file="../styles/user.css"%>
+    <%@include file="../styles/item.css"%>
 </style>
 <body>
-<div class="user">
-    <div class="user-type">
-        <a href="/user/view/1" class="user-type-link"><spring:message code="user.view"/></a>
-        <a href="/user/add" class="user-type-link"><spring:message code="user.add"/></a>
+<div class="item">
+    <div class="item-type">
+        <a href="/user/view/1" class="item-type-link"><spring:message code="button.view"/></a>
+        <a href="/user/add" class="item-type-link"><spring:message code="button.add"/></a>
     </div>
 </div>
     <c:if test="${type eq 'view'}">
-        <div class="user-view">
-            <table class="user-table">
+        <div class="item-view">
+            <table class="item-table">
                 <thead>
                     <tr>
                         <th>id</th>
@@ -27,7 +27,7 @@
                     </tr>
                 </thead>
             <c:forEach var="user" items="${user}">
-                <tr class="user-item">
+                <tr>
                     <td>${user.id}</td>
                     <td>${user.email}</td>
                     <td>${user.password}</td>
@@ -38,44 +38,44 @@
                 </tr>
             </c:forEach>
             </table>
-            <div class="user-pages">
+            <div class="item-pages">
             <c:forEach var="pages" items="${pages}">
-                <a class="user-page-link" href="/user/view/${pages}">${pages}</a>
+                <a class="item-page-link" href="/user/view/${pages}">${pages}</a>
             </c:forEach>
             </div>
-            <div class="user-sort">
+            <div class="item-sort">
                 <form name='sort'>
-                    Sort by:
+                    <spring:message code="sort.sortby"/>
                     <select name='sortBy'>
-                        <option value="none">none</option>
-                        <option value='email'>email</option>
-                        <option value='name'>name</option>
-                        <option value='surname'>surname</option>
+                        <option value="none"><spring:message code="sort.none"/></option>
+                        <option value='email'><spring:message code="sort.byemail"/></option>
+                        <option value='name'><spring:message code="sort.byname"/></option>
+                        <option value='surname'><spring:message code="sort.bysurname"/></option>
                     </select>
-                    <button type='submit'>SORT</button>
+                    <button type='submit'><spring:message code="sort"/></button>
                 </form>
             </div>
         </div>
     </c:if>
     <c:if test="${type eq 'add'}">
-        <div class="user-add">
-            <form class="user-add-form" name="newUser" method="Post" action="/user/add">
+        <div class="item-add">
+            <form class="item-add-form" name="newUser" method="Post" action="/user/add">
                 <h1><spring:message code="user.addUserTitle"/></h1>
                 <div class="question">
-                    <input class="user-add-form-input" name="email" type="text" required />
-                    <label class="user-add-form-label"><spring:message code="user.email"/></label>
+                    <input class="item-add-form-input" name="email" type="text" required />
+                    <label class="item-add-form-label"><spring:message code="user.email"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" name="password" type="text" required/>
-                    <label class="user-add-form-label"><spring:message code="user.password"/></label>
+                    <input class="item-add-form-input" name="password" type="text" required/>
+                    <label class="item-add-form-label"><spring:message code="user.password"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" name="name" type="text" required/>
-                    <label class="user-add-form-label"><spring:message code="user.name"/></label>
+                    <input class="item-add-form-input" name="name" type="text" required/>
+                    <label class="item-add-form-label"><spring:message code="user.name"/></label>
                 </div>
                 <div class="question">
-                    <input class="user-add-form-input" name="surname" type="text" required/>
-                    <label class="user-add-form-label"><spring:message code="user.surname"/></label>
+                    <input class="item-add-form-input" name="surname" type="text" required/>
+                    <label class="item-add-form-label"><spring:message code="user.surname"/></label>
                 </div>
                 <button type="submit"><spring:message code="user.addUser"/></button>
             </form>
