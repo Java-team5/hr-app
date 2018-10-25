@@ -43,6 +43,7 @@ footer{
     display: flex;
     padding: 0 5px;
     text-decoration: none;
+    color: black;
     border-radius: 5px;
 }
 

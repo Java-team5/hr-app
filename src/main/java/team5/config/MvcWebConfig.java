@@ -12,6 +12,11 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import team5.dao.CandidateDAO;
+import team5.dao.FeedbackDAO;
+import team5.dao.SkillDao;
+import team5.dao.UserDao;
+import team5.dao.VacancyDAO;
 
 @Configuration
 @EnableWebMvc
@@ -23,6 +28,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
         registry.jsp("/WEB-INF/pages/", ".jsp");
     }
 
+
     @Bean("messageSource")
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -31,6 +37,28 @@ public class MvcWebConfig implements WebMvcConfigurer {
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
     }
+
+
+    @Bean(name = "skillDao")
+    public SkillDao skillDao(){
+        return new SkillDao();
+    }
+
+    @Bean(name = "candidateDAO")
+    public CandidateDAO candidateDao(){
+        return new CandidateDAO();
+    }
+
+    @Bean(name = "userDao")
+    public UserDao userDao(){
+        return new UserDao();
+    }
+
+    @Bean(name = "feedbackDAO")
+    public FeedbackDAO feedbackDAO(){return new FeedbackDAO(); }
+
+    @Bean(name = "vacancyDAO")
+    public VacancyDAO vacancyDAO(){return new VacancyDAO(); }
 
     @Bean
     public LocaleResolver localeResolver() {
