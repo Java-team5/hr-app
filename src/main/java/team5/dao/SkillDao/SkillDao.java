@@ -46,8 +46,8 @@ public class SkillDao implements EntityDao<Skill> {
     }
 
     @Override
-    public List<Skill> getEntitiesByPage(int pageid, int total) {
-        String sql="SELECT * FROM skill LIMIT "+(pageid-1)+","+total;
+    public List<Skill> getEntitiesByPage(int offset, int total) {
+        String sql="SELECT * FROM skill LIMIT "+(offset -1)+","+total;
         return createListEntitiesFromQueryResult(sql);
     }
 

@@ -52,8 +52,8 @@ public class CandidateDAO implements EntityDao<Candidate> {
     }
 
     @Override
-    public List<Candidate> getEntitiesByPage(int pageid, int total) {
-        String sql="SELECT * FROM candidate LIMIT "+(pageid-1)+","+total;
+    public List<Candidate> getEntitiesByPage(int offset, int total) {
+        String sql="SELECT * FROM candidate LIMIT "+(offset -1)+","+total;
         return createListEntitiesFromQueryResult(sql);
     }
 

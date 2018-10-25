@@ -21,7 +21,7 @@ public class SkillController {
     @Autowired
     EntityDao skillDao;
 
-    @RequestMapping(value = "/{page}/**", method = RequestMethod.GET)
+    @RequestMapping(value = "view/{page}/**", method = RequestMethod.GET)
     public ModelAndView setSkillView(Locale locale, @PathVariable int page) {
         int total=5;
 

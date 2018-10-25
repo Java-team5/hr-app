@@ -71,8 +71,8 @@ public class FeedbackDAO implements EntityDao<Feedback> {
     }
 
     @Override
-    public List<Feedback> getEntitiesByPage(int pageid, int total) {
-        String sql="SELECT * FROM interviewfeedback LIMIT "+(pageid-1)+","+total;
+    public List<Feedback> getEntitiesByPage(int offset, int total) {
+        String sql="SELECT * FROM interviewfeedback LIMIT "+(offset -1)+","+total;
         return createListEntitiesFromQueryResult(sql);
     }
 

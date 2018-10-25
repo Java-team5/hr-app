@@ -52,8 +52,8 @@ public class UserDao implements EntityDao<User>{
     }
 
     @Override
-    public List<User> getEntitiesByPage(int pageid, int total) {
-        String sql="SELECT * FROM users LIMIT " + (pageid-1) + "," + total;
+    public List<User> getEntitiesByPage(int offset, int total) {
+        String sql="SELECT * FROM users LIMIT " + (offset -1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 

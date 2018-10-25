@@ -20,6 +20,7 @@ import team5.dao.FeedbackDAO.FeedbackDAO;
 import team5.dao.SkillDao.SkillDao;
 import team5.dao.UserDao.UserDao;
 import team5.dao.SkillDao.SkillDao;
+import team5.dao.vacancyDAO.VacancyDAO;
 
 import java.sql.Connection;
 
@@ -61,6 +62,9 @@ public class MvcWebConfig implements WebMvcConfigurer {
 
     @Bean(name = "feedbackDAO")
     public FeedbackDAO feedbackDAO(){return new FeedbackDAO(); }
+
+    @Bean(name = "vacancyDAO")
+    public VacancyDAO vacancyDAO(){return new VacancyDAO(); }
 
     @Bean
     public LocaleResolver localeResolver() {
