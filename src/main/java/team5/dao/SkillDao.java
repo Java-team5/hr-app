@@ -12,13 +12,6 @@ import java.util.List;
 
 
 public class SkillDao implements EntityDao<Skill> {
-
-    //private JdbcTemplate template;
-
-    //public void setTemplate(JdbcTemplate template) {
-      //  this.template = template;
-    //}
-
     @Override
     public Skill getById(long id) {
         return null;
