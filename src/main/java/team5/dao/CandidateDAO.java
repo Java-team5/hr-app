@@ -15,14 +15,22 @@ public class CandidateDAO implements EntityDao<Candidate> {
 
     @Override
     public void save(Candidate candidate) {
-
-
         String sql = "INSERT INTO candidate (name, surname, birthday, salary) VALUES ('" +
                 candidate.getName() +
                 "', '" + candidate.getSurname() +
                 "', '" + candidate.getBirthday() +
                 "', '" + candidate.getSalary();
         DBUtils.insertByQuery(sql);
+    }
+
+    @Override
+    public void update(Candidate model) {
+
+    }
+
+    @Override
+    public void delete(long id) {
+
     }
 
     @Override
@@ -42,16 +50,6 @@ public class CandidateDAO implements EntityDao<Candidate> {
     }
 
     @Override
-    public void update(Candidate model) {
-
-    }
-
-    @Override
-    public void delete(long id) {
-
-    }
-
-    @Override
     public List<Candidate> getEntitiesByPage(int offset, int total) {
         String sql="SELECT * FROM candidate LIMIT "+(offset -1)+","+total;
         return createListEntitiesFromQueryResult(sql);
@@ -59,7 +57,8 @@ public class CandidateDAO implements EntityDao<Candidate> {
 
     @Override
     public List<Candidate> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
-        return null;
+        String sql = "SELECT * FROM candidate ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
+        return createListEntitiesFromQueryResult(sql);
     }
 
     private List<Candidate> createListEntitiesFromQueryResult(String sql){
