@@ -1,6 +1,5 @@
-package team5.dao;
+package team5.dao.Skill;
 
-import team5.dao.interfaces.EntityDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
@@ -11,14 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SkillDao implements EntityDao<Skill> {
+public class SkillDao implements SkillCrudDao {
+
+    private Connection connection;
+    private Statement statement;
+
+    public SkillDao() {
+        try {
+            connection = DBConnector.getConnection();
+            statement = connection.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public Skill getById(long id) {
         String sql = "SELECT * FROM skill WHERE id="+id+"";
         try {
-            Connection connection = DBConnector.getConnection();
-            Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
             return new Skill(id, resultSet.getString(2));
@@ -54,35 +63,22 @@ public class SkillDao implements EntityDao<Skill> {
     }
 
     @Override
-    public List<Skill> getEntitiesByPage(int page, int total) {
-        String sql = "SELECT * FROM skill LIMIT " + (page - 1) + "," + total;
-        return createListEntitiesFromQueryResult(sql);
-    }
-
-    @Override
-    public List<Skill> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
-        String sql = "SELECT * FROM skill ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
-        return createListEntitiesFromQueryResult(sql);
-    }
-
     public List<Skill> getEntitiesByPage(String filter, int page, int total) {
         String sql = "SELECT * FROM skill WHERE skill LIKE '%" + filter + "%' LIMIT " + (page - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
+    @Override
     public List<Skill> getSortedEntitiesByPage(String filter, String sortBy, int pageid, int total) {
         String sql = "SELECT * FROM skill WHERE skill LIKE '%" + filter + "%' ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
     private List<Skill> createListEntitiesFromQueryResult(String sql) {
-        ResultSet resultSet;
         List<Skill> skills = new ArrayList<>();
 
         try {
-            Connection connection = DBConnector.getConnection();
-            Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 skills.add(new Skill(resultSet.getLong(1), resultSet.getString(2)));
             }
@@ -104,10 +100,7 @@ public class SkillDao implements EntityDao<Skill> {
     }
 
     private void executуDatabaseQuery(String sql) {
-        Connection connection = null;
         try {
-            connection = DBConnector.getConnection();
-            Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
         } catch (Exception e) {
             e.printStackTrace();

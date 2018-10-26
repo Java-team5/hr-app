@@ -29,8 +29,8 @@
                     <tr class="item-item">
                         <td>${skill.id}</td>
                         <td>${skill.skill}</td>
-                        <td><a href="/skill/updateSkill/${skill.id}">Edit</a></td>
-                        <td><a href="/skill/deleteSkill/${skill.id}">Delete</a></td>
+                        <td><a href="/skill/updateSkill/${skill.id}"><spring:message code="menu.edit"/></a></td>
+                        <td><a href="/skill/deleteSkill/${skill.id}"><spring:message code="menu.delete"/></a></td>
                     </tr>
                 </c:forEach>
             </table>

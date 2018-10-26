@@ -2,14 +2,16 @@ package team5.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import team5.dao.SkillDao;
+import team5.dao.Skill.SkillDao;
 import team5.models.Filter;
 import team5.models.Skill;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 import static java.lang.Math.ceil;
@@ -23,7 +25,7 @@ public class SkillController {
     Filter filter = new Filter();
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
-    public ModelAndView setSkillView(@CookieValue(value = "skillSortField", required = false) Cookie skillSortField, @PathVariable int page) {
+    public ModelAndView skillView(@CookieValue(value = "skillSortField", required = false) Cookie skillSortField, @PathVariable int page) {
         int total=5;
         if(page==1){}
         else{
@@ -54,7 +56,7 @@ public class SkillController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ModelAndView setSkillAdd() {
+    public ModelAndView skillAdd() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("entity", "Skill");
         modelAndView.getModelMap().addAttribute("type", "add");
@@ -64,18 +66,21 @@ public class SkillController {
     }
 
     @RequestMapping(value = "/addSorting/{sortField}/**", method = RequestMethod.GET)
-    public ModelAndView setSkillAddSorting(HttpServletResponse response, @PathVariable String sortField) {
+    public ModelAndView skillAddSorting(HttpServletResponse response, @PathVariable String sortField) {
 
         Cookie cookie = new Cookie("skillSortField", sortField);
         cookie.setMaxAge(1000*60*60*24);
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return setSkillView(cookie,1);
+        return skillView(cookie,1);
     }
 
     @RequestMapping(value = "/addSkill", method = RequestMethod.POST)
-    public String addNewSkill(@ModelAttribute("addSkillForm") Skill skill){
+    public String addNewSkill(@ModelAttribute("addSkillForm") @Valid Skill skill, BindingResult result){
+        if(result.hasErrors()) {
+            return "redirect:/skill/add";
+        }
         skillDao.save(skill);
         return "redirect:/skill/view/1";
     }
@@ -94,13 +99,16 @@ public class SkillController {
     }
 
     @RequestMapping(value = "/updateSaveSkill", method = RequestMethod.POST)
-    public String updateSkillPost(@ModelAttribute("editSkillForm") Skill skill){
+    public String updateSkillPost(@ModelAttribute("editSkillForm") @Valid Skill skill, BindingResult result){
+        if(result.hasErrors()) {
+            return "redirect:/skill/updateSkill/" + skill.getId();
+        }
         skillDao.update(skill);
         return "redirect:/skill/view/1";
     }
 
     @RequestMapping(value = "/filter", method = RequestMethod.POST)
-    public String qwerty(@ModelAttribute("filterInput") Filter filterInput){
+    public String skillSetFilter(@ModelAttribute("filterInput") Filter filterInput){
         filter.setValue(filterInput.getValue());
         return "redirect:/skill/view/1";
     }
