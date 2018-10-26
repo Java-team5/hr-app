@@ -1,13 +1,11 @@
 package team5.dao;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import team5.dao.EntityDao;
+import team5.dao.interfaces.EntityDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +13,8 @@ import java.util.List;
 
 public class SkillDao implements EntityDao<Skill> {
 
-    private JdbcTemplate template;
-
-    public void setTemplate(JdbcTemplate template) {
-        this.template = template;
-    }
-
     @Override
-    public Skill findByID(long id) {
+    public Skill getById(long id) {
         String sql = "SELECT * FROM skill WHERE id="+id+"";
         try {
             Connection connection = DBConnector.getConnection();
@@ -56,7 +48,7 @@ public class SkillDao implements EntityDao<Skill> {
     }
 
     @Override
-    public List<Skill> findAll() {
+    public List<Skill> getAll() {
         String sql = "SELECT * FROM skill";
         return createListEntitiesFromQueryResult(sql);
     }
@@ -70,6 +62,16 @@ public class SkillDao implements EntityDao<Skill> {
     @Override
     public List<Skill> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
         String sql = "SELECT * FROM skill ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
+        return createListEntitiesFromQueryResult(sql);
+    }
+
+    public List<Skill> getEntitiesByPage(String filter, int page, int total) {
+        String sql = "SELECT * FROM skill WHERE skill LIKE '%" + filter + "%' LIMIT " + (page - 1) + "," + total;
+        return createListEntitiesFromQueryResult(sql);
+    }
+
+    public List<Skill> getSortedEntitiesByPage(String filter, String sortBy, int pageid, int total) {
+        String sql = "SELECT * FROM skill WHERE skill LIKE '%" + filter + "%' ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
@@ -91,8 +93,14 @@ public class SkillDao implements EntityDao<Skill> {
         return skills;
     }
 
-    public long getCount() {
-        return findAll().size();
+    @Override
+    public int count() {
+        return getAll().size();
+    }
+
+    public int count(String filter) {
+        String sql = "SELECT * FROM skill  WHERE skill LIKE '%" + filter + "%'";
+        return createListEntitiesFromQueryResult(sql).size();
     }
 
     private void executуDatabaseQuery(String sql) {

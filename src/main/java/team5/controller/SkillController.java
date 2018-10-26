@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import team5.dao.SkillDao;
+import team5.models.Filter;
 import team5.models.Skill;
 
 import javax.servlet.http.Cookie;
@@ -19,6 +20,7 @@ public class SkillController {
 
     @Autowired
     SkillDao skillDao;
+    Filter filter = new Filter();
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
     public ModelAndView setSkillView(@CookieValue(value = "skillSortField", required = false) Cookie skillSortField, @PathVariable int page) {
@@ -30,11 +32,11 @@ public class SkillController {
 
         List<Skill> skills;
         if(skillSortField != null)
-            skills= skillDao.getSortedEntitiesByPage(skillSortField.getValue(), page, total);
+            skills= skillDao.getSortedEntitiesByPage(filter.getValue(), skillSortField.getValue(), page, total);
         else
-            skills= skillDao.getEntitiesByPage(page, total);
+            skills= skillDao.getEntitiesByPage(filter.getValue(), page, total);
 
-        float pagesCount = (float) skillDao.getCount() / total;
+        float pagesCount = (float) skillDao.count(filter.getValue()) / total;
         int[] pages = new int[(int) ceil(pagesCount)];
         for(int i=0; i<pages.length; i++){
             pages[i] = i + 1;
@@ -45,6 +47,7 @@ public class SkillController {
         modelAndView.getModelMap().addAttribute("type", "view");
         modelAndView.getModelMap().addAttribute("skill", skills);
         modelAndView.getModelMap().addAttribute("pages", pages);
+        modelAndView.addObject("filterInput", filter);
         modelAndView.setViewName("index");
         return modelAndView;
 
@@ -83,7 +86,7 @@ public class SkillController {
     }
     @RequestMapping(value = "/updateSkill/{id}", method = RequestMethod.GET)
     public ModelAndView updateSkillGet(@PathVariable int id){
-        Skill skill = skillDao.findByID(id);
+        Skill skill = skillDao.getById(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("skill", skill);
         modelAndView.setViewName("SkillEditForm");
@@ -93,6 +96,12 @@ public class SkillController {
     @RequestMapping(value = "/updateSaveSkill", method = RequestMethod.POST)
     public String updateSkillPost(@ModelAttribute("editSkillForm") Skill skill){
         skillDao.update(skill);
+        return "redirect:/skill/view/1";
+    }
+
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
+    public String qwerty(@ModelAttribute("filterInput") Filter filterInput){
+        filter.setValue(filterInput.getValue());
         return "redirect:/skill/view/1";
     }
 

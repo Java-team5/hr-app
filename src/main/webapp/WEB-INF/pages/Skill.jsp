@@ -40,6 +40,11 @@
                 </c:forEach>
             </div>
         </div>
+        <form:form modelAttribute="filterInput" class="item-add-form"  method="post" action="/skill/filter">
+            <form:input path="value" onchange="this.submit();" class="item-add-form-input"/>
+            <label class="item-add-form-label"><spring:message code="menu.find"/> <spring:message code="menu.skill"/></label>
+        </form:form>
+
     </c:if>
 
     <c:if test="${type eq 'add'}">
