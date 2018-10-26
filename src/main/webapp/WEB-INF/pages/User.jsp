@@ -24,6 +24,7 @@
                         <th><spring:message code="user.surname"/></th>
                         <th><spring:message code="user.userState"/></th>
                         <th><spring:message code="user.isAdmin"/></th>
+                        <th>DO</th>
                     </tr>
                 </thead>
             <c:forEach var="user" items="${user}">
@@ -35,6 +36,13 @@
                     <td>${user.surname}</td>
                     <td>${user.userState}</td>
                     <td>${user.isAdmin}</td>
+                    <td class="item-edit-button">
+                        <a class="item-edit-button-a" href="/user/edit/${user.id}">
+                            <h3>
+                                <spring:message code="user.edit" />
+                            </h3>
+                        </a>
+                    </td>
                 </tr>
             </c:forEach>
             </table>
@@ -81,6 +89,9 @@
             </form>
 
         </div>
+    </c:if>
+    <c:if test="${type eq 'edit'}">
+        <jsp:include page="UserEditForm.jsp" />
     </c:if>
 </body>
 </html>

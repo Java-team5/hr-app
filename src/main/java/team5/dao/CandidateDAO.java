@@ -20,7 +20,7 @@ public class CandidateDAO implements EntityDao<Candidate> {
                 "', '" + candidate.getSurname() +
                 "', '" + candidate.getBirthday() +
                 "', '" + candidate.getSalary();
-        DBUtils.insertByQuery(sql);
+        DBUtils.updateByQuery(sql);
     }
 
     @Override

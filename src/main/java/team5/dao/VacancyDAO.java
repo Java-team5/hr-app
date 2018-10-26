@@ -22,7 +22,7 @@ public class VacancyDAO implements EntityDao<Vacancy> {
                 "', '" + vacancy.getSalaryTo() +
                 "', '" + vacancy.getVacancyState()+
                 "')";
-        DBUtils.insertByQuery(sql);
+        DBUtils.updateByQuery(sql);
     }
 
     @Override
