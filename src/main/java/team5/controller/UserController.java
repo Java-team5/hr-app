@@ -9,9 +9,6 @@ import team5.dao.interfaces.EntityDao;
 import team5.models.User;
 import team5.utils.Utils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
 import java.util.List;
 
 @Controller
