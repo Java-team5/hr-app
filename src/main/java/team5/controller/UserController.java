@@ -1,5 +1,6 @@
 package team5.controller;
 
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,9 @@ import team5.dao.interfaces.EntityDao;
 import team5.models.User;
 import team5.utils.Utils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URL;
 import java.util.List;
 
 @Controller
@@ -24,13 +28,11 @@ public class UserController {
 
         List<User> users = null;
 
-        if(sortBy!="none"){
-            users = userDao.getSortedEntitiesByPage(sortBy, offset, total);
-        } else {
+        if (sortBy == null || sortBy.equals("none") || sortBy.equals("")) {
             users = userDao.getEntitiesByPage(offset, total);
+        } else if (sortBy.equals("email") || sortBy.equals("name") || sortBy.equals("surname")) {
+            users = userDao.getSortedEntitiesByPage(sortBy, offset, total);
         }
-
-        System.out.println("");
 
         int[] pages = Utils.getPagesIndexArray(userDao,total);
 
@@ -52,10 +54,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView addNewUser(@ModelAttribute("newUser") User user ) {
+    public String addNewUser(@ModelAttribute("newUser") User user) {
         userDao.save(user);
-        return setUserView(1, "none");
+        return "redirect:/user/view/1";
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
@@ -69,9 +70,8 @@ public class UserController {
         return modelAndView;
     }
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView editUser(@ModelAttribute("editUser") User user) {
+    public String editUser(@ModelAttribute("editUser") User user) {
         userDao.update(user);
-        return setUserView(1, "none");
+        return "redirect:/user/view/1";
     }
 }
