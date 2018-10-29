@@ -14,7 +14,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import team5.dao.CandidateDAO;
 import team5.dao.FeedbackDAO;
-import team5.dao.SkillDao;
+import team5.dao.Skill.SkillDao;
 import team5.dao.UserDao;
 import team5.dao.VacancyDAO;
 

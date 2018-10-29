@@ -7,7 +7,7 @@ import java.util.Properties;
 public final class MavenVersion {
 
     public static String getVersion() {
-        String path = "/version.prop";
+        String path = "/version.properties";
         InputStream stream = MavenVersion.class.getResourceAsStream(path);
 
         if (stream == null) return "UNKNOWN";

@@ -1,5 +1,6 @@
 package team5.dao;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import team5.dao.interfaces.EntityDao;
 import team5.dao.utils.DBConnector;
 import team5.dao.utils.DBUtils;
@@ -12,14 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao implements EntityDao<User>{
-//    private JdbcTemplate template;
-//
-//    public void setTemplate(JdbcTemplate template) {
-//        this.template = template;
-//    }
+    private JdbcTemplate template;
+
+    public void setTemplate(JdbcTemplate template) {
+        this.template = template;
+    }
 
     @Override
     public User getById(long id) {
+        String sql = "SELECT * FROM users WHERE id="+id+"";
+        try {
+            Connection connection = DBConnector.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            resultSet.next();
+            return new User(resultSet.getLong(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -31,12 +48,14 @@ public class UserDao implements EntityDao<User>{
                 "', '" + model.getName() +
                 "', '" + model.getSurname() +
                 "', 'Active', 'User')";
-        DBUtils.insertByQuery(sql);
+        DBUtils.updateByQuery(sql);
     }
 
     @Override
     public void update(User model) {
-
+        String sql = "UPDATE users SET email='" + model.getEmail() + "', password='"+model.getPassword()
+                +"', name='"+model.getName()+"', surname='"+model.getSurname()+"' WHERE id=" + model.getId();
+        DBUtils.updateByQuery(sql);
     }
 
     @Override

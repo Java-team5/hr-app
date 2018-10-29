@@ -1,8 +1,8 @@
 package team5.dao;
 
+import team5.dao.utils.DBConnector;
 import team5.dao.utils.DBUtils;
 import team5.models.Candidate;
-import team5.dao.utils.DBConnector;
 import team5.dao.interfaces.EntityDao;
 
 import java.sql.Connection;
@@ -20,7 +20,7 @@ public class CandidateDAO implements EntityDao<Candidate> {
                 "', '" + candidate.getSurname() +
                 "', '" + candidate.getBirthday() +
                 "', '" + candidate.getSalary();
-        DBUtils.insertByQuery(sql);
+        DBUtils.updateByQuery(sql);
     }
 
     @Override

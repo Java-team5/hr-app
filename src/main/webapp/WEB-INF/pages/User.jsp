@@ -24,6 +24,7 @@
                         <th><spring:message code="user.surname"/></th>
                         <th><spring:message code="user.userState"/></th>
                         <th><spring:message code="user.isAdmin"/></th>
+                        <th>DO</th>
                     </tr>
                 </thead>
             <c:forEach var="user" items="${user}">
@@ -35,6 +36,13 @@
                     <td>${user.surname}</td>
                     <td>${user.userState}</td>
                     <td>${user.isAdmin}</td>
+                    <td class="item-edit-button">
+                        <a class="item-edit-button-a" href="/user/edit/${user.id}">
+                            <h3>
+                                <spring:message code="user.edit" />
+                            </h3>
+                        </a>
+                    </td>
                 </tr>
             </c:forEach>
             </table>
@@ -46,13 +54,13 @@
             <div class="item-sort">
                 <form name='sort'>
                     <spring:message code="sort.sortby"/>
-                    <select name='sortBy'>
+                    <select class="item-sort-input" name='sortBy'>
                         <option value="none"><spring:message code="sort.none"/></option>
                         <option value='email'><spring:message code="sort.byemail"/></option>
                         <option value='name'><spring:message code="sort.byname"/></option>
                         <option value='surname'><spring:message code="sort.bysurname"/></option>
                     </select>
-                    <button type='submit'><spring:message code="sort"/></button>
+                    <button class="item-sort-button" type='submit'><spring:message code="sort"/></button>
                 </form>
             </div>
         </div>
@@ -62,25 +70,28 @@
             <form class="item-add-form" name="newUser" method="Post" action="/user/add">
                 <h1><spring:message code="user.addUserTitle"/></h1>
                 <div class="question">
-                    <input class="item-add-form-input" name="email" type="text" required />
+                    <input class="item-add-form-input" name="email" type="email" required />
                     <label class="item-add-form-label"><spring:message code="user.email"/></label>
                 </div>
                 <div class="question">
-                    <input class="item-add-form-input" name="password" type="text" required/>
+                    <input class="item-add-form-input" name="password" minlength="4" maxlength="40" type="password" required/>
                     <label class="item-add-form-label"><spring:message code="user.password"/></label>
                 </div>
                 <div class="question">
-                    <input class="item-add-form-input" name="name" type="text" required/>
+                    <input class="item-add-form-input" name="name" minlength="2" maxlength="20" type="text" required/>
                     <label class="item-add-form-label"><spring:message code="user.name"/></label>
                 </div>
                 <div class="question">
-                    <input class="item-add-form-input" name="surname" type="text" required/>
+                    <input class="item-add-form-input" name="surname" minlength="2" maxlength="20" type="text" required/>
                     <label class="item-add-form-label"><spring:message code="user.surname"/></label>
                 </div>
                 <button type="submit"><spring:message code="user.addUser"/></button>
             </form>
 
         </div>
+    </c:if>
+    <c:if test="${type eq 'edit'}">
+        <jsp:include page="UserEditForm.jsp" />
     </c:if>
 </body>
 </html>

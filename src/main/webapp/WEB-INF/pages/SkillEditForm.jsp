@@ -7,15 +7,15 @@
 <html>
 <head></head>
 <style>
-    <%@include file="../styles/skill.css"%>
+    <%@include file="../styles/item.css"%>
 </style>
 <body>
-    <div class="skill-add">
-        <form:form modelAttribute="skill" class="skill-add-form"  method="post" action="/skill/updateSaveSkill">
+    <div class="item-add">
+        <form:form modelAttribute="skill" class="item-add-form"  method="post" action="/skill/updateSaveSkill">
             <div class="question">
                 <form:hidden  path="id" />
-                <form:input path="skill" class="skill-add-form-input"/>
-                <label class="skill-add-form-label"><spring:message code="menu.skill"/></label>
+                <form:input path="skill" class="item-add-form-input"/>
+                <label class="item-add-form-label"><spring:message code="menu.skill"/></label>
             </div>
             <form:button type="submit"><spring:message code="menu.edit"/></form:button>
         </form:form>

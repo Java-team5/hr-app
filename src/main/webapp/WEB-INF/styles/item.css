@@ -172,3 +172,44 @@ input.item-add-form-input:valid~label{
     color: white;
     background-color: #ff4a56;
 }
+
+.item-edit-button{
+    width: fit-content;
+}
+.item-edit-button-a h3{
+    background-color: #ff5064;
+    padding: 3px;
+    border-radius: 5px;
+    margin: auto;
+    width: fit-content;
+}
+.item-edit-button-a{
+    color: black;
+    text-decoration: none;
+    width: fit-content;
+}
+
+.item-sort-button{
+    background-color: rgba(255, 74, 86, 0.07);
+    margin: 5px;
+    cursor: pointer;
+    border: 1px solid #ff4a56;
+    line-height: 0;
+    font-size: 17px;
+    display: inline-block;
+    padding: 15px 10px;
+    border-radius: 60px;
+    color: #ff4a56;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+}
+.item-sort-input{
+    border: 1px solid #ff4a56;
+    font-size: 15px;
+    width: auto;
+    max-width: 300px;
+    padding: 5px 10px;
+    border-radius: 60px;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+}
