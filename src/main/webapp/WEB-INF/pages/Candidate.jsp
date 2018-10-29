@@ -47,6 +47,8 @@
                         <option value="none"><spring:message code="sort.none"/></option>
                         <option value='name'><spring:message code="sort.byname"/></option>
                         <option value='surname'><spring:message code="sort.bysurname"/></option>
+                        <option value='birthday'><spring:message code="sort.bybirthday"/></option>
+                        <option value='salary'><spring:message code="sort.bysalary"/></option>
                     </select>
                     <button type='submit'><spring:message code="sort"/></button>
                 </form>

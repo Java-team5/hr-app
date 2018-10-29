@@ -19,11 +19,11 @@ public class DBConnector {
     private static Properties properties = new Properties();
 
     private static void setProperties() throws IOException {
-        properties.load(new FileInputStream("src/main/resources/db.properties"));
-        URL = properties.getProperty("db.url");
-        USERNAME = properties.getProperty("db.username");
-        PASSWORD = properties.getProperty("db.password");
-        DRIVER = properties.getProperty("db.driver");
+        //properties.load(new FileInputStream("src/main/resources/db.properties"));
+        URL = "jdbc:mysql://localhost:3306/hr_app_db ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
+        USERNAME = "root";
+        PASSWORD = "";
+        DRIVER = "com.mysql.cj.jdbc.Driver";
     }
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException, IOException{
