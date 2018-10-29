@@ -1,7 +1,7 @@
 package team5.dao;
 
-import team5.dao.utils.DBConnector;
 import team5.dao.interfaces.EntityDao;
+import team5.dao.utils.DBConnector;
 import team5.dao.utils.DBUtils;
 import team5.models.Vacancy;
 
