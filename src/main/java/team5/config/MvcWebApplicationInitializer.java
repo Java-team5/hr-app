@@ -15,8 +15,7 @@ public class MvcWebApplicationInitializer extends AbstractAnnotationConfigDispat
     }
 
     @Override
-    protected String[] getServletMappings() {
-        return new String[]{"/"};
+    protected String[] getServletMappings() {return new String[]{"/"};
     }
 
 }

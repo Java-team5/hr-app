@@ -1,7 +1,5 @@
 package team5.dao.utils;
 
-import team5.dao.utils.DBConnector;
-
 import java.sql.Connection;
 import java.sql.Statement;
 
