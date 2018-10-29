@@ -25,7 +25,9 @@ public class CandidateDAO implements EntityDao<Candidate> {
 
     @Override
     public void update(Candidate model) {
-
+        String sql = "UPDATE candidate SET name='" + model.getName() + "', surname='"+model.getSurname()
+                +"', birthday='"+model.getBirthday()+"', salary='"+model.getSalary()+"' WHERE id=" + model.getId();
+        DBUtils.updateByQuery(sql);
     }
 
     @Override
@@ -35,6 +37,20 @@ public class CandidateDAO implements EntityDao<Candidate> {
 
     @Override
     public Candidate getById(long id) {
+        String sql = "SELECT * FROM candidate WHERE id="+id+"";
+        try {
+            Connection connection = DBConnector.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            resultSet.next();
+            return new Candidate(resultSet.getLong(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getDate(4),
+                    resultSet.getDouble(5));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -71,7 +87,7 @@ public class CandidateDAO implements EntityDao<Candidate> {
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()){
                 candidates.add(new Candidate(
-                        resultSet.getInt(1),
+                        resultSet.getLong(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getDate(4),

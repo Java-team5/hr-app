@@ -67,7 +67,8 @@ public class FeedbackDAO implements EntityDao<Feedback> {
 
     @Override
     public List<Feedback> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
-        return null;
+        String sql = "SELECT * FROM candidate ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
+        return createListEntitiesFromQueryResult(sql);
     }
 
     @Override

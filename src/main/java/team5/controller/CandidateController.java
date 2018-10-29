@@ -60,4 +60,20 @@ public class CandidateController {
         candidateDAO.save(candidate);
         return setCandidateView(1, "none");
     }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView openEditPage(@PathVariable long id){
+        Object candidate = candidateDAO.getById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModelMap().addAttribute("type", "edit");
+        modelAndView.getModelMap().addAttribute("entity", "Candidate");
+        modelAndView.getModelMap().addAttribute("candidate", candidate);
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String editUser(@ModelAttribute("editCandidate") Candidate candidate) {
+        candidateDAO.update(candidate);
+        return "redirect:/candidate/view/1";
+    }
 }

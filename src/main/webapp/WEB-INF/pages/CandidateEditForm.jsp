@@ -1,24 +1,34 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head></head>
 <style>
     <%@include file="../styles/item.css"%>
 </style>
 <body>
+<script type="text/javascript">
+    function changeValue(id, value){
+        document.getElementById("id").value = value;
+    }
+</script>
 <div class="item-add">
-    <form:form modelAttribute="candidate" class="item-add-form"  method="post" action="/candidate/updateSaveCandidate">
+    <form class="item-add-form" name="editCandidate" method="Post" action="/candidate/edit">
+        <h1><spring:message code="candidate.editCandidateTitle"/></h1>
+        <input name="id" value="${candidate.id}" style="display: none"/>
         <div class="question">
-            <form:hidden  path="id" />
-            <form:input path="candidate" class="item-add-form-input"/>
-            <label class="item-add-form-label"><spring:message code="menu.candidate"/></label>
+            <input class="item-add-form-input" id="input1" name="name" type="text" value="${candidate.name}" onchange="changeValue(this.id, this.value)" required />
         </div>
-        <form:button type="submit"><spring:message code="menu.edit"/></form:button>
-    </form:form>
+        <div class="question">
+            <input class="item-add-form-input" id="input2" name="surname" type="text" value="${candidate.surname}" onchange="changeValue(this.id, this.value)" required/>
+        </div>
+        <div class="question">
+            <input class="item-add-form-input" id="input3" name="birthday" type="date" value="${candidate.birthday}" onchange="changeValue(this.id, this.value)" required/>
+        </div>
+        <div class="question">
+            <input class="item-add-form-input" id="input4" name="salary" type="text" value="${candidate.salary}" onchange="changeValue(this.id, this.value)" required/>
+        </div>
+        <button type="submit"><spring:message code="menu.saveEdit" /></button>
+    </form>
 </div>
 </body>
 </html>
