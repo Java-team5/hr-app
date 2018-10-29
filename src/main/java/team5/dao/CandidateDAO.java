@@ -27,6 +27,7 @@ public class CandidateDAO implements EntityDao<Candidate> {
     public void update(Candidate model) {
         String sql = "UPDATE candidate SET name='" + model.getName() + "', surname='"+model.getSurname()
                 +"', birthday='"+model.getBirthday()+"', salary='"+model.getSalary()+"' WHERE id=" + model.getId();
+        System.out.println("sql = " + sql);
         DBUtils.updateByQuery(sql);
     }
 

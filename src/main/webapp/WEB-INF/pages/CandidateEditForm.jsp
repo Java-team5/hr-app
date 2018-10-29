@@ -12,7 +12,7 @@
     }
 </script>
 <div class="item-add">
-    <form class="item-add-form" name="editCandidate" method="Post" action="/candidate/edit">
+    <form class="item-add-form" name="editCandidate" method="post" action="/candidate/edit">
         <h1><spring:message code="candidate.editCandidateTitle"/></h1>
         <input name="id" value="${candidate.id}" style="display: none"/>
         <div class="question">

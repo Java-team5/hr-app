@@ -72,8 +72,20 @@ public class CandidateController {
         return modelAndView;
     }
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editUser(@ModelAttribute("editCandidate") Candidate candidate) {
+    public String editCandidate(@ModelAttribute("editCandidate") Candidate candidate) {
+        System.out.println("edit_post_ок");
         candidateDAO.update(candidate);
         return "redirect:/candidate/view/1";
+    }
+
+    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
+    public ModelAndView openUserAccount(@PathVariable long id){
+        Object candidate = candidateDAO.getById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModelMap().addAttribute("type", "account");
+        modelAndView.getModelMap().addAttribute("entity", "Candidate");
+        modelAndView.getModelMap().addAttribute("candidate", candidate);
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 }

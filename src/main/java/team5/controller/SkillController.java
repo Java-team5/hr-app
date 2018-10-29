@@ -93,8 +93,10 @@ public class SkillController {
     public ModelAndView updateSkillGet(@PathVariable int id){
         Skill skill = skillDao.getById(id);
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModelMap().addAttribute("type", "edit");
+        modelAndView.getModelMap().addAttribute("entity", "Skill");
         modelAndView.addObject("skill", skill);
-        modelAndView.setViewName("SkillEditForm");
+        modelAndView.setViewName("index");
         return modelAndView;
     }
 

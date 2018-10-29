@@ -41,10 +41,9 @@
             </div>
         </div>
         <form:form modelAttribute="filterInput" class="item-add-form"  method="post" action="/skill/filter">
-            <form:input path="value" onchange="this.submit();" class="item-add-form-input"/>
+            <form:input path="value" onchange="this.submit();" class="item-add-form-input" cssStyle="max-width: 200px; max-height: 40px"/>
             <label class="item-add-form-label"><spring:message code="menu.find"/> <spring:message code="menu.skill"/></label>
         </form:form>
-
     </c:if>
 
     <c:if test="${type eq 'add'}">
@@ -59,6 +58,9 @@
         </div>
     </c:if>
 
+    <c:if test="${type eq 'edit'}">
+        <jsp:include page="SkillEditForm.jsp" />
+    </c:if>
 
 </body>
 </html>

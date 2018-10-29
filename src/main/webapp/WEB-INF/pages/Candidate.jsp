@@ -22,7 +22,8 @@
                     <th><spring:message code="candidate.surname"/></th>
                     <th><spring:message code="candidate.birthday"/></th>
                     <th><spring:message code="candidate.salary"/></th>
-                    <th>DO</th>
+                    <th><spring:message code="menu.edit" /></th>
+                    <th><spring:message code="button.view" /></th>
                 </tr>
                 </thead>
                 <c:forEach var="candidate" items="${candidate}">
@@ -35,6 +36,11 @@
                         <td class="item-edit-button">
                             <a class="item-edit-button-a" href="/candidate/edit/${candidate.id}">
                                 <h3><spring:message code="candidate.edit"/></h3>
+                            </a>
+                        </td>
+                        <td class="item-edit-button">
+                            <a class="item-edit-button-a" href="/candidate/account/${candidate.id}">
+                                <h3><spring:message code="candidate.view" /></h3>
                             </a>
                         </td>
                     </tr>
@@ -62,7 +68,7 @@
     </c:if>
     <c:if test="${type eq 'add'}">
         <div class="item-add">
-            <form class="item-add-form" name="newCandidate" method="Post" action="/candidate/add">
+            <form class="item-add-form" name="newCandidate" method="post" action="/candidate/add">
                 <h1><spring:message code="candidate.addCandidateTitle"/></h1>
                 <div class="question">
                     <input class="item-add-form-input" name="name" type="text" required />
@@ -86,6 +92,9 @@
     </c:if>
     <c:if test="${type eq 'edit'}">
         <jsp:include page="CandidateEditForm.jsp" />
+    </c:if>
+    <c:if test="${type eq 'account'}">
+        <jsp:include page="CandidateView.jsp" />
     </c:if>
 </body>
 </html>
