@@ -31,7 +31,7 @@
                 </thead>
                 <tr>
                     <form:form modelAttribute="filterInput"  method="post" action="/user/filter?sort=${sort}">
-                        <td class="item-filter">filter:</td>
+                        <td class="item-filter"><spring:message code="menu.filter" /></td>
                         <td>
                             <form:input path="email" onchange="this.submit();"/>
                         </td>
@@ -44,7 +44,7 @@
                         </td>
                         <td>-</td><td>-</td><td></td>
                         <td>
-                            <input type="submit" value="Submit"/>
+                            <form:button type="submit"><spring:message code="menu.find"/></form:button>
                         </td>
                     </form:form>
                 </tr>
@@ -66,7 +66,7 @@
                     </td>
                     <td class="item-edit-button">
                         <a class="item-edit-button-a" href="/user/account/${user.id}">
-                            <h3>view</h3>
+                            <h3><spring:message code="user.view" /></h3>
                         </a>
                     </td>
                 </tr>

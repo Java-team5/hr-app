@@ -7,7 +7,7 @@
 </style>
 <body>
 <div class="item-account-view">
-    <h2>View a user account</h2>
+    <h2><spring:message code="user.account" /></h2>
     <table class="item-table">
         <tr>
             <th>id</th>
@@ -38,7 +38,7 @@
             <td>${user.isAdmin}</td>
         </tr>
     </table>
-    <a class="item-sort-button item-edit-button-a" style="margin: 15px" href="/user/view/1">return</a>
+    <a class="item-sort-button item-edit-button-a" style="margin: 15px" href="/user/view/1"><spring:message code="menu.return" /></a>
 </div>
 </body>
 </html>
