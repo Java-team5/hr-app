@@ -1,9 +1,11 @@
-package team5.dao;
+package team5.dao.Candidate;
 
 import team5.dao.utils.DBConnector;
 import team5.dao.utils.DBUtils;
 import team5.models.Candidate;
-import team5.dao.interfaces.EntityDao;
+import team5.models.CandidateFilter;
+import team5.dao.Candidate.CandidateDAO;
+import team5.dao.Candidate.CandidateCrudDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,7 +13,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CandidateDAO implements EntityDao<Candidate> {
+public class CandidateDAO implements CandidateCrudDAO {
+
+    private Connection connection;
+    private Statement statement;
+    public CandidateDAO() {
+        try {
+            connection = DBConnector.getConnection();
+            statement = connection.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void save(Candidate candidate) {
@@ -65,16 +78,25 @@ public class CandidateDAO implements EntityDao<Candidate> {
     public int count() {
         return getAll().size();
     }
+    public int count(CandidateFilter filter) {
+        String sql = "SELECT * FROM candidate WHERE (name LIKE '%" + filter.getName() +
+                "%' AND surname LIKE '%" + filter.getSurname()+"%')";
+        return createListEntitiesFromQueryResult(sql).size();
+    }
 
     @Override
-    public List<Candidate> getEntitiesByPage(int offset, int total) {
-        String sql="SELECT * FROM candidate LIMIT "+(offset -1)+","+total;
+    public List<Candidate> getEntitiesByPage(CandidateFilter filter,int offset, int total) {
+        String sql="SELECT * FROM candidate WHERE (name LIKE '%" + filter.getName() +
+                "%' AND surname LIKE '%"+filter.getSurname() +
+                "%') LIMIT " + (offset -1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
     @Override
-    public List<Candidate> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
-        String sql = "SELECT * FROM candidate ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
+    public List<Candidate> getSortedEntitiesByPage(CandidateFilter filter, String sortBy, int pageid, int total) {
+        String sql = "SELECT * FROM users WHERE (name LIKE '%" + filter.getName() +
+                "%' AND surname LIKE '%" + filter.getSurname() +
+                "%') ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 

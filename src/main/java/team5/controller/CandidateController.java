@@ -4,42 +4,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import team5.dao.interfaces.EntityDao;
-import team5.models.Feedback;
+import team5.dao.Candidate.CandidateDAO;
+import team5.dao.Candidate.CandidateCrudDAO;
+import team5.models.CandidateFilter;
 import team5.models.Candidate;
 import team5.utils.Utils;
 
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Math.ceil;
+
 @Controller
 @RequestMapping(value ="/candidate/")
 public class CandidateController {
     @Autowired
-    EntityDao candidateDAO;
+    CandidateDAO candidateDAO;
+    CandidateFilter filter = new CandidateFilter();
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
-    public ModelAndView setCandidateView(@PathVariable int page, String sortBy) {
-        int total = 5;
-        int offset = Utils.getPageOffset(page,total);
-
+    public ModelAndView setCandidateView(@PathVariable int page, String sort) {
         List<Candidate> candidates = null;
-        System.out.println(sortBy);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModelMap().addAttribute("sort",(sort !=null)?sort:"none");
 
-        if(sortBy!="none"){
-            candidates = candidateDAO.getSortedEntitiesByPage(sortBy, offset, total);
-        } else {
-            candidates = candidateDAO.getEntitiesByPage(offset, total);
+        int total=5;
+        if(page==1){}
+        else{
+            page=(page-1)*total+1;
         }
 
-        int[] pages = Utils.getPagesIndexArray(candidateDAO,total);
+        if(sort!=null&&!sort.equals("none")){
+            candidates = candidateDAO.getSortedEntitiesByPage(filter, sort, page, total);
+        } else{
+            candidates = candidateDAO.getEntitiesByPage(filter, page, total);
+        }
 
-        ModelAndView modelAndView = new ModelAndView();
+        float pagesCount = (float) candidateDAO.count(filter) / total;
+        int[] pages = new int[(int) ceil(pagesCount)];
+        for(int i=0; i<pages.length; i++){
+            pages[i] = i + 1;
+        }
+
         modelAndView.getModelMap().addAttribute("type", "view");
         modelAndView.getModelMap().addAttribute("entity", "Candidate");
+        modelAndView.addObject("filterInput", filter);
         modelAndView.getModelMap().addAttribute("candidate", candidates);
         modelAndView.getModelMap().addAttribute("pages", pages);
-
         modelAndView.setViewName("index");
         return modelAndView;
     }
@@ -55,10 +66,9 @@ public class CandidateController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView addNewCandidate(@ModelAttribute("newCandidate") Candidate candidate ) {
+    public String addNewCandidate(@ModelAttribute("newCandidate") Candidate candidate ) {
         candidateDAO.save(candidate);
-        return setCandidateView(1, "none");
+        return "redirect:/candidate/view/1";
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
@@ -87,5 +97,12 @@ public class CandidateController {
         modelAndView.getModelMap().addAttribute("candidate", candidate);
         modelAndView.setViewName("index");
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
+    public String skillSetFilter(@ModelAttribute("filterInput") CandidateFilter filterInput, String sort){
+        filter.setName(filterInput.getName());
+        filter.setSurname(filterInput.getSurname());
+        return "redirect:/candidate/view/1?sort=" + sort;
     }
 }

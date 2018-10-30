@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head></head>
 <style>
@@ -26,6 +27,21 @@
                     <th><spring:message code="button.view" /></th>
                 </tr>
                 </thead>
+                <tr>
+                    <form:form modelAttribute="filterInput"  method="post" action="/candidate/filter?sort=${sort}">
+                        <td class="item-filter"><spring:message code="menu.filter" /></td>
+                        <td>
+                            <form:input path="name" onchange="this.submit();"/>
+                        </td>
+                        <td>
+                            <form:input path="surname" onchange="this.submit();"/>
+                        </td>
+                        <td>-</td><td>-</td><td></td>
+                        <td>
+                            <form:button type="submit"><spring:message code="menu.find"/></form:button>
+                        </td>
+                    </form:form>
+                </tr>
                 <c:forEach var="candidate" items="${candidate}">
                     <tr>
                         <td>${candidate.id}</td>
@@ -48,8 +64,9 @@
             </table>
             <div class="item-pages">
                 <c:forEach var="pages" items="${pages}">
-                    <a class="item-page-link" href="/candidate/view/${pages}">${pages}</a>
+                    <a class="item-page-link" href="/candidate/view/${pages}?sort=${sort}">${pages}</a>
                 </c:forEach>
+
             </div>
             <div class="item-sort">
                 <form name='sort'>
