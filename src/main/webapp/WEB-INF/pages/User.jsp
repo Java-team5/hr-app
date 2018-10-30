@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head></head>
 <style>
@@ -24,9 +25,29 @@
                         <th><spring:message code="user.surname"/></th>
                         <th><spring:message code="user.userState"/></th>
                         <th><spring:message code="user.isAdmin"/></th>
-                        <th>DO</th>
+                        <th><spring:message code="menu.edit" /></th>
+                        <th><spring:message code="button.view" /></th>
                     </tr>
                 </thead>
+                <tr>
+                    <form:form modelAttribute="filterInput"  method="post" action="/user/filter?sort=${sort}">
+                        <td class="item-filter"><spring:message code="menu.filter" /></td>
+                        <td>
+                            <form:input path="email" onchange="this.submit();"/>
+                        </td>
+                        <td>-</td>
+                        <td>
+                            <form:input path="name" onchange="this.submit();"/>
+                        </td>
+                        <td>
+                            <form:input path="surname" onchange="this.submit();"/>
+                        </td>
+                        <td>-</td><td>-</td><td></td>
+                        <td>
+                            <form:button type="submit"><spring:message code="menu.find"/></form:button>
+                        </td>
+                    </form:form>
+                </tr>
             <c:forEach var="user" items="${user}">
                 <tr>
                     <td>${user.id}</td>
@@ -43,18 +64,23 @@
                             </h3>
                         </a>
                     </td>
+                    <td class="item-edit-button">
+                        <a class="item-edit-button-a" href="/user/account/${user.id}">
+                            <h3><spring:message code="user.view" /></h3>
+                        </a>
+                    </td>
                 </tr>
             </c:forEach>
             </table>
             <div class="item-pages">
             <c:forEach var="pages" items="${pages}">
-                <a class="item-page-link" href="/user/view/${pages}">${pages}</a>
+                <a class="item-page-link" href="/user/view/${pages}?sort=${sort}">${pages}</a>
             </c:forEach>
             </div>
             <div class="item-sort">
                 <form name='sort'>
                     <spring:message code="sort.sortby"/>
-                    <select class="item-sort-input" name='sortBy'>
+                    <select class="item-sort-input" name='sort'>
                         <option value="none"><spring:message code="sort.none"/></option>
                         <option value='email'><spring:message code="sort.byemail"/></option>
                         <option value='name'><spring:message code="sort.byname"/></option>
@@ -92,6 +118,9 @@
     </c:if>
     <c:if test="${type eq 'edit'}">
         <jsp:include page="UserEditForm.jsp" />
+    </c:if>
+    <c:if test="${type eq 'account'}">
+        <jsp:include page="UserView.jsp" />
     </c:if>
 </body>
 </html>

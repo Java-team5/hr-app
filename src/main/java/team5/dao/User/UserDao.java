@@ -1,10 +1,9 @@
-package team5.dao;
+package team5.dao.User;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import team5.dao.interfaces.EntityDao;
 import team5.dao.utils.DBConnector;
 import team5.dao.utils.DBUtils;
 import team5.models.User;
+import team5.models.UserFilter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,19 +11,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao implements EntityDao<User>{
-    private JdbcTemplate template;
-
-    public void setTemplate(JdbcTemplate template) {
-        this.template = template;
+public class UserDao implements UserCrudDao {
+    private Connection connection;
+    private Statement statement;
+    public UserDao() {
+        try {
+            connection = DBConnector.getConnection();
+            statement = connection.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public User getById(long id) {
         String sql = "SELECT * FROM users WHERE id="+id+"";
         try {
-            Connection connection = DBConnector.getConnection();
-            Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
             return new User(resultSet.getLong(1),
@@ -70,25 +72,28 @@ public class UserDao implements EntityDao<User>{
     }
 
     @Override
-    public List<User> getEntitiesByPage(int offset, int total) {
-        String sql="SELECT * FROM users LIMIT " + (offset -1) + "," + total;
+    public List<User> getEntitiesByPage(UserFilter filter, int offset, int total) {
+        String sql="SELECT * FROM users WHERE (email LIKE '%" + filter.getEmail() +
+                "%' AND name LIKE '%"+filter.getName() +
+                "%' AND surname LIKE '%"+filter.getSurname() +
+                "%') LIMIT " + (offset -1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
     @Override
-    public List<User> getSortedEntitiesByPage(String sortBy, int pageid, int total){
-        String sql = "SELECT * FROM users ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," +total;
+    public List<User> getSortedEntitiesByPage(UserFilter filter, String sortBy, int pageid, int total){
+        String sql = "SELECT * FROM users WHERE (email LIKE '%" + filter.getEmail() +
+                "%' AND name LIKE '%"+filter.getName() +
+                "%' AND surname LIKE '%"+filter.getSurname() +
+                "%') ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," +total;
         return createListEntitiesFromQueryResult(sql);
     }
-
 
     private List<User> createListEntitiesFromQueryResult(String sql){
         ResultSet resultSet;
         List<User> users = new ArrayList<>();
 
         try {
-            Connection connection = DBConnector.getConnection();
-            Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()){
                 users.add(new User(
@@ -109,6 +114,12 @@ public class UserDao implements EntityDao<User>{
     @Override
     public int count(){
         return getAll().size();
+    }
+    public int count(UserFilter filter) {
+        String sql = "SELECT * FROM users WHERE (email LIKE '%" + filter.getEmail() +
+                "%' AND name LIKE '%"+filter.getName() +
+                "%' AND surname LIKE '%"+filter.getSurname()+"%')";
+        return createListEntitiesFromQueryResult(sql).size();
     }
 
 }
