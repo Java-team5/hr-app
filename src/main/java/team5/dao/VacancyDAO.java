@@ -60,7 +60,8 @@ public class VacancyDAO implements EntityDao<Vacancy> {
 
     @Override
     public List<Vacancy> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
-        return null;
+        String sql = "SELECT * FROM candidate ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
+        return createListEntitiesFromQueryResult(sql);
     }
 
     private List<Vacancy> createListEntitiesFromQueryResult(String sql){
