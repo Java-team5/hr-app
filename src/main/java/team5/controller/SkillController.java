@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import team5.dao.Skill.SkillDao;
-import team5.models.Filter;
+import team5.models.SkillFilter;
 import team5.models.Skill;
 
 import javax.servlet.http.Cookie;
@@ -22,7 +22,7 @@ public class SkillController {
 
     @Autowired
     SkillDao skillDao;
-    Filter filter = new Filter();
+    SkillFilter filter = new SkillFilter();
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
     public ModelAndView skillView(@CookieValue(value = "skillSortField", required = false) Cookie skillSortField, @PathVariable int page) {
@@ -34,11 +34,11 @@ public class SkillController {
 
         List<Skill> skills;
         if(skillSortField != null)
-            skills= skillDao.getSortedEntitiesByPage(filter.getValue(), skillSortField.getValue(), page, total);
+            skills= skillDao.getSortedEntitiesByPage(filter.getSkill(), skillSortField.getValue(), page, total);
         else
-            skills= skillDao.getEntitiesByPage(filter.getValue(), page, total);
+            skills= skillDao.getEntitiesByPage(filter.getSkill(), page, total);
 
-        float pagesCount = (float) skillDao.count(filter.getValue()) / total;
+        float pagesCount = (float) skillDao.count(filter.getSkill()) / total;
         int[] pages = new int[(int) ceil(pagesCount)];
         for(int i=0; i<pages.length; i++){
             pages[i] = i + 1;
@@ -110,9 +110,21 @@ public class SkillController {
     }
 
     @RequestMapping(value = "/filter", method = RequestMethod.POST)
-    public String skillSetFilter(@ModelAttribute("filterInput") Filter filterInput){
-        filter.setValue(filterInput.getValue());
+    public String skillSetFilter(@ModelAttribute("filterInput") SkillFilter filterInput){
+        filter.setSkill(filterInput.getSkill());
         return "redirect:/skill/view/1";
+    }
+
+    @RequestMapping(value = "/viewSkillById/{id}/**", method = RequestMethod.GET)
+    public ModelAndView skillViewById(@PathVariable int id) {
+        ModelAndView modelAndView = new ModelAndView();
+        Skill skill = skillDao.getById(id);
+        modelAndView.getModelMap().addAttribute("entity", "Skill");
+        modelAndView.getModelMap().addAttribute("type", "viewById");
+        modelAndView.getModelMap().addAttribute("skill", skill.getSkill());
+        modelAndView.getModelMap().addAttribute("id", skill.getId());
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 
 }
