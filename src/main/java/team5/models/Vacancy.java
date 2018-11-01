@@ -3,7 +3,7 @@ package team5.models;
 import java.util.Date;
 
 public class Vacancy {
-    private int id;
+    private long id;
     private int idDeveloper;
     private String position;
     private double salaryFrom;
@@ -14,7 +14,7 @@ public class Vacancy {
     public Vacancy() {
     }
 
-    public Vacancy(int id, int idDeveloper, String position, double salaryFrom, double salaryTo, String vacancyState, double experienceYearsRequire) {
+    public Vacancy(long id, int idDeveloper, String position, double salaryFrom, double salaryTo, String vacancyState, double experienceYearsRequire) {
         this.id = id;
         this.idDeveloper = idDeveloper;
         this.position = position;
@@ -24,11 +24,11 @@ public class Vacancy {
         this.experienceYearsRequire = experienceYearsRequire;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
