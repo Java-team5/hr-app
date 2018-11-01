@@ -1,12 +1,10 @@
 package team5.dao.utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 public class DBConnector {
 
@@ -22,7 +20,7 @@ public class DBConnector {
         //properties.load(new FileInputStream("src/main/resources/db.properties"));
         URL = "jdbc:mysql://localhost:3306/hr_app_db ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
         USERNAME = "root";
-        PASSWORD = "";
+        PASSWORD = "root";
         DRIVER = "com.mysql.cj.jdbc.Driver";
     }
 

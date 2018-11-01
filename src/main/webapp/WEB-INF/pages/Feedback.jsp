@@ -21,6 +21,8 @@
                         <th><spring:message code="feedback.idInterviewer"/></th>
                         <th><spring:message code="feedback.feedbackState"/></th>
                         <th><spring:message code="feedback.reason"/></th>
+                        <th><spring:message code="menu.edit"/></th>
+                        <th><spring:message code="button.view"/></th>
                     </tr>
                 </thead>
             <c:forEach var="feedback" items="${feedback}">
@@ -29,6 +31,20 @@
                     <td>${feedback.idInterviewer}</td>
                     <td>${feedback.feedbackState}</td>
                     <td>${feedback.reason}</td>
+                    <td class="item-edit-button">
+                        <a class="item-edit-button-a"
+                           href="/feedback/edit/${feedback.idInterview}|${feedback.idInterviewer}">
+                            <h3>
+                                <spring:message code="user.edit"/>
+                            </h3>
+                        </a>
+                    </td>
+                    <td class="item-edit-button">
+                        <a class="item-edit-button-a"
+                           href="/feedback/account/${feedback.idInterview}|${feedback.idInterviewer}">
+                            <h3><spring:message code="user.view"/></h3>
+                        </a>
+                    </td>
                 </tr>
             </c:forEach>
             </table>
@@ -41,22 +57,26 @@
     </c:if>
     <c:if test="${type eq 'add'}">
         <div class="item-add">
-            <form class="item-add-form" method="post" action="/feedback/add">
+            <form class="item-add-form" name="newFeedback" method="Post" action="/feedback/add">
                 <h1><spring:message code="feedback.addFeedback"/></h1>
                 <div class="question">
-                    <input class="item-add-form-input" type="text" required />
+                    <input class="item-add-form-input" name="idInterview" type="text" required/>
                     <label class="item-add-form-label"><spring:message code="feedback.idInterview"/></label>
                 </div>
                 <div class="question">
-                    <input class="item-add-form-input" type="text" required/>
+                    <input class="item-add-form-input" name="idInterviewer" type="text" required/>
                     <label class="item-add-form-label"><spring:message code="feedback.idInterviewer"/></label>
                 </div>
                 <div class="question">
-                    <input class="item-add-form-input" type="text" required/>
+                    <input list="states" class="item-add-form-input" name="feedbackState" type="text" required>
+                    <datalist id="states">
+                        <option value="JobOffer">
+                        <option value="NonJobOffer">
+                    </datalist>
                     <label class="item-add-form-label"><spring:message code="feedback.feedbackState"/></label>
                 </div>
                 <div class="question">
-                    <input class="item-add-form-input" type="text" required/>
+                    <input class="item-add-form-input" name="reason" type="text" required/>
                     <label class="item-add-form-label"><spring:message code="feedback.reason"/></label>
                 </div>
                 <button type="submit">Add</button>
@@ -64,5 +84,11 @@
 
         </div>
     </c:if>
+<c:if test="${type eq 'edit'}">
+    <jsp:include page="FeedbackEditForm.jsp"/>
+</c:if>
+<c:if test="${type eq 'account'}">
+    <jsp:include page="FeedbackView.jsp"/>
+</c:if>
 </body>
 </html>

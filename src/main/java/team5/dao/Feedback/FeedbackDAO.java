@@ -1,7 +1,7 @@
-package team5.dao;
+package team5.dao.Feedback;
 
-import team5.dao.interfaces.EntityDao;
 import team5.dao.utils.DBConnector;
+import team5.dao.utils.DBUtils;
 import team5.models.Feedback;
 
 import java.sql.Connection;
@@ -10,21 +10,61 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedbackDAO implements EntityDao<Feedback> {
+public class FeedbackDAO implements FeedbackCRUDDAO {
+
+    private Connection connection;
+    private Statement statement;
+
+    public FeedbackDAO() {
+        try {
+            connection = DBConnector.getConnection();
+            statement = connection.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public Feedback getById(long id) {
         return null;
     }
 
+    public Feedback getByIds(long id1, long id2) {
+        String sql = "SELECT * FROM interviewfeedback WHERE (idInterview=" + id1 + " AND  idInterviewer=" + id2 + ")";
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            resultSet.next();
+
+            return new Feedback(
+                    resultSet.getInt("idInterview"),
+                    resultSet.getInt("idInterviewer"),
+                    resultSet.getString("feedbackState"),
+                    resultSet.getString("reason")
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void save(Feedback model) {
-
+        String sql = "INSERT INTO interviewfeedback (idInterview, idInterviewer, feedbackState, reason) VALUES ('" +
+                model.getIdInterview() +
+                "', '" + model.getIdInterviewer() +
+                "', '" + model.getFeedbackState() +
+                "', '" + model.getReason() + "');";
+        DBUtils.updateByQuery(sql);
     }
 
     @Override
     public void update(Feedback model) {
-
+        String sql = "UPDATE interviewfeedback SET idInterview='" + model.getIdInterview()
+                + "', idInterviewer='" + model.getIdInterviewer()
+                + "', feedbackState='" + model.getFeedbackState()
+                + "', reason='" + model.getReason()
+                + "' WHERE (idInterview=" + model.getIdInterview() + " AND " + "idInterviewer=" + model.getIdInterviewer() + ")";
+        DBUtils.updateByQuery(sql);
     }
 
     @Override
