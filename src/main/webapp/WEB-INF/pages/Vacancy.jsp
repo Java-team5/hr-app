@@ -12,7 +12,6 @@
         <a href="/vacancy/add" class="item-type-link"><spring:message code="button.add"/></a>
     </div>
 </div>
-<div>
     <c:if test="${type eq 'view'}">
         <div class="item-view">
             <table class="item-table">
@@ -44,6 +43,17 @@
                     <a class="item-page-link" href="/vacancy/view/${pages}">${pages}</a>
                 </c:forEach>
             </div>
+            <div class="item-sort">
+                <form name='sort'>
+                    <spring:message code="sort.sortby"/>
+                    <select class="item-sort-input" name='sortBy'>
+                        <option value="none"><spring:message code="sort.none"/></option>
+                        <option value='position'><spring:message code="sort.byposition"/></option>
+                        <option value='experience'><spring:message code="sort.byexperience"/></option>
+                    </select>
+                    <button class="item-sort-button" type='submit'><spring:message code="sort"/></button>
+                </form>
+            </div>
         </div>
     </c:if>
     <c:if test="${type eq 'add'}">
@@ -65,7 +75,6 @@
             </form>
         </div>
     </c:if>
-</div>
 
 </body>
 </html>

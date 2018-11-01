@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Candidate {
 
-    private int id;
+    private long id;
     private String name;
     private String surname;
     private Date birthday;
@@ -12,7 +12,7 @@ public class Candidate {
 
     public Candidate(){}
 
-    public Candidate(int id, String name, String surname, Date birthday, double salary) {
+    public Candidate(long id, String name, String surname, Date birthday, double salary) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -20,10 +20,10 @@ public class Candidate {
         this.salary = salary;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

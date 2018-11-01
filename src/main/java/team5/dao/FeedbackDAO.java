@@ -1,7 +1,7 @@
 package team5.dao;
 
-import team5.dao.utils.DBConnector;
 import team5.dao.interfaces.EntityDao;
+import team5.dao.utils.DBConnector;
 import team5.models.Feedback;
 
 import java.sql.Connection;
@@ -67,7 +67,8 @@ public class FeedbackDAO implements EntityDao<Feedback> {
 
     @Override
     public List<Feedback> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
-        return null;
+        String sql = "SELECT * FROM candidate ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
+        return createListEntitiesFromQueryResult(sql);
     }
 
     @Override

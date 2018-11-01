@@ -1,21 +1,36 @@
 package team5.dao.utils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class DBConnector {
-    //TODO change sqlconnection properties to properties file
-    private static final String URL="jdbc:mysql://localhost:3306/hr_app_db ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
-    private static final String USERNAME="root";
-    private static final String PASSWORD="";
+
+    private static String URL;
+    private static String USERNAME;
+    private static String PASSWORD;
+    private static String DRIVER;
 
     private static Connection connection;
+    private static Properties properties = new Properties();
 
-    public static Connection getConnection() throws SQLException,ClassNotFoundException{
+    private static void setProperties() throws IOException {
+        //properties.load(new FileInputStream("src/main/resources/db.properties"));
+        URL = "jdbc:mysql://localhost:3306/hr_app_db ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
+        USERNAME = "root";
+        PASSWORD = "";
+        DRIVER = "com.mysql.cj.jdbc.Driver";
+    }
+
+    public static Connection getConnection() throws SQLException, ClassNotFoundException, IOException{
         if (connection == null)
         {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            setProperties();
+            Class.forName(DRIVER);
             connection =  DriverManager.getConnection(URL,USERNAME,PASSWORD);
         }
         return connection;
