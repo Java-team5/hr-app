@@ -6,8 +6,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import team5.dao.Skill.SkillDao;
-import team5.models.SkillFilter;
 import team5.models.Skill;
+import team5.models.SkillFilter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +22,8 @@ public class SkillController {
 
     @Autowired
     SkillDao skillDao;
-    SkillFilter filter = new SkillFilter();
+    private SkillFilter filter = new SkillFilter();
+    private final String FIELD = "skill";
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
     public ModelAndView skillView(@CookieValue(value = "skillSortField", required = false) Cookie skillSortField, @PathVariable int page) {
@@ -34,9 +35,9 @@ public class SkillController {
 
         List<Skill> skills;
         if(skillSortField != null)
-            skills= skillDao.getSortedEntitiesByPage(filter.getSkill(), skillSortField.getValue(), page, total);
+            skills= skillDao.getFilteredSortedEntitiesByPage(FIELD,filter.getSkill(), skillSortField.getValue(), page, total);
         else
-            skills= skillDao.getEntitiesByPage(filter.getSkill(), page, total);
+            skills= skillDao.getFilteredEntitiesByPage(FIELD,filter.getSkill(), page, total);
 
         float pagesCount = (float) skillDao.count(filter.getSkill()) / total;
         int[] pages = new int[(int) ceil(pagesCount)];
@@ -96,7 +97,7 @@ public class SkillController {
         modelAndView.getModelMap().addAttribute("type", "edit");
         modelAndView.getModelMap().addAttribute("entity", "Skill");
         modelAndView.addObject("skill", skill);
-        modelAndView.setViewName("index");
+        modelAndView.setViewName("SkillEditForm");
         return modelAndView;
     }
 

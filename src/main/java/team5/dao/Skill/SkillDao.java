@@ -1,5 +1,7 @@
 package team5.dao.Skill;
 
+
+import team5.dao.interfaces.FilteredEntityDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SkillDao implements SkillCrudDao {
+public class SkillDao implements FilteredEntityDao<Skill> {
 
     private Connection connection;
     private Statement statement;
@@ -63,14 +65,14 @@ public class SkillDao implements SkillCrudDao {
     }
 
     @Override
-    public List<Skill> getEntitiesByPage(String filter, int page, int total) {
-        String sql = "SELECT * FROM skill WHERE skill LIKE '%" + filter + "%' LIMIT " + (page - 1) + "," + total;
+    public List<Skill> getFilteredEntitiesByPage(String field, String filter, int page, int total) {
+        String sql = "SELECT * FROM skill WHERE " + field + " LIKE '%" + filter + "%' LIMIT " + (page - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
     @Override
-    public List<Skill> getSortedEntitiesByPage(String filter, String sortBy, int pageid, int total) {
-        String sql = "SELECT * FROM skill WHERE skill LIKE '%" + filter + "%' ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
+    public List<Skill> getFilteredSortedEntitiesByPage(String field, String filter, String sortBy, int pageid, int total) {
+        String sql = "SELECT * FROM skill WHERE " + field + " LIKE '%" + filter + "%' ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
