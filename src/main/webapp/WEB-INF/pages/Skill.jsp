@@ -19,7 +19,6 @@
             <table class="item-table">
                 <thead>
                 <tr>
-                    <th><a href="/skill/addSorting/id/">id</a></th>
                     <th><a href="/skill/addSorting/skill/"><spring:message code="menu.skill"/></a></th>
                     <th><spring:message code="menu.edit"/></th>
                     <th><spring:message code="menu.delete"/></th>
@@ -27,10 +26,9 @@
                 </thead>
                 <c:forEach var="skill" items="${skill}">
                     <tr class="item-item">
-                        <td>${skill.id}</td>
-                        <td><a href="/skill/viewSkillById/${skill.id}">${skill.skill}</a></td>
-                        <td><a href="/skill/updateSkill/${skill.id}"><spring:message code="menu.edit"/></a></td>
-                        <td><a href="/skill/deleteSkill/${skill.id}"><spring:message code="menu.delete"/></a></td>
+                        <td><a href="/skill/viewSkillById/${skill.skill}">${skill.skill}</a></td>
+                        <td><a href="/skill/updateSkill/${skill.skill}"><spring:message code="menu.edit"/></a></td>
+                        <td><a href="/skill/deleteSkill/${skill.skill}"><spring:message code="menu.delete"/></a></td>
                     </tr>
                 </c:forEach>
             </table>
@@ -64,7 +62,6 @@
 
     <c:if test="${type eq 'viewById'}">
         <label><spring:message code="menu.skill"/>: ${skill}</label>
-        <label>Id: ${id}</label>
     </c:if>
 
 </body>
