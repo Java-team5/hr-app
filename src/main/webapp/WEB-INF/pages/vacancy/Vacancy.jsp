@@ -3,7 +3,7 @@
 <html>
 <head></head>
 <style>
-    <%@include file="../styles/item.css"%>
+    <%@include file="../../styles/item.css"%>
 </style>
 <body>
 <div class="item">
@@ -39,8 +39,8 @@
                 </c:forEach>
             </table>
             <div class="item-pages">
-                <c:forEach var="pages" items="${pages}">
-                    <a class="item-page-link" href="/vacancy/view/${pages}">${pages}</a>
+                <c:forEach var="page" items="${pages}">
+                    <a class="item-page-link" href="/vacancy/view/${page}">${page}</a>
                 </c:forEach>
             </div>
             <div class="item-sort">
@@ -48,6 +48,7 @@
                     <spring:message code="sort.sortby"/>
                     <select class="item-sort-input" name='sortBy'>
                         <option value="none"><spring:message code="sort.none"/></option>
+                        <option value="salaryFrom"><spring:message code="sort.salaryFrom"/></option>
                         <option value='position'><spring:message code="sort.byposition"/></option>
                         <option value='experience'><spring:message code="sort.byexperience"/></option>
                     </select>
@@ -74,6 +75,9 @@
                 <button type="submit">submit</button>
             </form>
         </div>
+    </c:if>
+    <c:if test="${type eq 'edit'}">
+        <jsp:include page="VacancyEditForm.jsp" />
     </c:if>
 
 </body>
