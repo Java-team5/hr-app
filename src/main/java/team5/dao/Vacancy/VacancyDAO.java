@@ -1,6 +1,6 @@
-package team5.dao;
+package team5.dao.Vacancy;
 
-import team5.dao.interfaces.EntityDao;
+import team5.dao.interfaces.SortFilterCrudDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Vacancy;
 
@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VacancyDAO implements EntityDao<Vacancy> {
+public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
 
     //language=SQL
     private final String SQL_SELECT_ALL = "SELECT * FROM vacancy";
@@ -19,14 +19,14 @@ public class VacancyDAO implements EntityDao<Vacancy> {
             " VALUES (?,?,?,?,?,?)";
     //language=SQL
     private final String SQL_UPDATE_VACANCY_BY_ID = "UPDATE vacancy SET" +
-            " idDeveloper = ?, position = ?, salaryFrom = ?, salaryTo = ?, vacancyState = ?, experienceYearsRequire = ?)" +
+            " idDeveloper = ?, position = ?, salaryFrom = ?, salaryTo = ?, vacancyState = ?, experienceYearsRequire = ?" +
             " WHERE id = ?";
     //language=SQL
     private final String SQL_DELETE_VACANCY_BY_ID = "DELETE FROM vacancy WHERE id = ?";
     //language=SQL
-    private final String SQL_SELECT_BY_PAGE = "SELECT * FROM vacancy LIMIT ?,?";
+    private final String SQL_SELECT_FILTERED_ENTITIES_BY_PAGE = "SELECT * FROM vacancy LIKE '%'?'%' LIMIT ?,?";
     //language=SQL
-    private final String SQL_SELECT_SORTED_ENTITIES_BY_PAGE = "SELECT * FROM candidate ORDER BY ? LIMIT ?,?";
+    private final String SQL_SELECT_SORTED_FILTERED_ENTITIES_BY_PAGE = "SELECT * FROM vacancy LIKE '%'?'%' ORDER BY ? LIMIT ?,?";
 
     private Connection connection;
 
@@ -42,18 +42,33 @@ public class VacancyDAO implements EntityDao<Vacancy> {
 
     @Override
     public void save(Vacancy model) {
-        queryUpdate(model,this.SQL_INSERT_VACANCY);
+        try{
+            queryUpdate(model,this.SQL_INSERT_VACANCY);
+        }
+        catch (SQLException e){
+            throw new IllegalStateException();
+        }
     }
 
     @Override
     public Vacancy getById(long id)
     {
-        return query(this.SQL_SELECT_BY_ID).get(0);
+        try{
+            return query(this.SQL_SELECT_BY_ID).get(0);
+        }
+        catch (SQLException e){
+            throw new IllegalStateException();
+        }
     }
 
     @Override
     public List<Vacancy> getAll() {
-        return query(this.SQL_SELECT_ALL);
+        try{
+            return query(this.SQL_SELECT_ALL);
+        }
+        catch (SQLException e){
+            throw new IllegalStateException();
+        }
     }
 
     @Override
@@ -63,40 +78,51 @@ public class VacancyDAO implements EntityDao<Vacancy> {
 
     @Override
     public void update(Vacancy model) {
-        queryUpdate(model,this.SQL_UPDATE_VACANCY_BY_ID);
+        try{
+            queryUpdate(model,this.SQL_UPDATE_VACANCY_BY_ID);
+        }
+        catch (SQLException e){
+            throw new IllegalStateException();
+        }
     }
 
     @Override
     public void delete(long id) {
-        queryDelete(id,this.SQL_DELETE_VACANCY_BY_ID);
+        try{
+            queryDelete(id,this.SQL_DELETE_VACANCY_BY_ID);
+        }
+        catch (SQLException e){
+            throw new IllegalStateException();
+        }
     }
 
     @Override
-    public List<Vacancy> getEntitiesByPage(int offset, int total) {
+    public List<Vacancy> getEntitiesByPage(String filter,int offset, int total) {
         try{
-            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_SELECT_BY_PAGE);
+            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_SELECT_FILTERED_ENTITIES_BY_PAGE);
             pStatement.setInt(1,offset - 1);
             pStatement.setInt(2,total);
-            return getQueryResult(pStatement.executeQuery());
+            return getListOfQueryResult(pStatement.executeQuery());
         } catch (SQLException e) {
             throw new IllegalStateException();
         }
     }
 
     @Override
-    public List<Vacancy> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
+    public List<Vacancy> getSortedEntitiesByPage(String filter, String sortBy, int pageid, int total) {
         try{
-            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_SELECT_SORTED_ENTITIES_BY_PAGE);
-            pStatement.setString(1,sortBy);
-            pStatement.setInt(2,pageid - 1);
-            pStatement.setInt(3,total);
-            return getQueryResult(pStatement.executeQuery());
+            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_SELECT_SORTED_FILTERED_ENTITIES_BY_PAGE);
+            pStatement.setString(1,filter);
+            pStatement.setString(2,sortBy);
+            pStatement.setInt(3,pageid - 1);
+            pStatement.setInt(4,total);
+            return getListOfQueryResult(pStatement.executeQuery());
         } catch (SQLException e) {
             throw new IllegalStateException();
         }
     }
 
-    private void queryUpdate(Vacancy model, String sqlQuery)
+    private void queryUpdate(Vacancy model, String sqlQuery)throws SQLException
     {
         try
         {
@@ -111,11 +137,11 @@ public class VacancyDAO implements EntityDao<Vacancy> {
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    private void queryDelete(long id, String sqlQuery)
+    private void queryDelete(long id, String sqlQuery) throws SQLException
     {
         try
         {
@@ -125,22 +151,22 @@ public class VacancyDAO implements EntityDao<Vacancy> {
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    private List<Vacancy> query(String sqlQuery)
+    private List<Vacancy> query(String sqlQuery) throws SQLException
     {
         List<Vacancy> vacancyList = new ArrayList<>();
         try{
             PreparedStatement pStatement = this.connection.prepareStatement(sqlQuery);
-            return getQueryResult(pStatement.executeQuery());
+            return getListOfQueryResult(pStatement.executeQuery());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    private List<Vacancy> getQueryResult(ResultSet resultSet) throws SQLException
+    private List<Vacancy> getListOfQueryResult(ResultSet resultSet) throws SQLException
     {
         try {
             List<Vacancy> vacancyList = new ArrayList<>();

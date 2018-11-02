@@ -16,7 +16,7 @@ import team5.dao.Candidate.CandidateDAO;
 import team5.dao.FeedbackDAO;
 import team5.dao.Skill.SkillDao;
 import team5.dao.User.UserDao;
-import team5.dao.VacancyDAO;
+import team5.dao.Vacancy.VacancyDAO;
 
 @Configuration
 @EnableWebMvc
