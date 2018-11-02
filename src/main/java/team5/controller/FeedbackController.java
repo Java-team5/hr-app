@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import team5.dao.Feedback.FeedbackCRUDDAO;
 import team5.models.Feedback;
+import team5.models.FeedbackFilter;
 import team5.utils.Utils;
 
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping(value ="/feedback/")
@@ -21,19 +21,28 @@ public class FeedbackController {
     @Autowired
     FeedbackCRUDDAO feedbackDAO;
 
+    FeedbackFilter filter = new FeedbackFilter();
+
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
-    public ModelAndView setFeedbackView(Locale locale, @PathVariable int page) {
+    public ModelAndView setFeedbackView(@PathVariable int page, String sort) {
         int total = 5;
 
         int offset = Utils.getPageOffset(page,total);
 
-        List<Feedback> feedbacks = feedbackDAO.getEntitiesByPage(offset, total);
+        List<Feedback> feedbacks;
+        if (sort != null && !sort.equals("none")) {
+            feedbacks = feedbackDAO.getSortedEntitiesByPage(filter, sort, offset, total);
+        } else {
+            feedbacks = feedbackDAO.getEntitiesByPage(filter, offset, total);
+        }
 
         int[] pages = Utils.getPagesIndexArray(feedbackDAO,total);
 
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModelMap().addAttribute("sort", (sort != null) ? sort : "none");
         modelAndView.getModelMap().addAttribute("type", "view");
         modelAndView.getModelMap().addAttribute("entity", "Feedback");
+        modelAndView.addObject("filterInput", filter);
         modelAndView.getModelMap().addAttribute("feedback", feedbacks);
         modelAndView.getModelMap().addAttribute("pages", pages);
 
@@ -86,5 +95,13 @@ public class FeedbackController {
         modelAndView.setViewName("index");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
+    public String skillSetFilter(@ModelAttribute("filterInput") FeedbackFilter filterInput, String sort) {
+        filter.setReason(filterInput.getReason());
+        filter.setState(filterInput.getState());
+        return "redirect:/feedback/view/1?sort=" + sort;
+    }
+
 
 }

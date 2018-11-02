@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head></head>
 <style>
@@ -25,7 +26,25 @@
                         <th><spring:message code="button.view"/></th>
                     </tr>
                 </thead>
-            <c:forEach var="feedback" items="${feedback}">
+
+                <tr>
+                    <form:form modelAttribute="filterInput" method="post" action="/feedback/filter?sort=${sort}">
+                        <td class="item-filter"><spring:message code="menu.filter"/></td>
+                        <td>-</td>
+                        <td>
+                            <form:input path="state" onchange="this.submit();"/>
+                        </td>
+                        <td>
+                            <form:input path="reason" onchange="this.submit();"/>
+                        </td>
+                        <td>-</td>
+                        <td>
+                            <form:button type="submit"><spring:message code="menu.find"/></form:button>
+                        </td>
+                    </form:form>
+                </tr>
+
+                <c:forEach var="feedback" items="${feedback}">
                 <tr class="user-item">
                     <td>${feedback.idInterview}</td>
                     <td>${feedback.idInterviewer}</td>
@@ -53,6 +72,21 @@
                     <a class="item-page-link" href="/feedback/view/${pages}">${pages}</a>
                 </c:forEach>
             </div>
+
+            <div class="item-sort">
+                <form name='sort'>
+                    <spring:message code="sort.sortby"/>
+                    <select class="item-sort-input" name='sort'>
+                        <option value="none"><spring:message code="sort.none"/></option>
+                        <option value='idInterview'>id Interview</option>
+                        <option value='idInterviewer'>id Interviewer</option>
+                        <option value='feedbackState'>FeedbackState</option>
+                        <option value='reason'>Reason</option>
+                    </select>
+                    <button class="item-sort-button" type='submit'><spring:message code="sort"/></button>
+                </form>
+            </div>
+
         </div>
     </c:if>
     <c:if test="${type eq 'add'}">

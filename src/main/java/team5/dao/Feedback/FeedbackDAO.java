@@ -3,6 +3,7 @@ package team5.dao.Feedback;
 import team5.dao.utils.DBConnector;
 import team5.dao.utils.DBUtils;
 import team5.models.Feedback;
+import team5.models.FeedbackFilter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -111,11 +112,30 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
         return createListEntitiesFromQueryResult(sql);
     }
 
+
     @Override
     public List<Feedback> getEntitiesByPage(int offset, int total) {
         String sql="SELECT * FROM interviewfeedback LIMIT "+(offset -1)+","+total;
         return createListEntitiesFromQueryResult(sql);
     }
 
+
+    @Override
+    public List<Feedback> getEntitiesByPage(FeedbackFilter filter, int offset, int total) {
+        String sql = "SELECT * FROM interviewfeedback WHERE (feedbackState LIKE '%" + filter.getState() + "%'" +
+                " AND reason LIKE '%" + filter.getReason() + "%')  LIMIT " + (offset - 1) + "," + total + ";";
+
+        return createListEntitiesFromQueryResult(sql);
+    }
+
+    @Override
+    public List<Feedback> getSortedEntitiesByPage(FeedbackFilter filter, String sortBy, int offset, int total) {
+        String sql = "SELECT * FROM interviewfeedback WHERE (feedbackState LIKE '%" + filter.getState() + "%'" +
+                " AND reason LIKE '%" + filter.getReason() + "%')" +
+                " ORDER BY " + sortBy +
+                " LIMIT " + (offset - 1) + "," + total + ";";
+
+        return createListEntitiesFromQueryResult(sql);
+    }
 
 }
