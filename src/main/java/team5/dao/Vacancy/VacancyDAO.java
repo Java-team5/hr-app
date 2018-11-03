@@ -46,7 +46,7 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
             queryUpdate(model,this.SQL_INSERT_VACANCY);
         }
         catch (SQLException e){
-            throw new IllegalStateException();
+            e.printStackTrace();
         }
     }
 
@@ -57,8 +57,9 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
             return query(this.SQL_SELECT_BY_ID).get(0);
         }
         catch (SQLException e){
-            throw new IllegalStateException();
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -67,8 +68,9 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
             return query(this.SQL_SELECT_ALL);
         }
         catch (SQLException e){
-            throw new IllegalStateException();
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -82,7 +84,7 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
             queryUpdate(model,this.SQL_UPDATE_VACANCY_BY_ID);
         }
         catch (SQLException e){
-            throw new IllegalStateException();
+            e.printStackTrace();
         }
     }
 
@@ -92,7 +94,7 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
             queryDelete(id,this.SQL_DELETE_VACANCY_BY_ID);
         }
         catch (SQLException e){
-            throw new IllegalStateException();
+            e.printStackTrace();
         }
     }
 
@@ -104,8 +106,9 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
             pStatement.setInt(2,total);
             return getListOfQueryResult(pStatement.executeQuery());
         } catch (SQLException e) {
-            throw new IllegalStateException();
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -118,8 +121,9 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
             pStatement.setInt(4,total);
             return getListOfQueryResult(pStatement.executeQuery());
         } catch (SQLException e) {
-            throw new IllegalStateException();
+            e.printStackTrace();
         }
+        return null;
     }
 
     private void queryUpdate(Vacancy model, String sqlQuery)throws SQLException
