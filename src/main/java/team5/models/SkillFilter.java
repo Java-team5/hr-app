@@ -1,6 +1,7 @@
 package team5.models;
 
 public class SkillFilter {
+
     private String skill;
 
     public SkillFilter(String skill) {
