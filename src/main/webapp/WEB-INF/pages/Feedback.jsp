@@ -52,7 +52,7 @@
                     <td>${feedback.reason}</td>
                     <td class="item-edit-button">
                         <a class="item-edit-button-a"
-                           href="/feedback/edit/${feedback.idInterview}|${feedback.idInterviewer}">
+                           href="/feedback/edit/${feedback.idInterview}/${feedback.idInterviewer}">
                             <h3>
                                 <spring:message code="user.edit"/>
                             </h3>
@@ -60,7 +60,7 @@
                     </td>
                     <td class="item-edit-button">
                         <a class="item-edit-button-a"
-                           href="/feedback/account/${feedback.idInterview}|${feedback.idInterviewer}">
+                           href="/feedback/account/${feedback.idInterview}/${feedback.idInterviewer}">
                             <h3><spring:message code="user.view"/></h3>
                         </a>
                     </td>

@@ -66,7 +66,7 @@ public class FeedbackController {
         return "redirect:/feedback/view/1";
     }
 
-    @RequestMapping(value = "/edit/{id1}|{id2}", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit/{id1}/{id2}", method = RequestMethod.GET)
     public ModelAndView openEditPage(@PathVariable long id1, @PathVariable long id2) {
         Object feedback = feedbackDAO.getByIds(id1, id2);
 
@@ -85,7 +85,7 @@ public class FeedbackController {
         return "redirect:/feedback/view/1";
     }
 
-    @RequestMapping(value = "/account/{id1}|{id2}", method = RequestMethod.GET)
+    @RequestMapping(value = "/account/{id1}/{id2}", method = RequestMethod.GET)
     public ModelAndView openUserAccount(@PathVariable long id1, @PathVariable long id2) {
         Object feedback = feedbackDAO.getByIds(id1, id2);
         ModelAndView modelAndView = new ModelAndView();
@@ -95,6 +95,7 @@ public class FeedbackController {
         modelAndView.setViewName("index");
         return modelAndView;
     }
+
 
     @RequestMapping(value = "/filter", method = RequestMethod.POST)
     public String skillSetFilter(@ModelAttribute("filterInput") FeedbackFilter filterInput, String sort) {
