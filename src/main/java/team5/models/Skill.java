@@ -3,34 +3,27 @@ package team5.models;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Entity 'Skill'.
+ */
 public class Skill {
 
-    private long id;
-
+    /**
+     * PK.
+     */
     @NotNull
-    @Size(min=1,max=15)
+    @Size(min = 1, max = 50)
     private String skill;
-
-    public Skill() {
-    }
-
-    public Skill(long id, String skill) {
-        this.id = id;
-        this.skill = skill;
-    }
-
-    public long getId() {
-        return id;
-    }
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getSkill() {
         return skill;
     }
+
     public void setSkill(String skill) {
         this.skill = skill;
+    }
+
+    public Skill() {
     }
 
     public Skill(String skill) {

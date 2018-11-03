@@ -19,7 +19,6 @@
             <table class="item-table">
                 <thead>
                 <tr>
-                    <th><a href="/skill/addSorting/id/">id</a></th>
                     <th><a href="/skill/addSorting/skill/"><spring:message code="menu.skill"/></a></th>
                     <th><spring:message code="menu.edit"/></th>
                     <th><spring:message code="menu.delete"/></th>
@@ -27,10 +26,9 @@
                 </thead>
                 <c:forEach var="skill" items="${skill}">
                     <tr class="item-item">
-                        <td>${skill.id}</td>
-                        <td>${skill.skill}</td>
-                        <td><a href="/skill/updateSkill/${skill.id}"><spring:message code="menu.edit"/></a></td>
-                        <td><a href="/skill/deleteSkill/${skill.id}"><spring:message code="menu.delete"/></a></td>
+                        <td><a href="/skill/viewSkillById/${skill.skill}">${skill.skill}</a></td>
+                        <td><a href="/skill/updateSkill/${skill.skill}"><spring:message code="menu.edit"/></a></td>
+                        <td><a href="/skill/deleteSkill/${skill.skill}"><spring:message code="menu.delete"/></a></td>
                     </tr>
                 </c:forEach>
             </table>
@@ -41,7 +39,7 @@
             </div>
         </div>
         <form:form modelAttribute="filterInput" class="item-add-form"  method="post" action="/skill/filter">
-            <form:input path="value" onchange="this.submit();" class="item-add-form-input" cssStyle="max-width: 200px; max-height: 40px"/>
+            <form:input path="skill" onchange="this.submit();" class="item-add-form-input" />
             <label class="item-add-form-label"><spring:message code="menu.find"/> <spring:message code="menu.skill"/></label>
         </form:form>
     </c:if>
@@ -61,6 +59,10 @@
 
     <c:if test="${type eq 'edit'}">
         <jsp:include page="SkillEditForm.jsp" />
+    </c:if>
+
+    <c:if test="${type eq 'viewById'}">
+        <label><spring:message code="menu.skill"/>: ${skill}</label>
     </c:if>
 
 </body>
