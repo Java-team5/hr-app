@@ -51,14 +51,14 @@ public class SkillController {
         }
 
         List<Skill> skills;
-        final String fiedName = "skill";
+        final String fieldName = "skill";
         if (skillSortField != null) {
             skills = skillDao.getFilteredSortedEntitiesByPage(
-                    fiedName, filter.getSkill(),
+                    fieldName, filter.getSkill(),
                     skillSortField.getValue(), numberInDB, total);
         } else {
             skills = skillDao.getFilteredEntitiesByPage(
-                    fiedName, filter.getSkill(),
+                    fieldName, filter.getSkill(),
                     numberInDB, total);
         }
 

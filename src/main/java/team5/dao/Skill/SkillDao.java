@@ -123,7 +123,8 @@ public class SkillDao {
             final String filter,
             final String sortBy,
             final int page,
-            final int total) {
+            final int total
+    ) {
         String sql = "SELECT * FROM skill WHERE "
                 + field + " LIKE '%" + filter + "%' ORDER BY "
                 + sortBy + " LIMIT " + (page - 1) + "," + total;
