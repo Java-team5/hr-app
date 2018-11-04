@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Vacancy {
     private long id;
-    private int idDeveloper;
+    private long idDeveloper;
     private String position;
     private double salaryFrom;
     private double salaryTo;
@@ -14,7 +14,7 @@ public class Vacancy {
     public Vacancy() {
     }
 
-    public Vacancy(long id, int idDeveloper, String position, double salaryFrom, double salaryTo, String vacancyState, double experienceYearsRequire) {
+    public Vacancy(long id, long idDeveloper, String position, double salaryFrom, double salaryTo, String vacancyState, double experienceYearsRequire) {
         this.id = id;
         this.idDeveloper = idDeveloper;
         this.position = position;
@@ -32,11 +32,11 @@ public class Vacancy {
         this.id = id;
     }
 
-    public int getIdDeveloper() {
+    public long getIdDeveloper() {
         return idDeveloper;
     }
 
-    public void setIdDeveloper(int idDeveloper) {
+    public void setIdDeveloper(long idDeveloper) {
         this.idDeveloper = idDeveloper;
     }
 

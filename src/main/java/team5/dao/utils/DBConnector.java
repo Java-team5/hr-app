@@ -20,7 +20,7 @@ public class DBConnector {
 
     private static void setProperties() throws IOException {
         //properties.load(new FileInputStream("src/main/resources/db.properties"));
-        URL = "jdbc:mysql://localhost:3306/hr_app_db ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
+        URL = "jdbc:mysql://localhost:3306/hr_app_db_v2 ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
         USERNAME = "root";
         PASSWORD = "";
         DRIVER = "com.mysql.cj.jdbc.Driver";

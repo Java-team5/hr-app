@@ -61,7 +61,7 @@
     <c:if test="${type eq 'add'}">
         <div class="item-add">
             <%--@elvariable id="newVacancy" type="team5.models.Vacancy"--%>
-            <form:form modelAttribute="newVacancy" class="item-add-form" method="post" action="/vacancy/add">
+            <form:form modelAttribute="newVacancy" class="item-add-form" method="post" action="/vacancy/${type}">
                 <h1><spring:message code="vacancy.editVacancyTitle"/></h1>
 
                 <div class="question">
@@ -86,8 +86,8 @@
 
                 <div>
                     <form:select path='vacancyState'>
-                        <form:option value="active"><spring:message code="vacancy.state.active"/></form:option>
-                        <form:option value="close"><spring:message code="vacancy.state.close"/></form:option>
+                        <form:option value="Active"><spring:message code="vacancy.state.active"/></form:option>
+                        <form:option value="Closed"><spring:message code="vacancy.state.close"/></form:option>
                     </form:select>
                     <label class="item-add-form-label"><spring:message code="menu.vacancy.vacancyState"/></label>
                 </div>
