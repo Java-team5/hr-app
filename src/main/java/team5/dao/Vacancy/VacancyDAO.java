@@ -3,12 +3,13 @@ package team5.dao.Vacancy;
 import team5.dao.interfaces.SortFilterCrudDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Vacancy;
+import team5.models.VacancyFilter;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
+public class VacancyDAO implements SortFilterCrudDao<Vacancy, VacancyFilter> {
 
     //language=SQL
     private final String SQL_SELECT_ALL = "SELECT * FROM vacancy";
@@ -43,7 +44,7 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
     @Override
     public void save(Vacancy model) {
         try{
-            queryUpdate(model,this.SQL_INSERT_VACANCY);
+            querySave(model,this.SQL_INSERT_VACANCY);
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -54,12 +55,13 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
     public Vacancy getById(long id)
     {
         try{
-            return query(this.SQL_SELECT_BY_ID).get(0);
-        }
-        catch (SQLException e){
+            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_SELECT_BY_ID);
+            pStatement.setLong(1,id);
+            return getListOfQueryResult(pStatement.executeQuery()).get(0);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return  null;
     }
 
     @Override
@@ -81,9 +83,17 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
     @Override
     public void update(Vacancy model) {
         try{
-            queryUpdate(model,this.SQL_UPDATE_VACANCY_BY_ID);
+            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_UPDATE_VACANCY_BY_ID);
+            pStatement.setLong(1,model.getIdDeveloper());
+            pStatement.setString(2,model.getPosition());
+            pStatement.setDouble(3,model.getSalaryFrom());
+            pStatement.setDouble(4,model.getSalaryTo());
+            pStatement.setString(5,model.getVacancyState());
+            pStatement.setDouble(6,model.getExperienceYearsRequire());
+            pStatement.setLong(7,model.getId());
+            pStatement.executeUpdate();
         }
-        catch (SQLException e){
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -99,20 +109,25 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
     }
 
     @Override
-    public List<Vacancy> getEntitiesByPage(String criterion, String filter,int offset, int total) {
-        /*try{
-            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_SELECT_FILTERED_ENTITIES_BY_PAGE);
-            //pStatement.setString(1,criterion);
-            pStatement.setString(1,"'%" + filter + "%\'");
-            pStatement.setInt(2,offset - 1);
-            pStatement.setInt(3,total);
-            return getListOfQueryResult(pStatement.executeQuery());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;*/
-        String sql="SELECT * FROM vacancy WHERE position LIKE '%" + filter + "%' LIMIT " + (offset -1) + "," + total;
+    public List<Vacancy> getEntitiesByPage(VacancyFilter filter, int offset, int total) {
+        /*String sql="SELECT * FROM vacancy WHERE " +
+                "(idDeveloper = " + (filter.getIdDeveloper() == -1 ? "" : filter.getIdDeveloper()) +
+                " AND position LIKE '%" + filter.getPosition() +
+                "%' AND salaryFrom = " + filter.getSalaryFrom() +
+                " AND salaryTo = " + filter.getSalaryTo() +
+                " AND experienceYearsRequire = " + filter.getExperienceYearsRequire() +
+                ") LIMIT " + (offset -1) + "," + total;*/
+
+        String sql="SELECT * FROM vacancy WHERE " +
+                "position LIKE '%" + filter.getPosition() +
+                "%' LIMIT " + (offset -1) + "," + total;
+
         return createListEntitiesFromQueryResult(sql);
+    }
+
+    @Override
+    public List<Vacancy> getSortedEntitiesByPage(VacancyFilter filter, String sortBy, int pageId, int total) {
+        return null;
     }
 
     private List<Vacancy> createListEntitiesFromQueryResult(String sql){
@@ -120,7 +135,7 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
         try {
             Statement statement = this.connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 vacancyList.add(new Vacancy(
                         resultSet.getLong("id"),
                         resultSet.getLong("idDeveloper"),
@@ -137,23 +152,7 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
         return vacancyList;
     }
 
-    @Override
-    public List<Vacancy> getSortedEntitiesByPage(String criterion, String filter, String sortBy, int pageid, int total) {
-        try{
-            PreparedStatement pStatement = this.connection.prepareStatement(this.SQL_SELECT_SORTED_FILTERED_ENTITIES_BY_PAGE);
-            pStatement.setString(1,criterion);
-            pStatement.setString(2,"'%" + filter + "%'");
-            pStatement.setString(3,sortBy);
-            pStatement.setInt(4,pageid - 1);
-            pStatement.setInt(5,total);
-            return getListOfQueryResult(pStatement.executeQuery());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void queryUpdate(Vacancy model, String sqlQuery)throws SQLException
+    private void querySave(Vacancy model, String sqlQuery)throws SQLException
     {
         try
         {
@@ -188,7 +187,6 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy> {
 
     private List<Vacancy> query(String sqlQuery) throws SQLException
     {
-        List<Vacancy> vacancyList = new ArrayList<>();
         try{
             PreparedStatement pStatement = this.connection.prepareStatement(sqlQuery);
             return getListOfQueryResult(pStatement.executeQuery());

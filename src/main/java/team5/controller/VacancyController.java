@@ -13,6 +13,7 @@ import team5.dao.interfaces.EntityDao;
 import team5.dao.interfaces.SortFilterCrudDao;
 import team5.models.Feedback;
 import team5.models.Vacancy;
+import team5.models.VacancyFilter;
 import team5.utils.Utils;
 
 import javax.validation.Valid;
@@ -23,7 +24,8 @@ import java.util.Locale;
 @RequestMapping(value ="/vacancy/")
 public class VacancyController {
     @Autowired
-    private SortFilterCrudDao<Vacancy> vacancyDAO;
+    private SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDAO;
+    private VacancyFilter filter = new VacancyFilter();
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
     public ModelAndView setFeedbackView(Locale locale, @PathVariable int page) {
@@ -31,7 +33,7 @@ public class VacancyController {
 
         int offset = Utils.getPageOffset(page,total);
 
-        List<Vacancy> vacancies = vacancyDAO.getEntitiesByPage("","",offset, total);
+        List<Vacancy> vacancies = vacancyDAO.getEntitiesByPage(filter, offset, total);
 
         int[] pages = Utils.getPagesIndexArray(vacancyDAO,total);
 
@@ -50,13 +52,14 @@ public class VacancyController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("entity", "Vacancy");
         modelAndView.getModelMap().addAttribute("type", "add");
-        modelAndView.addObject("newVacancy", new Vacancy());
+        //modelAndView.getModelMap().addAttribute("modelName", "newVacancy");//------
+        modelAndView.addObject("vacancy", new Vacancy());
         modelAndView.setViewName("index");
         return modelAndView;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String setNewVacancy(@ModelAttribute("newVacancy") @Valid Vacancy vacancy, BindingResult result){
+    public String setNewVacancy(@ModelAttribute("vacancy") @Valid Vacancy vacancy, BindingResult result){
         if (result.hasErrors()) {
             return "redirect:/vacancy/add";
         }
@@ -66,17 +69,27 @@ public class VacancyController {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public ModelAndView getEditVacancyPage(@PathVariable long id){
-        Object user = vacancyDAO.getById(id);
+        Object vacancy = vacancyDAO.getById(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("type", "edit");
-        modelAndView.getModelMap().addAttribute("entity", "Vacancu");
-        modelAndView.getModelMap().addAttribute("vacancy", user);
+        modelAndView.getModelMap().addAttribute("entity", "Vacancy");
+        //modelAndView.getModelMap().addAttribute("modelName", "editVacancy");//------
+        modelAndView.addObject("vacancy", vacancy);
         modelAndView.setViewName("index");
         return modelAndView;
     }
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editVacancy(@ModelAttribute("editUser") Vacancy vacancy) {
+    public String editVacancy(@ModelAttribute("vacancy") @Valid Vacancy vacancy, BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/vacancy/updateSkill/" + vacancy.getId();
+        }
         vacancyDAO.update(vacancy);
+        return "redirect:/vacancy/view/1";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteSkill(@PathVariable final long id) {
+        vacancyDAO.delete(id);
         return "redirect:/vacancy/view/1";
     }
 }

@@ -6,7 +6,7 @@ import team5.models.Vacancy;
 
 import java.util.List;
 
-public interface SortFilterCrudDao<T> extends CrudDao<T> {
-    List<T> getEntitiesByPage(String сriterion,String filter, int offset, int total);
-    List<T> getSortedEntitiesByPage(String сriterion, String filter, String sortBy, int pageId, int total);
+public interface SortFilterCrudDao<T,F> extends CrudDao<T> {
+    List<T> getEntitiesByPage(F filter, int offset, int total);
+    List<T> getSortedEntitiesByPage(F filter, String sortBy, int pageId, int total);
 }
