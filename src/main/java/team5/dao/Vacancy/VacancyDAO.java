@@ -127,7 +127,11 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy, VacancyFilter> {
 
     @Override
     public List<Vacancy> getSortedEntitiesByPage(VacancyFilter filter, String sortBy, int pageId, int total) {
-        return null;
+        String sql="SELECT * FROM vacancy WHERE " +
+                "position LIKE '%" + filter.getPosition() +
+                "%' ORDER BY " + sortBy + " LIMIT " + (pageId - 1) + "," + total;
+
+        return createListEntitiesFromQueryResult(sql);
     }
 
     private List<Vacancy> createListEntitiesFromQueryResult(String sql){

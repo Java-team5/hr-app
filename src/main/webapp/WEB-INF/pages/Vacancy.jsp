@@ -29,6 +29,20 @@
                     <th><spring:message code="menu.delete" /></th>
                 </tr>
                 </thead>
+                <tr>
+                    <%--@elvariable id="filterInput" type="team5.models.VacancyFilter"--%>
+                    <form:form modelAttribute="filterInput"  method="post" action="/vacancy/filter?sort=${sort}">
+                        <td class="item-filter"><spring:message code="menu.filter" /></td>
+                        <td>-</td>
+                        <td>
+                            <form:textarea path="position" onchange="this.submit();"/>
+                        </td>
+                        <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                        <td>
+                            <form:button type="submit"><spring:message code="menu.find"/></form:button>
+                        </td>
+                    </form:form>
+                </tr>
                 <c:forEach var="vacancy" items="${vacancies}">
                     <tr>
                         <td>${vacancy.id}</td>
@@ -59,11 +73,12 @@
             <div class="item-sort">
                 <form name='sort'>
                     <spring:message code="sort.sortby"/>
-                    <select class="item-sort-input" name='sortBy'>
+                    <select class="item-sort-input" name='sort'>
                         <option value="none"><spring:message code="sort.none"/></option>
                         <option value="salaryFrom"><spring:message code="sort.salaryFrom"/></option>
+                        <option value="salaryTo"><spring:message code="sort.salaryTo"/></option>
                         <option value='position'><spring:message code="sort.byposition"/></option>
-                        <option value='experience'><spring:message code="sort.byexperience"/></option>
+                        <option value='experienceYearsRequire'><spring:message code="sort.byexperience"/></option>
                     </select>
                     <button class="item-sort-button" type='submit'><spring:message code="sort"/></button>
                 </form>

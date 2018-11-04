@@ -3,10 +3,7 @@ package team5.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import team5.dao.Vacancy.VacancyDAO;
 import team5.dao.interfaces.EntityDao;
@@ -16,6 +13,7 @@ import team5.models.Vacancy;
 import team5.models.VacancyFilter;
 import team5.utils.Utils;
 
+import javax.servlet.http.Cookie;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
@@ -28,18 +26,24 @@ public class VacancyController {
     private VacancyFilter filter = new VacancyFilter();
 
     @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
-    public ModelAndView setFeedbackView(Locale locale, @PathVariable int page) {
+    public ModelAndView setFeedbackView(@PathVariable int page, String sort) {
+        List<Vacancy> vacancies = null;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModelMap().addAttribute("sort",(sort !=null)?sort:"none");
         int total = 5;
-
         int offset = Utils.getPageOffset(page,total);
 
-        List<Vacancy> vacancies = vacancyDAO.getEntitiesByPage(filter, offset, total);
+        if(sort!=null&&!sort.equals("none")){
+            vacancies=vacancyDAO.getSortedEntitiesByPage(filter, sort, page, total);
+        } else{
+            vacancies = vacancyDAO.getEntitiesByPage(filter, page, total);
+        }
 
         int[] pages = Utils.getPagesIndexArray(vacancyDAO,total);
 
-        ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("type", "view");
         modelAndView.getModelMap().addAttribute("entity", "Vacancy");
+        modelAndView.addObject("filterInput", filter);
         modelAndView.getModelMap().addAttribute("vacancies", vacancies);
         modelAndView.getModelMap().addAttribute("pages", pages);
         modelAndView.setViewName("index");
@@ -91,5 +95,11 @@ public class VacancyController {
     public String deleteSkill(@PathVariable final long id) {
         vacancyDAO.delete(id);
         return "redirect:/vacancy/view/1";
+    }
+
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
+    public String skillSetFilter(@ModelAttribute("filterInput") VacancyFilter filterInput, String sort){
+        filter.setPosition(filterInput.getPosition());
+        return "redirect:/vacancy/view/1?sort="+sort;
     }
 }
