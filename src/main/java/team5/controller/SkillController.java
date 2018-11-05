@@ -1,13 +1,11 @@
 package team5.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import team5.dao.Skill.SkillDao;
-import team5.models.SkillFilter;
 import team5.models.Skill;
+import team5.models.SkillFilter;
+import team5.service.SkillService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -16,115 +14,150 @@ import java.util.List;
 
 import static java.lang.Math.ceil;
 
-@Controller
+/**
+ * Controller by url /skill.
+ */
+@RestController
 @RequestMapping(value = "/skill")
 public class SkillController {
 
+    /**
+     * Dao for entity 'Skill'.
+     */
     @Autowired
-    SkillDao skillDao;
-    SkillFilter filter = new SkillFilter();
+    private SkillService skillService;
 
-    @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
-    public ModelAndView skillView(@CookieValue(value = "skillSortField", required = false) Cookie skillSortField, @PathVariable int page) {
-        int total=5;
-        if(page==1){}
-        else{
-            page=(page-1)*total+1;
+    /**
+     * Filtering value.
+     */
+    private SkillFilter filter = new SkillFilter();
+
+    /**
+     * View page with records from DB.
+     * @param skillSortField Sorting field in DB.
+     * @param page page number.
+     * @return page with records from DB.
+     */
+    @GetMapping(value = "/view/{page}/**")
+    public List<Skill> skillView(
+            @CookieValue(value = "skillSortField", required = false)
+            final Cookie skillSortField,
+            @PathVariable final int page
+    ) {
+        final int total = 5;
+        int numberInDB = 1;
+        if (page != 1) {
+            numberInDB = (page - 1) * total + 1;
         }
 
         List<Skill> skills;
-        if(skillSortField != null)
-            skills= skillDao.getSortedEntitiesByPage(filter.getSkill(), skillSortField.getValue(), page, total);
-        else
-            skills= skillDao.getEntitiesByPage(filter.getSkill(), page, total);
+        final String fieldName = "skill";
+        if (skillSortField != null) {
+            skills = skillService.getFilteredSortedEntitiesByPage(
+                    fieldName, filter.getSkill(),
+                    skillSortField.getValue(), numberInDB, total);
+        } else {
+            skills = skillService.getFilteredEntitiesByPage(
+                    fieldName, filter.getSkill(),
+                    numberInDB, total);
+        }
 
-        float pagesCount = (float) skillDao.count(filter.getSkill()) / total;
+        float pagesCount = (float) skillService.count(filter.getSkill()) / total;
         int[] pages = new int[(int) ceil(pagesCount)];
-        for(int i=0; i<pages.length; i++){
+        for (int i = 0; i < pages.length; i++) {
             pages[i] = i + 1;
         }
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("entity", "Skill");
-        modelAndView.getModelMap().addAttribute("type", "view");
-        modelAndView.getModelMap().addAttribute("skill", skills);
-        modelAndView.getModelMap().addAttribute("pages", pages);
-        modelAndView.addObject("filterInput", filter);
-        modelAndView.setViewName("index");
-        return modelAndView;
-
+        return skills;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ModelAndView skillAdd() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("entity", "Skill");
-        modelAndView.getModelMap().addAttribute("type", "add");
-        modelAndView.addObject("addSkillForm", new Skill());
-        modelAndView.setViewName("index");
-        return modelAndView;
+    /**
+     * View one record from DB.
+     * @param id Skill PK.
+     * @return Page with selected record.
+     */
+    @GetMapping(value = "/viewSkillById/{id}/**")
+    public Skill skillViewById(@PathVariable final String id) {
+        Skill skill = skillService.getById(id);
+        return skill;
     }
 
-    @RequestMapping(value = "/addSorting/{sortField}/**", method = RequestMethod.GET)
-    public ModelAndView skillAddSorting(HttpServletResponse response, @PathVariable String sortField) {
-
+    /**
+     * Set sorted field.
+     * @param response Http response.
+     * @param sortField Sort field value.
+     * @return page with sorted records from DB.
+     */
+    @GetMapping(value = "/addSorting/{sortField}/**")
+    public List<Skill> skillAddSorting(
+            final HttpServletResponse response,
+            @PathVariable final String sortField
+    ) {
+        final int lifeTime = 1000 * 60 * 60 * 24;
+        final int firstPage = 1;
         Cookie cookie = new Cookie("skillSortField", sortField);
-        cookie.setMaxAge(1000*60*60*24);
+        cookie.setMaxAge(lifeTime);
         cookie.setPath("/");
         response.addCookie(cookie);
-
-        return skillView(cookie,1);
+        return skillView(cookie, firstPage);
     }
 
-    @RequestMapping(value = "/addSkill", method = RequestMethod.POST)
-    public String addNewSkill(@ModelAttribute("addSkillForm") @Valid Skill skill, BindingResult result){
-        if(result.hasErrors()) {
+    /**
+     * Add new skill to DB.
+     * @param skill New skill.
+     * @param result Validation result.
+     * @return Redirect URL.
+     */
+    @PostMapping(value = "/view")
+    public String addNewSkill(
+            @RequestBody @Valid final Skill skill,
+            final BindingResult result
+    ) {
+        if (result.hasErrors()) {
             return "redirect:/skill/add";
         }
-        skillDao.save(skill);
+        skillService.save(skill);
         return "redirect:/skill/view/1";
-    }
-    @RequestMapping(value = "/deleteSkill/{id}", method = RequestMethod.GET)
-    public String deleteSkill(@PathVariable int id){
-        skillDao.delete(id);
-        return "redirect:/skill/view/1";
-    }
-    @RequestMapping(value = "/updateSkill/{id}", method = RequestMethod.GET)
-    public ModelAndView updateSkillGet(@PathVariable int id){
-        Skill skill = skillDao.getById(id);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("type", "edit");
-        modelAndView.getModelMap().addAttribute("entity", "Skill");
-        modelAndView.addObject("skill", skill);
-        modelAndView.setViewName("index");
-        return modelAndView;
     }
 
-    @RequestMapping(value = "/updateSaveSkill", method = RequestMethod.POST)
-    public String updateSkillPost(@ModelAttribute("editSkillForm") @Valid Skill skill, BindingResult result){
-        if(result.hasErrors()) {
-            return "redirect:/skill/updateSkill/" + skill.getId();
+    /**
+     * Delete skill from db.
+     * @param id Skill PK.
+     * @return Redirect URL.
+     */
+    @DeleteMapping(value = "/view/{id}")
+    public String deleteSkill(@PathVariable final String id) {
+        skillService.delete(id);
+        return "redirect:/skill/view/1";
+    }
+
+    /**
+     * Edit skill.
+     * @param skill Edit skill.
+     * @param result Validation result.
+     * @param id PK.
+     * @return Redirect URL.
+     */
+    @PutMapping(value = "/view/{id}")
+    public String updateSkill(
+            @RequestBody @Valid final Skill skill,
+            final BindingResult result,
+            @PathVariable final String id
+    ) {
+        if (result.hasErrors()) {
+            return "redirect:/skill/updateSkill/" + skill.getSkill();
         }
-        skillDao.update(skill);
+        skillService.update(skill, id);
         return "redirect:/skill/view/1";
     }
 
-    @RequestMapping(value = "/filter", method = RequestMethod.POST)
-    public String skillSetFilter(@ModelAttribute("filterInput") SkillFilter filterInput){
+    /**
+     * Set filter.
+     * @param filterInput Filter value.
+     * @return Redirect URL.
+     */
+    @PostMapping(value = "/filter")
+    public String skillSetFilter(@RequestBody final SkillFilter filterInput) {
         filter.setSkill(filterInput.getSkill());
         return "redirect:/skill/view/1";
     }
-
-    @RequestMapping(value = "/viewSkillById/{id}/**", method = RequestMethod.GET)
-    public ModelAndView skillViewById(@PathVariable int id) {
-        ModelAndView modelAndView = new ModelAndView();
-        Skill skill = skillDao.getById(id);
-        modelAndView.getModelMap().addAttribute("entity", "Skill");
-        modelAndView.getModelMap().addAttribute("type", "viewById");
-        modelAndView.getModelMap().addAttribute("skill", skill.getSkill());
-        modelAndView.getModelMap().addAttribute("id", skill.getId());
-        modelAndView.setViewName("index");
-        return modelAndView;
-    }
-
 }

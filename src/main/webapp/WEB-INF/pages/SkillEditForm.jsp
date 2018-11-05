@@ -11,9 +11,8 @@
 </style>
 <body>
     <div class="item-add">
-        <form:form modelAttribute="skill" class="item-add-form"  method="post" action="/skill/updateSaveSkill">
+        <form:form modelAttribute="editSkillForm" class="item-add-form"  method="post" action="/skill/updateSaveSkill/${editValue}">
             <div class="question">
-                <form:hidden  path="id" />
                 <form:input path="skill" class="item-add-form-input"/>
                 <label class="item-add-form-label"><spring:message code="menu.skill"/></label>
             </div>
