@@ -15,18 +15,31 @@ public class Skill {
     @Size(min = 1, max = 50)
     private String skill;
 
+    /**
+     * @return skill.
+     */
     public String getSkill() {
         return skill;
     }
 
-    public void setSkill(String skill) {
+    /**
+     * @param skill new skill value.
+     */
+    public void setSkill(final String skill) {
         this.skill = skill;
     }
 
+    /**
+     * Constructor.
+     */
     public Skill() {
     }
 
-    public Skill(String skill) {
+    /**
+     * Constructor.
+     * @param skill Skill value.
+     */
+    public Skill(final String skill) {
         this.skill = skill;
     }
 }

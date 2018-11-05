@@ -1,6 +1,7 @@
 package team5.dao.Skill;
 
 
+import org.springframework.stereotype.Component;
 import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
@@ -13,9 +14,12 @@ import java.util.List;
 /**
  * Dao for entity 'Skill'.
  */
+@Component
 public class SkillDao {
 
-    private Connection connection;
+    /**
+     * Statement.
+     */
     private Statement statement;
 
     /**
@@ -23,7 +27,7 @@ public class SkillDao {
      */
     public SkillDao() {
         try {
-            connection = DBConnector.getConnection();
+            Connection connection = DBConnector.getConnection();
             statement = connection.createStatement();
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +56,8 @@ public class SkillDao {
      * @param model record.
      */
     public void save(final Skill model) {
-        String sql = "INSERT INTO skill(skill) VALUES ('" + model.getSkill() + "')";
+        String sql = "INSERT INTO skill(skill) VALUES ('"
+                + model.getSkill() + "')";
         executDatabaseQuery(sql);
     }
 
@@ -62,7 +67,8 @@ public class SkillDao {
      * @param id PK.
      */
     public void update(final Skill model, final String id) {
-        String sql = "UPDATE skill SET skill='" + model.getSkill() + "' WHERE skill='" + id + "'";
+        String sql = "UPDATE skill SET skill='" + model.getSkill()
+                + "' WHERE skill='" + id + "'";
         executDatabaseQuery(sql);
     }
 
@@ -92,8 +98,14 @@ public class SkillDao {
      * @param total count record on page.
      * @return sql query.
      */
-    public List<Skill> getFilteredEntitiesByPage(final String field, final String filter, final int page, final int total) {
-        String sql = "SELECT * FROM skill WHERE " + field + " LIKE '%" + filter + "%' LIMIT " + (page - 1) + "," + total;
+    public List<Skill> getFilteredEntitiesByPage(
+            final String field,
+            final String filter,
+            final int page,
+            final int total) {
+        String sql = "SELECT * FROM skill WHERE "
+                + field + " LIKE '%" + filter
+                + "%' LIMIT " + (page - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
@@ -106,8 +118,16 @@ public class SkillDao {
      * @param total count record on page.
      * @return sql query.
      */
-    public List<Skill> getFilteredSortedEntitiesByPage(final String field, final String filter, final String sortBy, final int page, final int total) {
-        String sql = "SELECT * FROM skill WHERE " + field + " LIKE '%" + filter + "%' ORDER BY " + sortBy + " LIMIT " + (page - 1) + "," + total;
+    public List<Skill> getFilteredSortedEntitiesByPage(
+            final String field,
+            final String filter,
+            final String sortBy,
+            final int page,
+            final int total
+    ) {
+        String sql = "SELECT * FROM skill WHERE "
+                + field + " LIKE '%" + filter + "%' ORDER BY "
+                + sortBy + " LIMIT " + (page - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
@@ -116,13 +136,13 @@ public class SkillDao {
      * @param sql query.
      * @return Skill list.
      */
-    private List<Skill> createListEntitiesFromQueryResult(String sql) {
+    private List<Skill> createListEntitiesFromQueryResult(final String sql) {
         List<Skill> skills = new ArrayList<>();
 
         try {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                skills.add( new Skill(resultSet.getString(1)));
+                skills.add(new Skill(resultSet.getString(1)));
             }
         } catch (Exception e) {
             e.printStackTrace();
