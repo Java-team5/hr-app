@@ -3,9 +3,9 @@ package team5.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import team5.dao.Skill.SkillDao;
 import team5.models.Skill;
 import team5.models.SkillFilter;
+import team5.service.SkillService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +25,7 @@ public class SkillController {
      * Dao for entity 'Skill'.
      */
     @Autowired
-    private SkillDao skillDao;
+    private SkillService skillService;
 
     /**
      * Filtering value.
@@ -53,16 +53,16 @@ public class SkillController {
         List<Skill> skills;
         final String fieldName = "skill";
         if (skillSortField != null) {
-            skills = skillDao.getFilteredSortedEntitiesByPage(
+            skills = skillService.getFilteredSortedEntitiesByPage(
                     fieldName, filter.getSkill(),
                     skillSortField.getValue(), numberInDB, total);
         } else {
-            skills = skillDao.getFilteredEntitiesByPage(
+            skills = skillService.getFilteredEntitiesByPage(
                     fieldName, filter.getSkill(),
                     numberInDB, total);
         }
 
-        float pagesCount = (float) skillDao.count(filter.getSkill()) / total;
+        float pagesCount = (float) skillService.count(filter.getSkill()) / total;
         int[] pages = new int[(int) ceil(pagesCount)];
         for (int i = 0; i < pages.length; i++) {
             pages[i] = i + 1;
@@ -77,7 +77,7 @@ public class SkillController {
      */
     @GetMapping(value = "/viewSkillById/{id}/**")
     public Skill skillViewById(@PathVariable final String id) {
-        Skill skill = skillDao.getById(id);
+        Skill skill = skillService.getById(id);
         return skill;
     }
 
@@ -115,7 +115,7 @@ public class SkillController {
         if (result.hasErrors()) {
             return "redirect:/skill/add";
         }
-        skillDao.save(skill);
+        skillService.save(skill);
         return "redirect:/skill/view/1";
     }
 
@@ -126,7 +126,7 @@ public class SkillController {
      */
     @DeleteMapping(value = "/view/{id}")
     public String deleteSkill(@PathVariable final String id) {
-        skillDao.delete(id);
+        skillService.delete(id);
         return "redirect:/skill/view/1";
     }
 
@@ -146,7 +146,7 @@ public class SkillController {
         if (result.hasErrors()) {
             return "redirect:/skill/updateSkill/" + skill.getSkill();
         }
-        skillDao.update(skill, id);
+        skillService.update(skill, id);
         return "redirect:/skill/view/1";
     }
 

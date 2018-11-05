@@ -10,8 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import team5.dao.Skill.SkillDao;
 import team5.models.Skill;
+import team5.service.SkillService;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class SkillControllerTest {
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
     @Mock
-    private SkillDao skillDao;
+    private SkillService skillService;
 
     private MockMvc mockMvc;
 
@@ -52,7 +52,7 @@ public class SkillControllerTest {
         skills.add(new Skill("C#"));
         skills.add(new Skill("Java"));
 
-        when(skillDao.getFilteredEntitiesByPage(fieldName,"", 1, 5))
+        when(skillService.getFilteredEntitiesByPage(fieldName,"", 1, 5))
                 .thenReturn(skills);
         mockMvc.perform(get("/skill/view/{id}", 1))
                 .andExpect(status().isOk())
@@ -62,7 +62,7 @@ public class SkillControllerTest {
 
     @Test
     public void skillViewById() throws Exception {
-        when(skillDao.getById("Java"))
+        when(skillService.getById("Java"))
                 .thenReturn(new Skill("Java"));
 
         mockMvc.perform(get("/skill/viewSkillById/{id}", "Java"))
