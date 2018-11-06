@@ -17,7 +17,6 @@ import team5.dao.Feedback.FeedbackDAO;
 import team5.dao.Skill.SkillDao;
 import team5.dao.User.UserDao;
 import team5.dao.VacancyDAO;
-import team5.service.SkillService;
 
 @Configuration
 @EnableWebMvc
@@ -64,11 +63,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public LocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         return localeResolver;
-    }
-
-    @Bean(name = "skillService")
-    public SkillService skillService(){
-        return new SkillService();
     }
 
     @Override
