@@ -1,105 +1,140 @@
 package team5.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import team5.dao.Vacancy.VacancyDAO;
-import team5.dao.interfaces.EntityDao;
 import team5.dao.interfaces.SortFilterCrudDao;
-import team5.models.Feedback;
 import team5.models.Vacancy;
 import team5.models.VacancyFilter;
 import team5.utils.Utils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Locale;
 
-@Controller
-@RequestMapping(value ="/vacancy/")
+@RestController
+@RequestMapping(value = "/vacancy/")
 public class VacancyController {
+
+    /**
+     * Class perform sql operations.
+     */
     @Autowired
-    private SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDAO;
-    private VacancyFilter filter = new VacancyFilter();
+    private SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDao;
 
-    @RequestMapping(value = "/view/{page}/**", method = RequestMethod.GET)
-    public ModelAndView setFeedbackView(@PathVariable int page, String sort) {
+    /**
+     * Filter.
+     */
+    private VacancyFilter vacancyFilter = new VacancyFilter();
+
+    /**
+     * View page with records from DB.
+     * @param vacancySortField Sorting field in DB.
+     * @param page page number.
+     * @return page with records from DB.
+     */
+    @GetMapping(value = "/view/{page}/**")
+    public List<Vacancy> view(
+            @CookieValue(value = "vacancySortField", required = false)
+            final Cookie vacancySortField,
+            final @PathVariable int page) {
+        final int total = 5;
+        int offset = Utils.getPageOffset(page, total);
+
         List<Vacancy> vacancies = null;
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("sort",(sort !=null)?sort:"none");
-        int total = 5;
-        int offset = Utils.getPageOffset(page,total);
-
-        if(sort!=null&&!sort.equals("none")){
-            vacancies=vacancyDAO.getSortedEntitiesByPage(filter, sort, page, total);
-        } else{
-            vacancies = vacancyDAO.getEntitiesByPage(filter, page, total);
+        if (vacancySortField != null) {
+            vacancies = vacancyDao.getFilteredSortedEntitiesByPage(
+                    this.vacancyFilter, vacancySortField.getValue(), offset, total);
+        } else {
+            vacancies = vacancyDao.getFilteredEntitiesByPage(
+                    this.vacancyFilter, offset, total);
         }
 
-        int[] pages = Utils.getPagesIndexArray(vacancyDAO,total);
-
-        modelAndView.getModelMap().addAttribute("type", "view");
-        modelAndView.getModelMap().addAttribute("entity", "Vacancy");
-        modelAndView.addObject("filterInput", filter);
-        modelAndView.getModelMap().addAttribute("vacancies", vacancies);
-        modelAndView.getModelMap().addAttribute("pages", pages);
-        modelAndView.setViewName("index");
-        return modelAndView;
+        int[] pages = Utils.getPagesIndexArray(vacancyDao, total);
+        return vacancies;
     }
 
-
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ModelAndView getVacancyEditFom(Locale locale){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("entity", "Vacancy");
-        modelAndView.getModelMap().addAttribute("type", "add");
-        //modelAndView.getModelMap().addAttribute("modelName", "newVacancy");//------
-        modelAndView.addObject("vacancy", new Vacancy());
-        modelAndView.setViewName("index");
-        return modelAndView;
+    /**
+     * Set sorted field.
+     * @param response Http response.
+     * @param sortField Sort field value.
+     * @return page with sorted records from DB.
+     */
+    @GetMapping(value = "/sortview/{sortField}/**")
+    public List<Vacancy> addSorting(
+            final HttpServletResponse response,
+            @PathVariable final String sortField
+    ) {
+        final int lifeTime = 1000 * 60 * 60 * 24;
+        final int firstPage = 1;
+        Cookie cookie = new Cookie("vacancySortField", sortField);
+        cookie.setMaxAge(lifeTime);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return view(cookie, firstPage);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String setNewVacancy(@ModelAttribute("vacancy") @Valid Vacancy vacancy, BindingResult result){
+    /**
+     * Add new vacancy to DB.
+     * @param vacancy New vacancy.
+     * @param result Validation result.
+     * @return Redirect URL.
+     */
+    @PostMapping(value = "/view")
+    public String addNewVacancy(
+            @RequestBody @Valid final Vacancy vacancy,
+            final BindingResult result
+    ) {
         if (result.hasErrors()) {
-            return "redirect:/vacancy/add";
+            return "Error";
         }
-        vacancyDAO.save(vacancy);
-        return "redirect:/vacancy/view/1";
+        vacancyDao.save(vacancy);
+        return "Success";
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView getEditVacancyPage(@PathVariable long id){
-        Object vacancy = vacancyDAO.getById(id);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModelMap().addAttribute("type", "edit");
-        modelAndView.getModelMap().addAttribute("entity", "Vacancy");
-        //modelAndView.getModelMap().addAttribute("modelName", "editVacancy");//------
-        modelAndView.addObject("vacancy", vacancy);
-        modelAndView.setViewName("index");
-        return modelAndView;
+    /**
+     * Delete vacancy from db by id.
+     * @param id Vacancy PK.
+     * @return Redirect URL.
+     */
+    @DeleteMapping(value = "/view/{id}")
+    public String delete(@PathVariable final long id) {
+        vacancyDao.delete(id);
+        return "Success";
     }
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editVacancy(@ModelAttribute("vacancy") @Valid Vacancy vacancy, BindingResult result) {
+
+    /**
+     * Edit vacancy.
+     * @param vacancy Edit skill.
+     * @param result Validation result.
+     * @param id PK.
+     * @return Redirect URL.
+     */
+    @PutMapping(value = "/view/{id}")
+    public String updateSkill(
+            @RequestBody @Valid final Vacancy vacancy,
+            final BindingResult result,
+            @PathVariable final long id
+    ) {
         if (result.hasErrors()) {
-            return "redirect:/vacancy/updateSkill/" + vacancy.getId();
+            return "Error";
         }
-        vacancyDAO.update(vacancy);
-        return "redirect:/vacancy/view/1";
+
+        vacancy.setId(id);
+        vacancyDao.update(vacancy);
+        return "Success";
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deleteSkill(@PathVariable final long id) {
-        vacancyDAO.delete(id);
-        return "redirect:/vacancy/view/1";
-    }
-
-    @RequestMapping(value = "/filter", method = RequestMethod.POST)
-    public String skillSetFilter(@ModelAttribute("filterInput") VacancyFilter filterInput, String sort){
-        filter.setPosition(filterInput.getPosition());
-        return "redirect:/vacancy/view/1?sort="+sort;
+    /**
+     * Set filter.
+     * @param filter Filter value.
+     * @return Redirect URL.
+     */
+    @PostMapping(value = "/filter")
+    public String setFilter(@RequestBody final String filter) {
+        this.vacancyFilter.setPosition(filter);
+        return "Success";
     }
 }
