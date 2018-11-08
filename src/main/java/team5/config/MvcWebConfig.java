@@ -14,7 +14,8 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import team5.dao.Candidate.CandidateDAO;
 import team5.dao.FeedbackDAO;
-import team5.dao.Skill.SkillDao;
+import team5.dao.InterviewDao;
+import team5.dao.SkillDao;
 import team5.dao.User.UserDao;
 import team5.dao.Vacancy.VacancyDAO;
 import team5.dao.interfaces.SortFilterCrudDao;
@@ -42,22 +43,29 @@ public class MvcWebConfig implements WebMvcConfigurer {
     }
 
     @Bean(name = "skillDao")
-    public SkillDao skillDao(){
+    public SkillDao skillDao() {
         return new SkillDao();
     }
 
+    @Bean(name = "interviewDao")
+    public InterviewDao interviewDao() {
+        return new InterviewDao();
+    }
+
     @Bean(name = "candidateDAO")
-    public CandidateDAO candidateDao(){
+    public CandidateDAO candidateDao() {
         return new CandidateDAO();
     }
 
     @Bean(name = "userDao")
-    public UserDao userDao(){
+    public UserDao userDao() {
         return new UserDao();
     }
 
     @Bean(name = "feedbackDAO")
-    public FeedbackDAO feedbackDAO(){return new FeedbackDAO(); }
+    public FeedbackDAO feedbackDAO() {
+        return new FeedbackDAO();
+    }
 
     @Bean(name = "vacancyDAO")
     public SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDAO(){
