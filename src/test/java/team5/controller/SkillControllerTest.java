@@ -22,6 +22,8 @@ import static org.mockito.Mockito.when;
 public class SkillControllerTest {
 
     private final String fieldName = "skill";
+    private static final String SUCCESS = "Success";
+    private static final String ERROR = "Error";
 
     @Mock
     private SkillDao dao;
@@ -74,7 +76,7 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(true);
         String url = controller.addNewSkill(new Skill("C++"), result);
-        assertEquals(url, "Error");
+        assertEquals(url, ERROR);
     }
 
     @Test
@@ -83,14 +85,14 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(false);
         String url = controller.addNewSkill(new Skill("C++"), result);
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
     @Test
     public void deleteSkill() {
         BindingResult result = mock(BindingResult.class);
         String url = controller.deleteSkill("JS");
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
     @Test
@@ -99,7 +101,7 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(true);
         String url = controller.updateSkill(new Skill("C++"), result, "Spring");
-        assertEquals(url, "Error");
+        assertEquals(url, ERROR);
     }
 
     @Test
@@ -108,13 +110,13 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(false);
         String url = controller.updateSkill(new Skill("C++"), result, "Spring");
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
     @Test
     public void skillSetFilter() {
         String url = controller.setFilter("");
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
 }

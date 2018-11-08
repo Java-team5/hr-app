@@ -21,6 +21,9 @@ public class InterviewController {
     private String filter = "";
     private String filteringField = "id";
 
+    private static final String SUCCESS = "Success";
+    private static final String ERROR = "Error";
+
     /**
      * View page with records from DB.
      * @param interviewSortField Sorting field in DB.
@@ -96,10 +99,10 @@ public class InterviewController {
             final BindingResult result
     ) {
         if (result.hasErrors()) {
-            return "Error";
+            return ERROR;
         }
         interviewDao.save(interview);
-        return "Sucses";
+        return SUCCESS;
     }
 
     /**
@@ -110,7 +113,7 @@ public class InterviewController {
     @DeleteMapping(value = "/view/{id}")
     public String deleteInterview(@PathVariable final long id) {
         interviewDao.delete(id);
-        return "Sucses";
+        return SUCCESS;
     }
 
     /**
@@ -126,10 +129,10 @@ public class InterviewController {
             final BindingResult result
     ) {
         if (result.hasErrors()) {
-            return "Error";
+            return ERROR;
         }
         interviewDao.update(interview);
-        return "Sucses";
+        return SUCCESS;
     }
 
     /**
@@ -141,6 +144,6 @@ public class InterviewController {
     public String setFilter(@RequestBody final String filter, @RequestBody final String filteringField) {
         this.filter = filter;
         this.filteringField = filteringField;
-        return "Sucses";
+        return SUCCESS;
     }
 }
