@@ -17,7 +17,10 @@ import team5.dao.FeedbackDAO;
 import team5.dao.InterviewDao;
 import team5.dao.SkillDao;
 import team5.dao.User.UserDao;
-import team5.dao.VacancyDAO;
+import team5.dao.Vacancy.VacancyDAO;
+import team5.dao.interfaces.SortFilterCrudDao;
+import team5.models.Vacancy;
+import team5.models.VacancyFilter;
 
 @Configuration
 @EnableWebMvc
@@ -65,7 +68,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     }
 
     @Bean(name = "vacancyDAO")
-    public VacancyDAO vacancyDAO() {
+    public SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDAO(){
         return new VacancyDAO();
     }
 

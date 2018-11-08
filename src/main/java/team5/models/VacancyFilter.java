@@ -1,35 +1,27 @@
 package team5.models;
 
-import java.util.Date;
-
-public class Vacancy {
-    private long id;
+public class VacancyFilter {
     private long idDeveloper;
     private String position;
     private double salaryFrom;
     private double salaryTo;
-    private String vacancyState;
     private double experienceYearsRequire;
 
-    public Vacancy() {
+    public VacancyFilter() {
+        this.idDeveloper = -1;
+        this.position = "";
+        this.salaryFrom = 0;
+        this.salaryTo = Double.MAX_VALUE;
+        this.experienceYearsRequire = Double.MIN_VALUE;
     }
 
-    public Vacancy(long id, long idDeveloper, String position, double salaryFrom, double salaryTo, String vacancyState, double experienceYearsRequire) {
-        this.id = id;
+    public VacancyFilter(long idDeveloper, String position, double salaryFrom,
+                         double salaryTo, double experienceYearsRequire) {
         this.idDeveloper = idDeveloper;
         this.position = position;
         this.salaryFrom = salaryFrom;
         this.salaryTo = salaryTo;
-        this.vacancyState = vacancyState;
         this.experienceYearsRequire = experienceYearsRequire;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getIdDeveloper() {
@@ -62,14 +54,6 @@ public class Vacancy {
 
     public void setSalaryTo(double salaryTo) {
         this.salaryTo = salaryTo;
-    }
-
-    public String getVacancyState() {
-        return vacancyState;
-    }
-
-    public void setVacancyState(String vacancyState) {
-        this.vacancyState = vacancyState;
     }
 
     public double getExperienceYearsRequire() {
