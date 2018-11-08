@@ -1,25 +1,22 @@
-package team5.dao.Skill;
+package team5.dao;
 
 
 import org.springframework.stereotype.Component;
 import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Dao for entity 'Skill'.
- */
+
 @Component
 public class SkillDao {
 
-    /**
-     * Statement.
-     */
     private Statement statement;
 
     /**
@@ -29,7 +26,11 @@ public class SkillDao {
         try {
             Connection connection = DBConnector.getConnection();
             statement = connection.createStatement();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -40,12 +41,12 @@ public class SkillDao {
      * @return Found record.
      */
     public Skill getById(final String id) {
-        String sql = "SELECT * FROM skill WHERE skill='" + id + "'";
+        String sql = String.format("SELECT * FROM skill WHERE skill='%s'", id);
         try {
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
             return new Skill(resultSet.getString(1));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -144,7 +145,7 @@ public class SkillDao {
             while (resultSet.next()) {
                 skills.add(new Skill(resultSet.getString(1)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -167,7 +168,7 @@ public class SkillDao {
     private void executDatabaseQuery(final String sql) {
         try {
             statement.executeUpdate(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

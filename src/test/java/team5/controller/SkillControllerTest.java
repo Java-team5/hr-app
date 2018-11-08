@@ -6,9 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
-import team5.dao.Skill.SkillDao;
+import team5.dao.SkillDao;
 import team5.models.Skill;
-import team5.models.SkillFilter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -27,24 +26,15 @@ public class SkillControllerTest {
     @Mock
     private SkillDao dao;
     @InjectMocks
-    SkillController controller;
-/*
-
-    @Before
-    public void SetUp() throws Exception{
-        //controller = new SkillController();
-
-        //dao = mock(SkillDao.class);
-    }
-*/
+    private SkillController controller;
 
     @Test
     public void getFilteredEntitiesByPage() {
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill("Java"));
-        when(dao.getFilteredEntitiesByPage(fieldName,"", 1, 5))
+        when(dao.getFilteredEntitiesByPage(fieldName, "", 1, 5))
                 .thenReturn(skills);
-        List<Skill> skillList = controller.skillView(null, 1);
+        List<Skill> skillList = controller.view(null, 1);
         assertEquals(skills, skillList);
     }
 
@@ -52,9 +42,9 @@ public class SkillControllerTest {
     public void getFilteredSortedEntitiesByPage() {
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill("C#"));
-        when(dao.getFilteredSortedEntitiesByPage(fieldName,"", fieldName, 6, 5))
+        when(dao.getFilteredSortedEntitiesByPage(fieldName, "", fieldName, 6, 5))
                 .thenReturn(skills);
-        List<Skill> skillList = controller.skillView(new Cookie("skillSortField", "skill"), 2);
+        List<Skill> skillList = controller.view(new Cookie("skillSortField", "skill"), 2);
         assertEquals(skills, skillList);
     }
 
@@ -63,7 +53,7 @@ public class SkillControllerTest {
         Skill skill = new Skill("PHP");
         when(dao.getById("PHP"))
                 .thenReturn(skill);
-        Skill returnSkill = controller.skillViewById("PHP");
+        Skill returnSkill = controller.viewById("PHP");
         assertEquals(skill, returnSkill);
     }
 
@@ -71,10 +61,10 @@ public class SkillControllerTest {
     public void skillAddSorting() {
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill("C"));
-        when(dao.getFilteredSortedEntitiesByPage(fieldName,"", fieldName, 1, 5))
+        when(dao.getFilteredSortedEntitiesByPage(fieldName, "", fieldName, 1, 5))
                 .thenReturn(skills);
         HttpServletResponse response = mock(HttpServletResponse.class);
-        List<Skill> skillList = controller.skillAddSorting(response, fieldName);
+        List<Skill> skillList = controller.addSorting(response, fieldName);
         assertEquals(skills, skillList);
     }
 
@@ -84,7 +74,7 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(true);
         String url = controller.addNewSkill(new Skill("C++"), result);
-        assertEquals(url, "redirect:/skill/add");
+        assertEquals(url, "Error");
     }
 
     @Test
@@ -93,14 +83,14 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(false);
         String url = controller.addNewSkill(new Skill("C++"), result);
-        assertEquals(url, "redirect:/skill/view/1");
+        assertEquals(url, "Sucses");
     }
 
     @Test
     public void deleteSkill() {
         BindingResult result = mock(BindingResult.class);
         String url = controller.deleteSkill("JS");
-        assertEquals(url, "redirect:/skill/view/1");
+        assertEquals(url, "Sucses");
     }
 
     @Test
@@ -109,7 +99,7 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(true);
         String url = controller.updateSkill(new Skill("C++"), result, "Spring");
-        assertEquals(url, "redirect:/skill/updateSkill/C++");
+        assertEquals(url, "Error");
     }
 
     @Test
@@ -118,13 +108,13 @@ public class SkillControllerTest {
         when(result.hasErrors())
                 .thenReturn(false);
         String url = controller.updateSkill(new Skill("C++"), result, "Spring");
-        assertEquals(url, "redirect:/skill/view/1");
+        assertEquals(url, "Sucses");
     }
 
     @Test
     public void skillSetFilter() {
-        String url = controller.skillSetFilter(new SkillFilter());
-        assertEquals(url, "redirect:/skill/view/1");
+        String url = controller.setFilter("");
+        assertEquals(url, "Sucses");
     }
 
 }
