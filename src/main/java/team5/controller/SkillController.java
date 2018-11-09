@@ -22,6 +22,8 @@ public class SkillController {
      * Filtering value.
      */
     private String filter = "";
+    private static final String SUCCESS = "Success";
+    private static final String ERROR = "Error";
 
     /**
      * View page with records from DB.
@@ -99,10 +101,10 @@ public class SkillController {
             final BindingResult result
     ) {
         if (result.hasErrors()) {
-            return "Error";
+            return ERROR;
         }
         skillDao.save(skill);
-        return "Sucses";
+        return SUCCESS;
     }
 
     /**
@@ -113,7 +115,7 @@ public class SkillController {
     @DeleteMapping(value = "/view/{id}")
     public String deleteSkill(@PathVariable final String id) {
         skillDao.delete(id);
-        return "Sucses";
+        return SUCCESS;
     }
 
     /**
@@ -130,10 +132,10 @@ public class SkillController {
             @PathVariable final String id
     ) {
         if (result.hasErrors()) {
-            return "Error";
+            return ERROR;
         }
         skillDao.update(skill, id);
-        return "Sucses";
+        return SUCCESS;
     }
 
     /**
@@ -144,6 +146,6 @@ public class SkillController {
     @PostMapping(value = "/filter")
     public String setFilter(@RequestBody final String filter) {
         this.filter = filter;
-        return "Sucses";
+        return SUCCESS;
     }
 }

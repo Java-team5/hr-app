@@ -23,6 +23,8 @@ import static org.mockito.Mockito.when;
 public class InterviewControllerTest {
 
     private final String fieldName = "interviev";
+    private static final String SUCCESS = "Success";
+    private static final String ERROR = "Error";
 
     @Mock
     private InterviewDao dao;
@@ -73,7 +75,7 @@ public class InterviewControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(true);
         String url = controller.addNewInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
-        assertEquals(url, "Error");
+        assertEquals(url, ERROR);
     }
 
     @Test
@@ -82,14 +84,14 @@ public class InterviewControllerTest {
         when(result.hasErrors())
                 .thenReturn(false);
         String url = controller.addNewInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
     @Test
     public void deleteInterview() {
         BindingResult result = mock(BindingResult.class);
         String url = controller.deleteInterview(1);
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
     @Test
@@ -98,7 +100,7 @@ public class InterviewControllerTest {
         when(result.hasErrors())
                 .thenReturn(true);
         String url = controller.updateInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
-        assertEquals(url, "Error");
+        assertEquals(url, ERROR);
     }
 
     @Test
@@ -107,13 +109,13 @@ public class InterviewControllerTest {
         when(result.hasErrors())
                 .thenReturn(false);
         String url = controller.updateInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
     @Test
     public void interviewSetFilter() {
         String url = controller.setFilter("", "");
-        assertEquals(url, "Sucses");
+        assertEquals(url, SUCCESS);
     }
 
 }
