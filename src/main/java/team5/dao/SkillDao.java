@@ -1,10 +1,16 @@
 package team5.dao;
 
 
-import org.springframework.stereotype.Component;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
+import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Component
+@Repository
+@Transactional
 public class SkillDao {
 
     private Statement statement;

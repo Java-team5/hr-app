@@ -47,7 +47,8 @@ public class InterviewControllerTest {
         interviews.add(new Interview(0, 1, 1, new Date(), new Date()));
         when(dao.getFilteredSortedEntitiesByPage("id", "", "id", 6, 5))
                 .thenReturn(interviews);
-        List<Interview> result = controller.view(new Cookie("interviewSortField", "id"), 2);
+        List<Interview> result = controller
+                .view(new Cookie("interviewSortField", "id"), 2);
         assertEquals(interviews, result);
     }
 
@@ -55,7 +56,7 @@ public class InterviewControllerTest {
     public void interviewViewById() {
         Interview interview = new Interview(0, 1, 1, new Date(), new Date());
         when(dao.getById(1)).thenReturn(interview);
-        Interview result = controller.viewById(1);
+        Interview result = controller.viewById((long) 1);
         assertEquals(interview, result);
     }
 
@@ -74,7 +75,7 @@ public class InterviewControllerTest {
     public void addNewInterviewWithErrors() {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(true);
-        String url = controller.addNewInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
+        String url = controller.add(new Interview(0, 1, 1, new Date(), new Date()), result);
         assertEquals(url, ERROR);
     }
 
@@ -83,14 +84,14 @@ public class InterviewControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors())
                 .thenReturn(false);
-        String url = controller.addNewInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
+        String url = controller.add(new Interview(0, 1, 1, new Date(), new Date()), result);
         assertEquals(url, SUCCESS);
     }
 
     @Test
     public void deleteInterview() {
         BindingResult result = mock(BindingResult.class);
-        String url = controller.deleteInterview(1);
+        String url = controller.delete((long) 1);
         assertEquals(url, SUCCESS);
     }
 
@@ -99,7 +100,7 @@ public class InterviewControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors())
                 .thenReturn(true);
-        String url = controller.updateInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
+        String url = controller.update(new Interview(0, 1, 1, new Date(), new Date()), result, (long) 0);
         assertEquals(url, ERROR);
     }
 
@@ -108,7 +109,7 @@ public class InterviewControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors())
                 .thenReturn(false);
-        String url = controller.updateInterview(new Interview(0, 1, 1, new Date(), new Date()), result);
+        String url = controller.update(new Interview(0, 1, 1, new Date(), new Date()), result, (long) 0);
         assertEquals(url, SUCCESS);
     }
 

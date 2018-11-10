@@ -1,5 +1,8 @@
 package team5.dao;
 
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import team5.dao.interfaces.FilteredEntityDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Interview;
@@ -14,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
+@Transactional
 public class InterviewDao implements FilteredEntityDao<Interview> {
 
     private Statement statement;

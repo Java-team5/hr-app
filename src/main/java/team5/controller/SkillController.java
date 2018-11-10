@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/skill")
-public class SkillController {
+public class SkillController implements EntityController<Skill, String> {
 
     @Autowired
     private SkillDao skillDao;
@@ -22,8 +22,6 @@ public class SkillController {
      * Filtering value.
      */
     private String filter = "";
-    private static final String SUCCESS = "Success";
-    private static final String ERROR = "Error";
 
     /**
      * View page with records from DB.
@@ -54,6 +52,8 @@ public class SkillController {
                     fieldName, filter,
                     numberInDB, total);
         }
+
+        skills = skillDao.getAll();
 
         return skills;
     }
@@ -96,7 +96,7 @@ public class SkillController {
      * @return Redirect URL.
      */
     @PostMapping(value = "/view")
-    public String addNewSkill(
+    public String add(
             @RequestBody @Valid final Skill skill,
             final BindingResult result
     ) {
@@ -113,7 +113,7 @@ public class SkillController {
      * @return Redirect URL.
      */
     @DeleteMapping(value = "/view/{id}")
-    public String deleteSkill(@PathVariable final String id) {
+    public String delete(@PathVariable final String id) {
         skillDao.delete(id);
         return SUCCESS;
     }
@@ -126,7 +126,7 @@ public class SkillController {
      * @return Redirect URL.
      */
     @PutMapping(value = "/view/{id}")
-    public String updateSkill(
+    public String update(
             @RequestBody @Valid final Skill skill,
             final BindingResult result,
             @PathVariable final String id

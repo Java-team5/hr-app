@@ -13,16 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/interview")
-public class InterviewController {
+public class InterviewController  implements EntityController<Interview, Long> {
 
     @Autowired
     private InterviewDao interviewDao;
 
     private String filter = "";
     private String filteringField = "id";
-
-    private static final String SUCCESS = "Success";
-    private static final String ERROR = "Error";
 
     /**
      * View page with records from DB.
@@ -62,7 +59,7 @@ public class InterviewController {
      * @return Page with selected record.
      */
     @GetMapping(value = "/viewSkillById/{id}/**")
-    public Interview viewById(@PathVariable final long id) {
+    public Interview viewById(@PathVariable final Long id) {
         Interview interview = interviewDao.getById(id);
         return interview;
     }
@@ -94,7 +91,7 @@ public class InterviewController {
      * @return Redirect URL.
      */
     @PostMapping(value = "/view")
-    public String addNewInterview(
+    public String add(
             @RequestBody @Valid final Interview interview,
             final BindingResult result
     ) {
@@ -111,7 +108,7 @@ public class InterviewController {
      * @return Redirect URL.
      */
     @DeleteMapping(value = "/view/{id}")
-    public String deleteInterview(@PathVariable final long id) {
+    public String delete(@PathVariable final Long id) {
         interviewDao.delete(id);
         return SUCCESS;
     }
@@ -124,9 +121,10 @@ public class InterviewController {
      * @return Redirect URL.
      */
     @PutMapping(value = "/view/")
-    public String updateInterview(
+    public String update(
             @RequestBody @Valid final Interview interview,
-            final BindingResult result
+            final BindingResult result,
+            final Long id
     ) {
         if (result.hasErrors()) {
             return ERROR;
@@ -141,7 +139,10 @@ public class InterviewController {
      * @return Redirect URL.
      */
     @PostMapping(value = "/filter")
-    public String setFilter(@RequestBody final String filter, @RequestBody final String filteringField) {
+    public String setFilter(
+            @RequestBody final String filter,
+            @RequestBody final String filteringField
+    ) {
         this.filter = filter;
         this.filteringField = filteringField;
         return SUCCESS;

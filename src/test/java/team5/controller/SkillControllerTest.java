@@ -75,7 +75,7 @@ public class SkillControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors())
                 .thenReturn(true);
-        String url = controller.addNewSkill(new Skill("C++"), result);
+        String url = controller.add(new Skill("C++"), result);
         assertEquals(url, ERROR);
     }
 
@@ -84,14 +84,14 @@ public class SkillControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors())
                 .thenReturn(false);
-        String url = controller.addNewSkill(new Skill("C++"), result);
+        String url = controller.add(new Skill("C++"), result);
         assertEquals(url, SUCCESS);
     }
 
     @Test
     public void deleteSkill() {
         BindingResult result = mock(BindingResult.class);
-        String url = controller.deleteSkill("JS");
+        String url = controller.delete("JS");
         assertEquals(url, SUCCESS);
     }
 
@@ -100,7 +100,7 @@ public class SkillControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors())
                 .thenReturn(true);
-        String url = controller.updateSkill(new Skill("C++"), result, "Spring");
+        String url = controller.update(new Skill("C++"), result, "Spring");
         assertEquals(url, ERROR);
     }
 
@@ -109,7 +109,7 @@ public class SkillControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors())
                 .thenReturn(false);
-        String url = controller.updateSkill(new Skill("C++"), result, "Spring");
+        String url = controller.update(new Skill("C++"), result, "Spring");
         assertEquals(url, SUCCESS);
     }
 
