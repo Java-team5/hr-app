@@ -53,8 +53,6 @@ public class SkillController implements EntityController<Skill, String> {
                     numberInDB, total);
         }
 
-        skills = skillDao.getAll();
-
         return skills;
     }
 
