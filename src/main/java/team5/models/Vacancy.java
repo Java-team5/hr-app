@@ -81,4 +81,29 @@ public class Vacancy {
     public void setExperienceYearsRequire(final double experienceYearsRequire) {
         this.experienceYearsRequire = experienceYearsRequire;
     }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Vacancy vacancy = (Vacancy) obj;
+
+        if (vacancy.id == this.id
+            && this.position.equals(vacancy.position)
+            && this.vacancyState.equals(vacancy.vacancyState)
+            && Double.toString(this.salaryFrom).
+                equals(Double.toString(vacancy.salaryFrom))
+            && Double.toString(this.salaryTo).
+                equals(Double.toString(vacancy.salaryTo))) {
+            return true;
+        }
+        return false;
+    }
 }

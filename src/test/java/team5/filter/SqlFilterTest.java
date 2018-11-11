@@ -2,16 +2,9 @@ package team5.filter;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-import team5.models.Vacancy;
 import team5.utils.SqlFilter;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class SqlFilterTest {
 

@@ -4,14 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import team5.dao.exceptions.DeleteException;
 import team5.dao.interfaces.SortFilterCrudDao;
 import team5.models.Vacancy;
 import team5.models.VacancyFilter;
+import team5.utils.ActionResult;
+import team5.utils.CookieValueType;
+import team5.utils.SqlFilter;
 import team5.utils.Utils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.CookieStore;
+import java.sql.ResultSet;
 import java.util.List;
 
 @RestController
@@ -22,16 +29,37 @@ public class VacancyController {
      * Class perform sql operations.
      */
     @Autowired
-    private SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDao;
+    private SortFilterCrudDao<Vacancy, SqlFilter> vacancyDao;
 
     /**
      * Filter.
      */
-    private VacancyFilter vacancyFilter = new VacancyFilter();
+    private SqlFilter filter = new SqlFilter();
+
+    /**
+     * Get current filter.
+     */
+    public SqlFilter getFilter() {
+        return filter;
+    }
+
+    /**
+     * Set current filter
+     * @param filterValue new filter
+     * @throws IllegalArgumentException
+     * null value is not valid
+     */
+    public void setFilter(final SqlFilter filterValue)
+            throws IllegalArgumentException {
+        if (filterValue == null) {
+            throw new IllegalArgumentException();
+        }
+        this.filter = filterValue;
+    }
 
     /**
      * View page with records from DB.
-     * @param vacancySortField Sorting field in DB.
+     * @param vacancySortField http request.
      * @param page page number.
      * @return page with records from DB.
      */
@@ -43,14 +71,12 @@ public class VacancyController {
         final int total = 5;
         int offset = Utils.getPageOffset(page, total);
 
-        List<Vacancy> vacancies = null;
         if (vacancySortField != null) {
-            vacancies = vacancyDao.getFilteredSortedEntitiesByPage(
-                    this.vacancyFilter, vacancySortField.getValue(), offset, total);
-        } else {
-            vacancies = vacancyDao.getFilteredEntitiesByPage(
-                    this.vacancyFilter, offset, total);
+            this.filter.setSortingСriterion(vacancySortField.getValue());
         }
+        List<Vacancy> vacancies = null;
+        vacancies = vacancyDao.getFilteredSortedEntitiesByPage(
+                this.filter, offset, total);
 
         int[] pages = Utils.getPagesIndexArray(vacancyDao, total);
         return vacancies;
@@ -77,6 +103,17 @@ public class VacancyController {
     }
 
     /**
+     * View one record from DB.
+     * @param id Vacancy PK.
+     * @return Page with selected record.
+     */
+    @GetMapping(value = "/viewVacancyById/{id}/**")
+    public Vacancy viewById(@PathVariable final long id) {
+        return vacancyDao.getById(id);
+    }
+
+
+    /**
      * Add new vacancy to DB.
      * @param vacancy New vacancy.
      * @param result Validation result.
@@ -88,10 +125,10 @@ public class VacancyController {
             final BindingResult result
     ) {
         if (result.hasErrors()) {
-            return "Error";
+            return ActionResult.ERROR.toString();
         }
         vacancyDao.save(vacancy);
-        return "Success";
+        return ActionResult.SUCCESS.toString();
     }
 
     /**
@@ -101,8 +138,12 @@ public class VacancyController {
      */
     @DeleteMapping(value = "/view/{id}")
     public String delete(@PathVariable final long id) {
-        vacancyDao.delete(id);
-        return "Success";
+        try {
+            vacancyDao.delete(id);
+        } catch (DeleteException ex) {
+            return ActionResult.ERROR.toString();
+        }
+        return ActionResult.SUCCESS.toString();
     }
 
     /**
@@ -113,28 +154,31 @@ public class VacancyController {
      * @return Redirect URL.
      */
     @PutMapping(value = "/view/{id}")
-    public String updateSkill(
+    public String updateVacancy(
             @RequestBody @Valid final Vacancy vacancy,
             final BindingResult result,
             @PathVariable final long id
     ) {
         if (result.hasErrors()) {
-            return "Error";
+            return ActionResult.ERROR.toString();
         }
-
         vacancy.setId(id);
         vacancyDao.update(vacancy);
-        return "Success";
+        return ActionResult.SUCCESS.toString();
     }
 
     /**
      * Set filter.
-     * @param filter Filter value.
+     * @param request http request.
      * @return Redirect URL.
      */
     @PostMapping(value = "/filter")
-    public String setFilter(@RequestBody final String filter) {
-        this.vacancyFilter.setPosition(filter);
-        return "Success";
+    public String setFilter(final HttpServletRequest request) {
+        this.filter.clear();
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie: cookies) {
+            this.filter.put(cookie.getName(), cookie.getValue());
+        }
+        return ActionResult.SUCCESS.toString();
     }
 }

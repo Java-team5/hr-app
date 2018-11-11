@@ -1,5 +1,7 @@
 package team5.dao.interfaces;
 
+import team5.dao.exceptions.DeleteException;
+
 import java.util.List;
 
 public interface CrudDao<T> {
@@ -17,5 +19,5 @@ public interface CrudDao<T> {
     void update(T model);
 
     //delete
-    void delete(long id);
+    void delete(long id) throws DeleteException;
 }

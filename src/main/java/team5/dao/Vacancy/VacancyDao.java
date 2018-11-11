@@ -1,15 +1,18 @@
 package team5.dao.Vacancy;
 
+import ch.qos.logback.core.joran.spi.ActionException;
+import team5.dao.exceptions.DeleteException;
 import team5.dao.interfaces.SortFilterCrudDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Vacancy;
 import team5.models.VacancyFilter;
+import team5.utils.SqlFilter;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VacancyDAO implements SortFilterCrudDao<Vacancy, VacancyFilter> {
+public class VacancyDao implements SortFilterCrudDao<Vacancy, SqlFilter> {
 
     //language=SQL
     private final String SQL_SELECT_ALL = "SELECT * FROM vacancy";
@@ -30,19 +33,15 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy, VacancyFilter> {
     private final String SQL_DELETE_VACANCY_BY_ID =
             "DELETE FROM vacancy WHERE id = ?";
     //language=SQL
-    //private final String SQL_SELECT_FILTERED_ENTITIES_BY_PAGE = "SELECT * FROM vacancy WHERE position LIKE ? LIMIT ?,?";
-    //language=SQL
     private final String SQL_SELECT_SORTED_FILTERED_ENTITIES_BY_PAGE =
             "SELECT * FROM vacancy WHERE ? LIKE ? ORDER BY ? LIMIT ?,?";
 
     private Connection connection;
 
-    public VacancyDAO() {
-        try
-        {
+    public VacancyDao() {
+        try {
             this.connection = DBConnector.getConnection();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -62,9 +61,12 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy, VacancyFilter> {
             PreparedStatement pStatement = this.connection.prepareStatement(
                     this.SQL_SELECT_BY_ID);
             pStatement.setLong(1, id);
-            return getListOfQueryResult(pStatement.executeQuery()).get(0);
+            List<Vacancy> list = getListOfQueryResult(pStatement.executeQuery());
+            return list.get(0);
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return  null;
     }
@@ -102,32 +104,22 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy, VacancyFilter> {
     }
 
     @Override
-    public void delete(final long id) {
+    public void delete(final long id) throws DeleteException {
         try {
             queryDelete(id, this.SQL_DELETE_VACANCY_BY_ID);
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DeleteException();
         }
     }
 
     @Override
-    public List<Vacancy> getFilteredEntitiesByPage(
-            final VacancyFilter filter, final int offset, final int total) {
-        String sql = "SELECT * FROM vacancy WHERE "
-                + "position LIKE '%" + filter.getPosition()
-                + "%' LIMIT " + (offset - 1) + "," + total;
-
-        return createListEntitiesFromQueryResult(sql);
-    }
-
-    @Override
     public List<Vacancy> getFilteredSortedEntitiesByPage(
-            final VacancyFilter filter, final String sortBy, final int pageId, final int total) {
-        String sql = "SELECT * FROM vacancy WHERE "
-                + "position LIKE '%" + filter.getPosition()
-                + "%' ORDER BY " + sortBy + " LIMIT "
-                + (pageId - 1) + "," + total;
-
+            final SqlFilter filter,
+            final int pageId,
+            final int total) {
+        String sql = "SELECT * FROM vacancy " + filter.getEmbeddedLine()
+                + " LIMIT " + (pageId - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
