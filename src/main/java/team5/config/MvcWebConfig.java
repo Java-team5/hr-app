@@ -52,15 +52,17 @@ public class MvcWebConfig implements WebMvcConfigurer {
     }
 
     @Bean(name = "userDao")
-    public UserDao userDao(){
+    public UserDao userDao() {
         return new UserDao();
     }
 
     @Bean(name = "feedbackDAO")
-    public FeedbackDAO feedbackDAO(){return new FeedbackDAO(); }
+    public FeedbackDAO feedbackDAO() {
+        return new FeedbackDAO();
+    }
 
     @Bean(name = "vacancyDAO")
-    public SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDAO(){
+    public SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDAO() {
         return new VacancyDAO();
     }
 
@@ -71,7 +73,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);

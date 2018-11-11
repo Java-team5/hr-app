@@ -11,10 +11,12 @@ public class Vacancy {
     private String vacancyState;
     private double experienceYearsRequire;
 
-    public Vacancy() {
-    }
+    public Vacancy() {}
 
-    public Vacancy(long id, long idDeveloper, String position, double salaryFrom, double salaryTo, String vacancyState, double experienceYearsRequire) {
+    public Vacancy(final long id, final long idDeveloper,
+                   final String position, final double salaryFrom,
+                   final double salaryTo, final String vacancyState,
+                   final double experienceYearsRequire) {
         this.id = id;
         this.idDeveloper = idDeveloper;
         this.position = position;
@@ -28,7 +30,7 @@ public class Vacancy {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -36,7 +38,7 @@ public class Vacancy {
         return idDeveloper;
     }
 
-    public void setIdDeveloper(long idDeveloper) {
+    public void setIdDeveloper(final long idDeveloper) {
         this.idDeveloper = idDeveloper;
     }
 
@@ -44,7 +46,7 @@ public class Vacancy {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(final String position) {
         this.position = position;
     }
 
@@ -52,7 +54,7 @@ public class Vacancy {
         return salaryFrom;
     }
 
-    public void setSalaryFrom(double salaryFrom) {
+    public void setSalaryFrom(final double salaryFrom) {
         this.salaryFrom = salaryFrom;
     }
 
@@ -60,7 +62,7 @@ public class Vacancy {
         return salaryTo;
     }
 
-    public void setSalaryTo(double salaryTo) {
+    public void setSalaryTo(final double salaryTo) {
         this.salaryTo = salaryTo;
     }
 
@@ -68,7 +70,7 @@ public class Vacancy {
         return vacancyState;
     }
 
-    public void setVacancyState(String vacancyState) {
+    public void setVacancyState(final String vacancyState) {
         this.vacancyState = vacancyState;
     }
 
@@ -76,7 +78,7 @@ public class Vacancy {
         return experienceYearsRequire;
     }
 
-    public void setExperienceYearsRequire(double experienceYearsRequire) {
+    public void setExperienceYearsRequire(final double experienceYearsRequire) {
         this.experienceYearsRequire = experienceYearsRequire;
     }
 }

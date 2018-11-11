@@ -131,7 +131,7 @@ public class VacancyDAO implements SortFilterCrudDao<Vacancy, VacancyFilter> {
         return createListEntitiesFromQueryResult(sql);
     }
 
-    private List<Vacancy> createListEntitiesFromQueryResult(String sql){
+    private List<Vacancy> createListEntitiesFromQueryResult(final String sql) {
         List<Vacancy> vacancyList = new ArrayList<>();
         try {
             Statement statement = this.connection.createStatement();
