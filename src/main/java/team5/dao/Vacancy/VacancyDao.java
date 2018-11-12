@@ -1,11 +1,9 @@
 package team5.dao.Vacancy;
 
-import ch.qos.logback.core.joran.spi.ActionException;
 import team5.dao.exceptions.DeleteException;
 import team5.dao.interfaces.SortFilterCrudDao;
 import team5.dao.utils.DBConnector;
 import team5.models.Vacancy;
-import team5.models.VacancyFilter;
 import team5.utils.SqlFilter;
 
 import java.sql.*;
