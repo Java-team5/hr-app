@@ -61,7 +61,7 @@ public class SkillController implements EntityController<Skill, String> {
      * @param id Skill PK.
      * @return Page with selected record.
      */
-    @GetMapping(value = "/viewSkillById/{id}/**")
+    @GetMapping(value = "/viewById/{id}/**")
     public Skill viewById(@PathVariable final String id) {
         Skill skill = skillDao.getById(id);
         return skill;
@@ -93,7 +93,7 @@ public class SkillController implements EntityController<Skill, String> {
      * @param result Validation result.
      * @return Redirect URL.
      */
-    @PostMapping(value = "/view")
+    @PostMapping(value = "/")
     public String add(
             @RequestBody @Valid final Skill skill,
             final BindingResult result
@@ -110,7 +110,7 @@ public class SkillController implements EntityController<Skill, String> {
      * @param id Skill PK.
      * @return Redirect URL.
      */
-    @DeleteMapping(value = "/view/{id}")
+    @DeleteMapping(value = "/{id}")
     public String delete(@PathVariable final String id) {
         skillDao.delete(id);
         return SUCCESS;
@@ -123,7 +123,7 @@ public class SkillController implements EntityController<Skill, String> {
      * @param id PK.
      * @return Redirect URL.
      */
-    @PutMapping(value = "/view/{id}")
+    @PutMapping(value = "/{id}")
     public String update(
             @RequestBody @Valid final Skill skill,
             final BindingResult result,

@@ -1,10 +1,10 @@
 package com.team5.controller;
 
+import com.team5.dao.interfaces.FilteredEntityDao;
+import com.team5.models.Interview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.team5.dao.InterviewDao;
-import com.team5.models.Interview;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/interview")
-public class InterviewController  implements EntityController<Interview, Long> {
+public class InterviewController implements EntityController<Interview, Long> {
 
     @Autowired
-    private InterviewDao interviewDao;
+    private FilteredEntityDao<Interview> interviewDao;
 
     private String filter = "";
     private String filteringField = "id";
@@ -49,7 +49,6 @@ public class InterviewController  implements EntityController<Interview, Long> {
                     filteringField, filter,
                     numberInDB, total);
         }
-
         return interviews;
     }
 
@@ -58,7 +57,7 @@ public class InterviewController  implements EntityController<Interview, Long> {
      * @param id PK.
      * @return Page with selected record.
      */
-    @GetMapping(value = "/viewSkillById/{id}/**")
+    @GetMapping(value = "/viewById/{id}/**")
     public Interview viewById(@PathVariable final Long id) {
         Interview interview = interviewDao.getById(id);
         return interview;
@@ -90,7 +89,7 @@ public class InterviewController  implements EntityController<Interview, Long> {
      * @param result Validation result.
      * @return Redirect URL.
      */
-    @PostMapping(value = "/view")
+    @PostMapping(value = "/")
     public String add(
             @RequestBody @Valid final Interview interview,
             final BindingResult result
@@ -107,7 +106,7 @@ public class InterviewController  implements EntityController<Interview, Long> {
      * @param id Skill PK.
      * @return Redirect URL.
      */
-    @DeleteMapping(value = "/view/{id}")
+    @DeleteMapping(value = "/{id}")
     public String delete(@PathVariable final Long id) {
         interviewDao.delete(id);
         return SUCCESS;
@@ -120,7 +119,7 @@ public class InterviewController  implements EntityController<Interview, Long> {
      * @param id PK.
      * @return Redirect URL.
      */
-    @PutMapping(value = "/view/")
+    @PutMapping(value = "/")
     public String update(
             @RequestBody @Valid final Interview interview,
             final BindingResult result,

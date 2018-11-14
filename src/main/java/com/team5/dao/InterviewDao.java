@@ -54,10 +54,9 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
     @Override
     public List<Interview> getFilteredSortedEntitiesByPage(String field, String filter, String sortBy, int pageId, int total) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM interview WHERE :field LIKE :filter ORDER BY :sortBy");
+        Query query = session.createSQLQuery("SELECT * FROM interview WHERE :field LIKE :filter ORDER BY " + sortBy);
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
-        query.setParameter("sortBy", sortBy);
         query.setFirstResult(pageId - 1);
         query.setMaxResults (total);
         return query.list();

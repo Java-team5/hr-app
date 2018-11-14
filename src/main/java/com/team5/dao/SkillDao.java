@@ -1,6 +1,5 @@
 package com.team5.dao;
 
-
 import com.team5.models.Skill;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
-@Repository("skillDao")
+@Repository
 @Transactional
 public class SkillDao {
 
@@ -62,10 +60,9 @@ public class SkillDao {
             final int total
     ) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM skill WHERE :field LIKE :filter ORDER BY :sortBy");
+        Query query = session.createSQLQuery("SELECT * FROM skill WHERE :field LIKE :filter ORDER BY " + sortBy);
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
-        query.setParameter("sortBy", sortBy);
         query.setFirstResult(page - 1);
         query.setMaxResults(total);
         return query.list();
