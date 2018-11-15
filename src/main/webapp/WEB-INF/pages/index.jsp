@@ -27,7 +27,7 @@
         <a class="menu-item" href="/candidate/view/1">
             <spring:message code="menu.candidate"/>
         </a>
-        <a class="menu-item" href="/interview">
+        <a class="menu-item" href="/interview/view/1">
             <spring:message code="menu.interview"/>
         </a>
         <a class="menu-item" href="/skill/view/1">

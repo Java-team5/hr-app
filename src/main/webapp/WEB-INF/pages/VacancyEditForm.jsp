@@ -8,7 +8,7 @@
 </style>
 <body>
 <div class="item-add">
-    <%--@elvariable id="vacancy" type="team5.models.Vacancy"--%>
+    <%--@elvariable id="vacancy" type="com.team5.models.Vacancy"--%>
     <form:form modelAttribute="vacancy" class="item-add-form" method="post" action="/vacancy/${type}">
         <h1><spring:message code="vacancy.editVacancyTitle"/></h1>
         <form:input path="id" type="number" cssStyle="display: none"/>

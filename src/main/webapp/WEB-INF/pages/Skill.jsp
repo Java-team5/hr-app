@@ -46,7 +46,7 @@
 
     <c:if test="${type eq 'add'}">
         <div class="item-add">
-            <%--@elvariable id="addSkillForm" type="team5.models.Skill"--%>
+                <%--@elvariable id="addSkillForm" type="com.team5.models.Skill"--%>
             <form:form modelAttribute="addSkillForm" class="item-add-form"  method="post" action="/skill/addSkill">
                 <div class="question">
                     <form:input path="skill" class="item-add-form-input"/>
