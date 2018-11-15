@@ -22,7 +22,7 @@ public class DBConnector {
         //properties.load(new FileInputStream("src/main/resources/db.properties"));
         URL = "jdbc:mysql://localhost:3306/hr_app_db ?verifyServerCertificate=false &useSSL=false &requireSSL=false &useLegacyDatetimeCode=false &amp &serverTimezone=UTC";
         USERNAME = "root";
-        PASSWORD = "";
+        PASSWORD = "evosav";
         DRIVER = "com.mysql.cj.jdbc.Driver";
     }
 
