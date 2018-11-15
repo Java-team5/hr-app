@@ -1,12 +1,12 @@
-package team5.controller;
+package com.team5.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team5.dao.User.UserDao;
-import team5.models.User;
-import team5.models.UserFilter;
+import com.team5.dao.User.UserDao;
+import com.team5.models.User;
+import com.team5.models.UserFilter;
 
 import java.util.List;
 
