@@ -1,21 +1,22 @@
-package team5.dao.Skill;
+package team5.dao;
 
 
+import org.springframework.stereotype.Component;
 import team5.dao.utils.DBConnector;
 import team5.models.Skill;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Dao for entity 'Skill'.
- */
+
+@Component
 public class SkillDao {
 
-    private Connection connection;
     private Statement statement;
 
     /**
@@ -23,9 +24,13 @@ public class SkillDao {
      */
     public SkillDao() {
         try {
-            connection = DBConnector.getConnection();
+            Connection connection = DBConnector.getConnection();
             statement = connection.createStatement();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -36,12 +41,12 @@ public class SkillDao {
      * @return Found record.
      */
     public Skill getById(final String id) {
-        String sql = "SELECT * FROM skill WHERE skill='" + id + "'";
+        String sql = String.format("SELECT * FROM skill WHERE skill='%s'", id);
         try {
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
             return new Skill(resultSet.getString(1));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -52,7 +57,8 @@ public class SkillDao {
      * @param model record.
      */
     public void save(final Skill model) {
-        String sql = "INSERT INTO skill(skill) VALUES ('" + model.getSkill() + "')";
+        String sql = "INSERT INTO skill(skill) VALUES ('"
+                + model.getSkill() + "')";
         executDatabaseQuery(sql);
     }
 
@@ -62,7 +68,8 @@ public class SkillDao {
      * @param id PK.
      */
     public void update(final Skill model, final String id) {
-        String sql = "UPDATE skill SET skill='" + model.getSkill() + "' WHERE skill='" + id + "'";
+        String sql = "UPDATE skill SET skill='" + model.getSkill()
+                + "' WHERE skill='" + id + "'";
         executDatabaseQuery(sql);
     }
 
@@ -92,8 +99,14 @@ public class SkillDao {
      * @param total count record on page.
      * @return sql query.
      */
-    public List<Skill> getFilteredEntitiesByPage(final String field, final String filter, final int page, final int total) {
-        String sql = "SELECT * FROM skill WHERE " + field + " LIKE '%" + filter + "%' LIMIT " + (page - 1) + "," + total;
+    public List<Skill> getFilteredEntitiesByPage(
+            final String field,
+            final String filter,
+            final int page,
+            final int total) {
+        String sql = "SELECT * FROM skill WHERE "
+                + field + " LIKE '%" + filter
+                + "%' LIMIT " + (page - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
@@ -106,8 +119,16 @@ public class SkillDao {
      * @param total count record on page.
      * @return sql query.
      */
-    public List<Skill> getFilteredSortedEntitiesByPage(final String field, final String filter, final String sortBy, final int page, final int total) {
-        String sql = "SELECT * FROM skill WHERE " + field + " LIKE '%" + filter + "%' ORDER BY " + sortBy + " LIMIT " + (page - 1) + "," + total;
+    public List<Skill> getFilteredSortedEntitiesByPage(
+            final String field,
+            final String filter,
+            final String sortBy,
+            final int page,
+            final int total
+    ) {
+        String sql = "SELECT * FROM skill WHERE "
+                + field + " LIKE '%" + filter + "%' ORDER BY "
+                + sortBy + " LIMIT " + (page - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
@@ -116,15 +137,15 @@ public class SkillDao {
      * @param sql query.
      * @return Skill list.
      */
-    private List<Skill> createListEntitiesFromQueryResult(String sql) {
+    private List<Skill> createListEntitiesFromQueryResult(final String sql) {
         List<Skill> skills = new ArrayList<>();
 
         try {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                skills.add( new Skill(resultSet.getString(1)));
+                skills.add(new Skill(resultSet.getString(1)));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -147,7 +168,7 @@ public class SkillDao {
     private void executDatabaseQuery(final String sql) {
         try {
             statement.executeUpdate(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

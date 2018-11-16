@@ -3,8 +3,8 @@ package team5.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import team5.dao.SkillDao;
-import team5.models.Skill;
+import team5.dao.InterviewDao;
+import team5.models.Interview;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -12,27 +12,25 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/skill")
-public class SkillController {
+@RequestMapping(value = "/interview")
+public class InterviewController {
 
     @Autowired
-    private SkillDao skillDao;
+    private InterviewDao interviewDao;
 
-    /**
-     * Filtering value.
-     */
     private String filter = "";
+    private String filteringField = "id";
 
     /**
      * View page with records from DB.
-     * @param skillSortField Sorting field in DB.
+     * @param interviewSortField Sorting field in DB.
      * @param page page number.
      * @return page with records from DB.
      */
     @GetMapping(value = "/view/{page}/**")
-    public List<Skill> view(
-            @CookieValue(value = "skillSortField", required = false)
-            final Cookie skillSortField,
+    public List<Interview> view(
+            @CookieValue(value = "interviewSortField", required = false)
+            final Cookie interviewSortField,
             @PathVariable final int page
     ) {
         final int total = 5;
@@ -41,30 +39,29 @@ public class SkillController {
             numberInDB = (page - 1) * total + 1;
         }
 
-        List<Skill> skills;
-        final String fieldName = "skill";
-        if (skillSortField != null) {
-            skills = skillDao.getFilteredSortedEntitiesByPage(
-                    fieldName, filter,
-                    skillSortField.getValue(), numberInDB, total);
+        List<Interview> interviews;
+        if (interviewSortField != null) {
+            interviews = interviewDao.getFilteredSortedEntitiesByPage(
+                    filteringField, filter,
+                    interviewSortField.getValue(), numberInDB, total);
         } else {
-            skills = skillDao.getFilteredEntitiesByPage(
-                    fieldName, filter,
+            interviews = interviewDao.getFilteredEntitiesByPage(
+                    filteringField, filter,
                     numberInDB, total);
         }
 
-        return skills;
+        return interviews;
     }
 
     /**
      * View one record from DB.
-     * @param id Skill PK.
+     * @param id PK.
      * @return Page with selected record.
      */
     @GetMapping(value = "/viewSkillById/{id}/**")
-    public Skill viewById(@PathVariable final String id) {
-        Skill skill = skillDao.getById(id);
-        return skill;
+    public Interview viewById(@PathVariable final long id) {
+        Interview interview = interviewDao.getById(id);
+        return interview;
     }
 
     /**
@@ -74,13 +71,13 @@ public class SkillController {
      * @return page with sorted records from DB.
      */
     @GetMapping(value = "/addSorting/{sortField}/**")
-    public List<Skill> addSorting(
+    public List<Interview> addSorting(
             final HttpServletResponse response,
             @PathVariable final String sortField
     ) {
         final int lifeTime = 1000 * 60 * 60 * 24;
         final int firstPage = 1;
-        Cookie cookie = new Cookie("skillSortField", sortField);
+        Cookie cookie = new Cookie("interviewSortField", sortField);
         cookie.setMaxAge(lifeTime);
         cookie.setPath("/");
         response.addCookie(cookie);
@@ -88,20 +85,20 @@ public class SkillController {
     }
 
     /**
-     * Add new skill to DB.
-     * @param skill New skill.
+     * Add new interview to DB.
+     * @param interview New interview.
      * @param result Validation result.
      * @return Redirect URL.
      */
     @PostMapping(value = "/view")
-    public String addNewSkill(
-            @RequestBody @Valid final Skill skill,
+    public String addNewInterview(
+            @RequestBody @Valid final Interview interview,
             final BindingResult result
     ) {
         if (result.hasErrors()) {
             return "Error";
         }
-        skillDao.save(skill);
+        interviewDao.save(interview);
         return "Sucses";
     }
 
@@ -111,28 +108,27 @@ public class SkillController {
      * @return Redirect URL.
      */
     @DeleteMapping(value = "/view/{id}")
-    public String deleteSkill(@PathVariable final String id) {
-        skillDao.delete(id);
+    public String deleteInterview(@PathVariable final long id) {
+        interviewDao.delete(id);
         return "Sucses";
     }
 
     /**
-     * Edit skill.
-     * @param skill Edit skill.
+     * Edit interview.
+     * @param interview Edit interview.
      * @param result Validation result.
      * @param id PK.
      * @return Redirect URL.
      */
-    @PutMapping(value = "/view/{id}")
-    public String updateSkill(
-            @RequestBody @Valid final Skill skill,
-            final BindingResult result,
-            @PathVariable final String id
+    @PutMapping(value = "/view/")
+    public String updateInterview(
+            @RequestBody @Valid final Interview interview,
+            final BindingResult result
     ) {
         if (result.hasErrors()) {
             return "Error";
         }
-        skillDao.update(skill, id);
+        interviewDao.update(interview);
         return "Sucses";
     }
 
@@ -142,8 +138,9 @@ public class SkillController {
      * @return Redirect URL.
      */
     @PostMapping(value = "/filter")
-    public String setFilter(@RequestBody final String filter) {
+    public String setFilter(@RequestBody final String filter, @RequestBody final String filteringField) {
         this.filter = filter;
+        this.filteringField = filteringField;
         return "Sucses";
     }
 }
