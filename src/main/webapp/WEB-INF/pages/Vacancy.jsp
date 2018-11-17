@@ -30,7 +30,7 @@
                 </tr>
                 </thead>
                 <tr>
-                    <%--@elvariable id="filterInput" type="team5.models.VacancyFilter"--%>
+                        <%--@elvariable id="filterInput" type="com.team5.models.VacancyFilter"--%>
                     <form:form modelAttribute="filterInput"  method="post" action="/vacancy/filter?sort=${sort}">
                         <td class="item-filter"><spring:message code="menu.filter" /></td>
                         <td>-</td>
