@@ -151,7 +151,7 @@ public class VacancyDao implements SortFilterCrudDao<Vacancy, SqlFilter> {
      * @param id unique record identifier.
      */
     @Override
-    public void delete(final long id){
+    public void delete(final long id) {
         try {
             queryDelete(id, this.SQL_DELETE_VACANCY_BY_ID);
         } catch (SQLException e) {

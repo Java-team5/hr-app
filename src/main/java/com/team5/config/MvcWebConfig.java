@@ -1,12 +1,12 @@
-package team5.config;
+package com.team5.config;
 
 import com.team5.dao.Candidate.CandidateDAO;
 import com.team5.dao.FeedbackDAO;
-import com.team5.dao.InterviewDao;
-import com.team5.dao.SkillDao;
 import com.team5.dao.User.UserDao;
+import com.team5.dao.Vacancy.VacancyDao;
 import com.team5.dao.interfaces.SortFilterCrudDao;
 import com.team5.models.Vacancy;
+import com.team5.utils.SqlFilter;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,19 +19,16 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import com.team5.dao.Vacancy.VacancyDao;
-import com.team5.utils.SqlFilter;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.team5.controller")
+@ComponentScan("com.team5")
 public class MvcWebConfig implements WebMvcConfigurer {
 
     @Override
-    public void configureViewResolvers(final ViewResolverRegistry registry) {
+    public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.jsp("/WEB-INF/pages/", ".jsp");
     }
-
 
     @Bean("messageSource")
     public MessageSource messageSource() {
@@ -40,16 +37,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
-    }
-
-    @Bean(name = "skillDao")
-    public SkillDao skillDao() {
-        return new SkillDao();
-    }
-
-    @Bean(name = "interviewDao")
-    public InterviewDao interviewDao() {
-        return new InterviewDao();
     }
 
     @Bean(name = "candidateDAO")
@@ -67,7 +54,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
         return new FeedbackDAO();
     }
 
-    @Bean(name = "vacancyDAO")
+    @Bean(name = "vacancyDao")
     public SortFilterCrudDao<Vacancy, SqlFilter> vacancyDAO() {
         return new VacancyDao();
     }
@@ -79,7 +66,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(final InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
