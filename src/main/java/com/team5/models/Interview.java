@@ -10,25 +10,25 @@ public class Interview {
 
     @Id
     @NotNull
-    @Column(name = "id")
+    @Column(name = "ID")
     private long id;
 
     @NotNull
     @Basic
-    @Column(name = "idVacancy")
+    @Column(name = "VACANCY_ID")
     private long idVacancy;
 
     @NotNull
     @Basic
-    @Column(name = "idCandidate")
+    @Column(name = "CANDIDATE_ID")
     private long idCandidate;
 
     @Basic
-    @Column(name = "planDate")
+    @Column(name = "PLAN_DATE")
     private Date planDate;
 
     @Basic
-    @Column(name = "factDate")
+    @Column(name = "FACT_DATE")
     private Date factDate;
 
     public Date getPlanDate() {

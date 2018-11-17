@@ -99,7 +99,7 @@ public class SkillDao {
      */
     public int count(final String filter) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM skill WHERE skill LIKE :filter");
+        Query query = session.createSQLQuery("SELECT * FROM skill WHERE NAME LIKE :filter");
         query.setParameter("filter", "%" + filter + "%");
         return query.list().size();
     }
@@ -111,8 +111,8 @@ public class SkillDao {
      */
     public void update(final Skill model, final String id) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("UPDATE skill SET skill=:newSkill WHERE skill=:id");
-        query.setParameter("newSkill", model.getSkill());
+        Query query = session.createSQLQuery("UPDATE skill SET NAME=:newSkill WHERE NAME=:id");
+        query.setParameter("newSkill", model.getName());
         query.setParameter("id", id);
         query.executeUpdate();
     }

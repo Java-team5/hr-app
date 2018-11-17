@@ -19,7 +19,7 @@ public class InterviewController implements EntityController<Interview, Long> {
     private FilteredEntityDao<Interview> interviewDao;
 
     private String filter = "";
-    private String filteringField = "id";
+    private String filteringField = "ID";
 
     /**
      * View page with records from DB.

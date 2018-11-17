@@ -14,22 +14,22 @@ public class Skill {
     @Id
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "skill")
-    private String skill;
+    @Column(name = "NAME")
+    private String name;
 
-    public String getSkill() {
-        return skill;
+    public String getName() {
+        return name;
     }
 
-    public void setSkill(final String skill) {
-        this.skill = skill;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public Skill() {
     }
 
     public Skill(final String skill) {
-        this.skill = skill;
+        this.name = skill;
     }
 
 }
