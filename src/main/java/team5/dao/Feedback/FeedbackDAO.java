@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedbackDAO implements FeedbackCRUDDAO {
+public class FeedbackDAO {
 
     private Connection connection;
     private Statement statement;
@@ -23,11 +23,6 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public Feedback getById(long id) {
-        return null;
     }
 
     public Feedback getByIds(long id1, long id2) {
@@ -48,7 +43,6 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
         return null;
     }
 
-    @Override
     public void save(Feedback model) {
         String sql = "INSERT INTO interviewfeedback (idInterview, idInterviewer, feedbackState, reason) VALUES ('" +
                 model.getIdInterview() +
@@ -58,7 +52,6 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
         DBUtils.updateByQuery(sql);
     }
 
-    @Override
     public void update(Feedback model) {
         String sql = "UPDATE interviewfeedback SET idInterview='" + model.getIdInterview()
                 + "', idInterviewer='" + model.getIdInterviewer()
@@ -68,18 +61,16 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
         DBUtils.updateByQuery(sql);
     }
 
-    @Override
-    public void delete(long id) {
-
+    public void delete(long id1, long id2) {
+        String sql = "DELETE FROM interviewfeedback WHERE (idInterview='" + id1 + "' AND  idInterviewer='" + id2 + "')";
+        executeDatabaseQuery(sql);
     }
 
-    @Override
     public List<Feedback> getAll() {
         String sql="SELECT * FROM interview";
         return createListEntitiesFromQueryResult(sql);
     }
 
-    @Override
     public int count(){
         return getAll().size();
     }
@@ -106,21 +97,18 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
         return feedbacks;
     }
 
-    @Override
     public List<Feedback> getSortedEntitiesByPage(String sortBy, int pageid, int total) {
         String sql = "SELECT * FROM candidate ORDER BY " + sortBy + " LIMIT " + (pageid - 1) + "," + total;
         return createListEntitiesFromQueryResult(sql);
     }
 
 
-    @Override
     public List<Feedback> getEntitiesByPage(int offset, int total) {
         String sql="SELECT * FROM interviewfeedback LIMIT "+(offset -1)+","+total;
         return createListEntitiesFromQueryResult(sql);
     }
 
 
-    @Override
     public List<Feedback> getEntitiesByPage(FeedbackFilter filter, int offset, int total) {
         String sql = "SELECT * FROM interviewfeedback WHERE (feedbackState LIKE '%" + filter.getState() + "%'" +
                 " AND reason LIKE '%" + filter.getReason() + "%')  LIMIT " + (offset - 1) + "," + total + ";";
@@ -128,7 +116,6 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
         return createListEntitiesFromQueryResult(sql);
     }
 
-    @Override
     public List<Feedback> getSortedEntitiesByPage(FeedbackFilter filter, String sortBy, int offset, int total) {
         String sql = "SELECT * FROM interviewfeedback WHERE (feedbackState LIKE '%" + filter.getState() + "%'" +
                 " AND reason LIKE '%" + filter.getReason() + "%')" +
@@ -136,6 +123,14 @@ public class FeedbackDAO implements FeedbackCRUDDAO {
                 " LIMIT " + (offset - 1) + "," + total + ";";
 
         return createListEntitiesFromQueryResult(sql);
+    }
+
+    private void executeDatabaseQuery(final String sql) {
+        try {
+            statement.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

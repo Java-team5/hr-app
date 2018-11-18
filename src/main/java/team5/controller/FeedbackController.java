@@ -9,17 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import team5.dao.Feedback.FeedbackCRUDDAO;
+import team5.dao.Feedback.FeedbackDAO;
 import team5.models.Feedback;
 import team5.models.FeedbackFilter;
 import team5.utils.Utils;
 
 import java.util.List;
 
+import static java.lang.Math.ceil;
+
 @Controller
 @RequestMapping(value ="/feedback/")
 public class FeedbackController {
     @Autowired
-    FeedbackCRUDDAO feedbackDAO;
+    FeedbackDAO feedbackDAO;
 
     FeedbackFilter filter = new FeedbackFilter();
 
@@ -36,7 +39,11 @@ public class FeedbackController {
             feedbacks = feedbackDAO.getEntitiesByPage(filter, offset, total);
         }
 
-        int[] pages = Utils.getPagesIndexArray(feedbackDAO,total);
+        float pagesCount = (float) feedbackDAO.count() / total;
+        int[] pages = new int[(int) ceil(pagesCount)];
+        for(int i=0; i<pages.length; i++){
+            pages[i] = i + 1;
+        }
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.getModelMap().addAttribute("sort", (sort != null) ? sort : "none");
