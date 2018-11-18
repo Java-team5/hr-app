@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value ="/candidate")
+@RequestMapping(value = "/candidate")
 public class CandidateController implements EntityController<Candidate, Long> {
 
     @Autowired

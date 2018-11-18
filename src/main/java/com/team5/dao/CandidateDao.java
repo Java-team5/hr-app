@@ -39,7 +39,7 @@ public class CandidateDao implements FilteredEntityDao<Candidate> {
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
         query.setFirstResult(offset - 1);
-        query.setMaxResults (total);
+        query.setMaxResults(total);
         return query.list();
     }
 
@@ -58,7 +58,7 @@ public class CandidateDao implements FilteredEntityDao<Candidate> {
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
         query.setFirstResult(pageId - 1);
-        query.setMaxResults (total);
+        query.setMaxResults(total);
         return query.list();
     }
 

@@ -1,9 +1,8 @@
 package com.team5.controller;
 
 import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MainControllerTest {
 
