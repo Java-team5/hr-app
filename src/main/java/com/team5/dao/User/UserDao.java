@@ -25,7 +25,7 @@ public class UserDao implements UserCrudDao {
 
     @Override
     public User getById(long id) {
-        String sql = "SELECT * FROM users WHERE id="+id+"";
+        String sql = "SELECT * FROM users WHERE id=" + id + "";
         try {
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();

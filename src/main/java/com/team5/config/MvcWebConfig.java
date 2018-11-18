@@ -2,10 +2,10 @@ package com.team5.config;
 
 import com.team5.dao.FeedbackDAO;
 import com.team5.dao.User.UserDao;
-import com.team5.dao.Vacancy.VacancyDAO;
+import com.team5.dao.Vacancy.VacancyDao;
 import com.team5.dao.interfaces.SortFilterCrudDao;
 import com.team5.models.Vacancy;
-import com.team5.models.VacancyFilter;
+import com.team5.utils.SqlFilter;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -48,9 +48,9 @@ public class MvcWebConfig implements WebMvcConfigurer {
         return new FeedbackDAO();
     }
 
-    @Bean(name = "vacancyDAO")
-    public SortFilterCrudDao<Vacancy, VacancyFilter> vacancyDAO() {
-        return new VacancyDAO();
+    @Bean(name = "vacancyDao")
+    public SortFilterCrudDao<Vacancy, SqlFilter> vacancyDAO() {
+        return new VacancyDao();
     }
 
     @Bean

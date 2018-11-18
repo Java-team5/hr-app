@@ -29,7 +29,6 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * Get all filtered records.
      * @param field filtered field.
      * @param filter value from filtering.
-     * @param page page number.
      * @param total count record on page.
      */
     @Override
@@ -48,7 +47,6 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * @param field filtered field.
      * @param filter value from filtering.
      * @param sortBy value from sorting.
-     * @param page page number.
      * @param total count record on page.
      */
     @Override

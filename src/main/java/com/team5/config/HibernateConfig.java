@@ -22,12 +22,15 @@ import java.util.Properties;
 @ComponentScan({"com.team5"})
 @PropertySource("classpath:db/db.properties")
 public class HibernateConfig {
+
     @Autowired
     private Environment env;
+
     @Bean
     public HibernateTemplate hibernateTemplate() {
         return new HibernateTemplate(sessionFactory());
     }
+
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
@@ -50,10 +53,12 @@ public class HibernateConfig {
         dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
     }
+
     @Bean
     public HibernateTransactionManager hibernateTransactionManager() {
         return new HibernateTransactionManager(sessionFactory());
     }
+
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
