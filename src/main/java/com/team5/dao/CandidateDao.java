@@ -1,7 +1,7 @@
 package com.team5.dao;
 
 import com.team5.dao.interfaces.FilteredEntityDao;
-import com.team5.models.Interview;
+import com.team5.models.Candidate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class InterviewDao implements FilteredEntityDao<Interview> {
+public class CandidateDao implements FilteredEntityDao<Candidate> {
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
@@ -33,9 +33,9 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * @param total count record on page.
      */
     @Override
-    public List<Interview> getFilteredEntitiesByPage(String field, String filter, int offset, int total) {
+    public List<Candidate> getFilteredEntitiesByPage(String field, String filter, int offset, int total) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM interview WHERE :field LIKE :filter");
+        Query query = session.createSQLQuery("SELECT * FROM candidate WHERE :field LIKE :filter");
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
         query.setFirstResult(offset - 1);
@@ -52,9 +52,9 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * @param total count record on page.
      */
     @Override
-    public List<Interview> getFilteredSortedEntitiesByPage(String field, String filter, String sortBy, int pageId, int total) {
+    public List<Candidate> getFilteredSortedEntitiesByPage(String field, String filter, String sortBy, int pageId, int total) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM interview WHERE :field LIKE :filter ORDER BY " + sortBy);
+        Query query = session.createSQLQuery("SELECT * FROM candidate WHERE :field LIKE :filter ORDER BY " + sortBy);
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
         query.setFirstResult(pageId - 1);
@@ -67,7 +67,7 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * @param model record.
      */
     @Override
-    public void save(Interview model) {
+    public void save(Candidate model) {
         hibernateTemplate.save(model);
     }
 
@@ -77,8 +77,8 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * @return Found record.
      */
     @Override
-    public Interview getById(long id) {
-        return hibernateTemplate.get(Interview.class, id);
+    public Candidate getById(long id) {
+        return hibernateTemplate.get(Candidate.class, id);
     }
 
     /**
@@ -86,8 +86,8 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * @return Skill list.
      */
     @Override
-    public List<Interview> getAll() {
-        return (List<Interview>) hibernateTemplate.find("FROM Interview");
+    public List<Candidate> getAll() {
+        return (List<Candidate>) hibernateTemplate.find("FROM Candidate");
     }
 
     /**
@@ -103,7 +103,7 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
      * @param model record.
      */
     @Override
-    public void update(Interview model) {
+    public void update(Candidate model) {
         hibernateTemplate.update(model);
     }
 
@@ -115,5 +115,4 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
     public void delete(long id) {
         hibernateTemplate.delete(getById(id));
     }
-
 }

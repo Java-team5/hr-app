@@ -1,6 +1,5 @@
 package com.team5.config;
 
-import com.team5.dao.Candidate.CandidateDAO;
 import com.team5.dao.FeedbackDAO;
 import com.team5.dao.User.UserDao;
 import com.team5.dao.Vacancy.VacancyDAO;
@@ -37,11 +36,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
-    }
-
-    @Bean(name = "candidateDAO")
-    public CandidateDAO candidateDao() {
-        return new CandidateDAO();
     }
 
     @Bean(name = "userDao")
