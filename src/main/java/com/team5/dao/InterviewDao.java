@@ -91,7 +91,6 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
     }
 
     /**
-     * @param filter value from filtering.
      * @return count filtering record in db.
      */
     @Override
@@ -102,7 +101,6 @@ public class InterviewDao implements FilteredEntityDao<Interview> {
     /**
      * Update record in DB.
      * @param model record.
-     * @param id PK.
      */
     @Override
     public void update(Interview model) {

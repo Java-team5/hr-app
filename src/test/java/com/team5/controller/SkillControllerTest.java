@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SkillControllerTest {
 
-    private final String fieldName = "skill";
+    private final String fieldName = "NAME";
     private static final String SUCCESS = "Success";
     private static final String ERROR = "Error";
 
@@ -46,7 +46,7 @@ public class SkillControllerTest {
         skills.add(new Skill("C#"));
         when(dao.getFilteredSortedEntitiesByPage(fieldName, "", fieldName, 6, 5))
                 .thenReturn(skills);
-        List<Skill> skillList = controller.view(new Cookie("skillSortField", "skill"), 2);
+        List<Skill> skillList = controller.view(new Cookie("skillSortField", "NAME"), 2);
         assertEquals(skills, skillList);
     }
 

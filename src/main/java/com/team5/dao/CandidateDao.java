@@ -1,6 +1,7 @@
 package com.team5.dao;
 
-import com.team5.models.Skill;
+import com.team5.dao.interfaces.FilteredEntityDao;
+import com.team5.models.Candidate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,17 +10,20 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
 @Transactional
-public class SkillDao {
+public class CandidateDao implements FilteredEntityDao<Candidate> {
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Get all filtered records.
@@ -28,20 +32,15 @@ public class SkillDao {
      * @param page page number.
      * @param total count record on page.
      */
-    public List<Skill> getFilteredEntitiesByPage(
-            final String field,
-            final String filter,
-            final int page,
-            final int total
-    ) {
+    @Override
+    public List<Candidate> getFilteredEntitiesByPage(String field, String filter, int offset, int total) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM skill WHERE :field LIKE :filter");
+        Query query = session.createSQLQuery("SELECT * FROM candidate WHERE :field LIKE :filter");
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
-        query.setFirstResult(page - 1);
+        query.setFirstResult(offset - 1);
         query.setMaxResults(total);
         return query.list();
-
     }
 
     /**
@@ -52,18 +51,13 @@ public class SkillDao {
      * @param page page number.
      * @param total count record on page.
      */
-    public List<Skill> getFilteredSortedEntitiesByPage(
-            final String field,
-            final String filter,
-            final String sortBy,
-            final int page,
-            final int total
-    ) {
+    @Override
+    public List<Candidate> getFilteredSortedEntitiesByPage(String field, String filter, String sortBy, int pageId, int total) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM skill WHERE :field LIKE :filter ORDER BY " + sortBy);
+        Query query = session.createSQLQuery("SELECT * FROM candidate WHERE :field LIKE :filter ORDER BY " + sortBy);
         query.setParameter("field", field);
         query.setParameter("filter", "%" + filter + "%");
-        query.setFirstResult(page - 1);
+        query.setFirstResult(pageId - 1);
         query.setMaxResults(total);
         return query.list();
     }
@@ -72,7 +66,8 @@ public class SkillDao {
      * Add new record to DB.
      * @param model record.
      */
-    public void save(final Skill model) {
+    @Override
+    public void save(Candidate model) {
         hibernateTemplate.save(model);
     }
 
@@ -81,48 +76,43 @@ public class SkillDao {
      * @param id PK.
      * @return Found record.
      */
-    public Skill getById(final String id) {
-        return hibernateTemplate.get(Skill.class, id);
+    @Override
+    public Candidate getById(long id) {
+        return hibernateTemplate.get(Candidate.class, id);
     }
 
     /**
      * Get all records from DB.
      * @return Skill list.
      */
-    public List<Skill> getAll() {
-        return (List<Skill>) hibernateTemplate.find("FROM Skill");
+    @Override
+    public List<Candidate> getAll() {
+        return (List<Candidate>) hibernateTemplate.find("FROM Candidate");
     }
 
     /**
-     * @param filter value from filtering.
      * @return count filtering record in db.
      */
-    public int count(final String filter) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("SELECT * FROM skill WHERE NAME LIKE :filter");
-        query.setParameter("filter", "%" + filter + "%");
-        return query.list().size();
+    @Override
+    public int count() {
+        return getAll().size();
     }
 
     /**
      * Update record in DB.
      * @param model record.
-     * @param id PK.
      */
-    public void update(final Skill model, final String id) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("UPDATE skill SET NAME=:newSkill WHERE NAME=:id");
-        query.setParameter("newSkill", model.getName());
-        query.setParameter("id", id);
-        query.executeUpdate();
+    @Override
+    public void update(Candidate model) {
+        hibernateTemplate.update(model);
     }
 
     /**
      * Delete record from DB.
      * @param id PK.
      */
-    public void delete(final String id) {
+    @Override
+    public void delete(long id) {
         hibernateTemplate.delete(getById(id));
     }
-
 }

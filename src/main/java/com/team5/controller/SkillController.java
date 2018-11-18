@@ -42,7 +42,7 @@ public class SkillController implements EntityController<Skill, String> {
         }
 
         List<Skill> skills;
-        final String fieldName = "skill";
+        final String fieldName = "NAME";
         if (skillSortField != null) {
             skills = skillDao.getFilteredSortedEntitiesByPage(
                     fieldName, filter,

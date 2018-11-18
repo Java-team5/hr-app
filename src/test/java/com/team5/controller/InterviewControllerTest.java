@@ -35,7 +35,7 @@ public class InterviewControllerTest {
     public void getFilteredEntitiesByPage() {
         List<Interview> interviews = new ArrayList<>();
         interviews.add(new Interview(0, 1, 1, new Date(), new Date()));
-        when(dao.getFilteredEntitiesByPage("id", "", 1, 5))
+        when(dao.getFilteredEntitiesByPage("ID", "", 1, 5))
                 .thenReturn(interviews);
         List<Interview> result = controller.view(null, 1);
         assertEquals(interviews, result);
@@ -45,10 +45,10 @@ public class InterviewControllerTest {
     public void getFilteredSortedEntitiesByPage() {
         List<Interview> interviews = new ArrayList<>();
         interviews.add(new Interview(0, 1, 1, new Date(), new Date()));
-        when(dao.getFilteredSortedEntitiesByPage("id", "", "id", 6, 5))
+        when(dao.getFilteredSortedEntitiesByPage("ID", "", "ID", 6, 5))
                 .thenReturn(interviews);
         List<Interview> result = controller
-                .view(new Cookie("interviewSortField", "id"), 2);
+                .view(new Cookie("interviewSortField", "ID"), 2);
         assertEquals(interviews, result);
     }
 
@@ -64,7 +64,7 @@ public class InterviewControllerTest {
     public void interviewAddSorting() {
         List<Interview> interviews = new ArrayList<>();
         interviews.add(new Interview(0, 1, 1, new Date(), new Date()));
-        when(dao.getFilteredSortedEntitiesByPage("id", "", fieldName, 1, 5))
+        when(dao.getFilteredSortedEntitiesByPage("ID", "", fieldName, 1, 5))
                 .thenReturn(interviews);
         HttpServletResponse response = mock(HttpServletResponse.class);
         List<Interview> result = controller.addSorting(response, fieldName);
