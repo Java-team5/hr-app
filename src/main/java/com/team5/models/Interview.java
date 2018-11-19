@@ -1,5 +1,7 @@
 package com.team5.models;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -10,6 +12,7 @@ public class Interview {
 
     @Id
     @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private long id;
 
@@ -18,10 +21,9 @@ public class Interview {
     @Column(name = "VACANCY_ID")
     private long idVacancy;
 
-    @NotNull
-    @Basic
-    @Column(name = "CANDIDATE_ID")
-    private long idCandidate;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CANDIDATE_ID")
+    private Candidate candidate;
 
     @Basic
     @Column(name = "PLAN_DATE")
@@ -63,18 +65,17 @@ public class Interview {
         this.idVacancy = idVacancy;
     }
 
-    public long getIdCandidate() {
-        return idCandidate;
+    public Candidate getCandidate() {
+        return candidate;
     }
 
-    public void setIdCandidate(long idCandidate) {
-        this.idCandidate = idCandidate;
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
     public Interview(@NotNull long id, @NotNull long idVacancy, @NotNull long idCandidate, Date planDate, Date factnDate) {
         this.id = id;
         this.idVacancy = idVacancy;
-        this.idCandidate = idCandidate;
         this.planDate = planDate;
         this.factDate = factnDate;
     }

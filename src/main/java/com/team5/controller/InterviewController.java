@@ -1,6 +1,7 @@
 package com.team5.controller;
 
 import com.team5.dao.interfaces.FilteredEntityDao;
+import com.team5.models.Candidate;
 import com.team5.models.Interview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;

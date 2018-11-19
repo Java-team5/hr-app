@@ -1,11 +1,15 @@
 package com.team5.models;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "candidate")
 public class Candidate {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private long id;
 
@@ -24,6 +28,21 @@ public class Candidate {
     @Basic
     @Column(name = "SALARY")
     private double salary;
+
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Interview> interviews;
+
+    public List<Interview> getInterviews() {
+        if (this.interviews == null) {
+            this.interviews = new ArrayList<>();
+        }
+        return interviews;
+    }
+
+    public void setInterviews(List<Interview> interviews) {
+        this.interviews = interviews;
+    }
 
     public long getId() {
         return id;
